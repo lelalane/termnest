@@ -1,0 +1,2376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TermNest Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+/* Palette: University of Miami green and orange, off-white, near black.
+   Contrast: #fff on #005030 ≈ 9.6:1 · #005030 on #fff ≈ 10:1 · #1A1A1A on #F47321 ≈ 6:1.
+   Rules: orange is only a fill for badges, highlights and small accents, always with near-black text/icons.
+   Never white text on orange; never orange text on white (≈ 2.9:1). */
+:root{
+  --green:#005030; --green-dark:#003A22; --green-text:#005030; --green-50:#E6F0EA;
+  --orange:#F47321; --orange-50:#FEF0E6; --bg:#FAFAF7;
+  --ink:#1A1A1A; --ink-2:#474C49; --muted:#474C49; --line:#1A1A1A; --soft:#D6DDD8;
+  --danger:#B3261E; --heart:var(--green); --s:1;   /* red is kept only for errors and Log out */
+  --shadow:4px 4px 0 var(--ink); --shadow-sm:3px 3px 0 var(--ink);
+  --head:'Bricolage Grotesque','Atkinson Hyperlegible',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:18px}
+html.lg{font-size:21px}
+body{margin:0;min-height:100vh;font-family:'Atkinson Hyperlegible',system-ui,-apple-system,sans-serif;color:var(--ink);
+  background:#E8EEEA;display:flex;align-items:center;justify-content:center;gap:56px;padding:16px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,p{margin:0}
+h1,h2,h3,.logo,.price strong,.price-lg strong,.ab-price strong,.range-val,.avatar,.avatar-lg{font-family:var(--head);letter-spacing:-.015em}
+h1{font-weight:800}
+h2,h3{font-weight:700}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--green-text);outline-offset:3px}
+[hidden]{display:none!important}
+
+/* ---------- page notes (desktop only) ---------- */
+.notes{max-width:300px;font-size:16px;line-height:1.5}
+.notes h2{font-size:30px;margin:14px 0 6px;font-weight:800}
+.notes ol{padding-left:20px;margin:12px 0}
+.notes .restart{margin-top:8px;min-height:48px;padding:0 18px;border-radius:10px;border:2px solid var(--ink);background:#fff;font-weight:700;box-shadow:var(--shadow-sm)}
+@media (max-width:1000px){.notes{display:none}}
+
+/* ---------- phone frame ---------- */
+.stage{width:calc(414px * var(--s));height:calc(868px * var(--s));flex:none}
+.phone{width:414px;height:868px;transform:scale(var(--s));transform-origin:top left;border-radius:66px;background:#151515;padding:12px;
+  box-shadow:0 0 0 2px #3a3a3a,0 30px 60px rgba(0,40,24,.3),inset 0 0 0 2px #222;position:relative}
+.glass{position:relative;width:390px;height:844px;border-radius:54px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:35px;background:#000;border-radius:20px;z-index:80}
+.statusbar{height:54px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:8px 30px 0 40px;font-weight:700;font-size:16px;background:var(--bg);color:var(--ink);z-index:40}
+.statusbar.dark{background:var(--green);color:#fff}
+.statusbar .sb-icons{display:flex;gap:6px;align-items:center}
+.home-ind{position:absolute;bottom:8px;left:50%;width:134px;height:5px;border-radius:3px;background:var(--ink);transform:translateX(-50%);z-index:90;pointer-events:none}
+#app{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;background:var(--bg);scrollbar-width:none}
+#app::-webkit-scrollbar{display:none}
+.pad{padding:0 20px}
+.endspace{height:36px}
+
+/* ---------- tab bar: floating shipping label ---------- */
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;margin:0 12px 26px;background:#fff;border:2px solid var(--ink);border-radius:20px;
+  box-shadow:var(--shadow);padding:6px 2px;z-index:30;position:relative}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:60px;border:0;background:none;
+  font-size:min(.76rem,14.5px);font-weight:700;color:var(--ink-2);border-radius:12px;position:relative;padding:0}
+.tab-ic{width:50px;height:32px;border-radius:9px;display:grid;place-items:center;border:2px solid transparent}
+.tab[aria-current="page"]{color:var(--green-text)}
+.tab[aria-current="page"] .tab-ic{background:var(--green);color:#fff;border-color:var(--ink);transform:rotate(-3deg)}
+.tab[aria-current="page"]::after{content:"";position:absolute;bottom:-4px;left:28%;right:28%;height:3px;border-radius:2px;background:var(--green-text)}
+.tab.post .tab-ic{width:56px;height:52px;margin-top:-26px;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:12px;
+  box-shadow:var(--shadow-sm);transform:rotate(-4deg)}
+.tab.post[aria-current="page"] .tab-ic{transform:rotate(3deg)}
+.tab.post[aria-current="page"]::after{display:none}
+.count{position:absolute;top:0;left:calc(50% + 8px);background:var(--orange);color:var(--ink);font-size:13px;font-weight:800;min-width:24px;height:24px;border-radius:7px;display:grid;place-items:center;padding:0 6px;border:2px solid var(--ink)}
+
+/* ---------- generic ---------- */
+.topbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 20px 12px;display:flex;align-items:center;gap:10px}
+.topbar h1{font-size:1.6rem;line-height:1.15}
+.eyebrow{font-size:.9rem;color:var(--green-text);font-weight:700}
+.icon-btn{width:52px;height:52px;flex:none;border-radius:12px;border:2px solid var(--ink);background:#fff;color:var(--ink);display:grid;place-items:center;box-shadow:var(--shadow-sm)}
+.icon-btn:active,.btn:active,.chip:active,.save-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;border-radius:12px;font-size:1rem;font-weight:700;
+  border:2px solid var(--ink);padding:0 18px;text-align:center;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s}
+.btn+.btn{margin-top:14px}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-dark)}
+.btn-accent{background:var(--orange);color:var(--ink)}
+.btn-ghost{background:#fff;color:var(--ink)}
+.link{background:none;border:0;color:var(--green-text);font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;min-height:48px;padding:0 6px}
+.verified{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--green-text);font-weight:700;font-size:.85rem;padding:5px 11px;border-radius:6px;border:2px dashed var(--green-text)}
+.meta{display:flex;align-items:center;gap:6px;color:var(--ink-2);font-size:.9rem}
+.protect{display:flex;gap:12px;background:var(--orange-50);border:2px solid var(--ink);border-radius:12px;padding:14px;font-size:.92rem;line-height:1.45;color:var(--ink);position:relative;border-left:10px solid var(--green)}
+.protect svg{flex:none;color:var(--green-text)}
+.protect strong{display:block;margin-bottom:2px;font-size:1rem;font-family:var(--head)}
+.empty{text-align:center;padding:40px 24px}
+.empty .big-ic,.mail-ill,.success .big-ic{border:2px solid var(--ink);box-shadow:var(--shadow);border-radius:18px;transform:rotate(-4deg);
+  background:var(--orange);color:var(--ink)}
+.empty .big-ic{width:96px;height:96px;display:grid;place-items:center;margin:0 auto 22px}
+.empty h2{font-size:1.3rem;margin-bottom:8px}
+.empty p{color:var(--ink-2);margin-bottom:22px;line-height:1.45}
+
+/* ---------- forms ---------- */
+.form h2{font-size:1.35rem;margin:24px 0 14px}
+.field{margin-bottom:18px}
+.field label,.legend{display:block;font-weight:700;margin-bottom:6px;font-size:1rem}
+.field input,.field select,.field textarea{width:100%;min-height:56px;border:2px solid var(--ink);border-radius:10px;padding:12px 14px;font-size:1rem;background:#fff}
+.field textarea{min-height:110px;resize:vertical;line-height:1.4}
+.field input::placeholder,.field textarea::placeholder{color:#5E6561}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:3px solid var(--green);outline-offset:2px;box-shadow:var(--shadow-sm)}
+.field [aria-invalid="true"]{border-color:var(--danger);background:#FFF5F4}
+.help{font-size:.85rem;color:var(--ink-2);margin-top:6px;line-height:1.4}
+.error{font-size:.9rem;color:var(--danger);font-weight:700;margin-top:6px}
+.error:empty{display:none}
+.error::before{content:"⚠ "}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+fieldset{border:0;padding:0;margin:0 0 18px}
+.opt{display:flex;align-items:center;gap:12px;min-height:56px;border:2px solid var(--ink);border-radius:10px;padding:0 14px;margin-bottom:10px;font-weight:700;cursor:pointer;background:#fff}
+.opt input{width:24px;height:24px;accent-color:var(--green);margin:0}
+.opt:has(input:checked){background:var(--green-50);box-shadow:var(--shadow-sm)}
+.opt:has(input:focus-visible){outline:3px solid var(--green-text);outline-offset:2px}
+.err-summary{background:#FFF5F4;border:2px solid var(--danger);border-radius:10px;padding:14px;margin:6px 0 18px}
+.err-summary h2{font-size:1rem;margin:0 0 6px;color:var(--danger)}
+.err-summary ul{margin:0;padding-left:20px}
+.err-summary button{background:none;border:0;color:var(--danger);text-decoration:underline;font-weight:700;padding:4px 0;min-height:44px;text-align:left}
+
+/* ---------- welcome hero ---------- */
+.hero{background:var(--green);color:#fff;padding:12px 24px 30px;border-bottom:6px solid var(--orange);position:relative}
+.hero h1{font-size:1.85rem;line-height:1.1;margin:20px 0 10px}
+.hero p{font-size:1rem;line-height:1.45}
+.props{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.props li{display:flex;gap:12px;align-items:center;font-weight:700;font-size:.95rem;line-height:1.3;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:10px;padding:8px 12px}
+.props svg{flex:none;color:var(--green-text)}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:1.4rem}
+.switch-mode{text-align:center;margin-top:16px;color:var(--ink-2)}
+.mail-ill{width:88px;height:88px;display:grid;place-items:center;margin:16px 0 22px}
+.code-input{letter-spacing:.5em;font-size:1.4rem!important;text-align:center;font-weight:700}
+
+/* ---------- home ---------- */
+.search{display:flex;align-items:center;gap:10px;border:2px solid var(--ink);border-radius:12px;padding:0 14px;min-height:58px;margin-bottom:12px;background:#fff;box-shadow:var(--shadow-sm)}
+.search:focus-within{outline:3px solid var(--green);outline-offset:2px}
+.search input{flex:1;border:0;min-height:54px;font-size:1rem;background:none;min-width:0}
+.search input:focus-visible{outline:none}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:4px 6px 10px 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{position:relative;min-height:48px;padding:0 14px;border-radius:8px;border:2px solid var(--ink);background:#fff;font-size:.9rem;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;flex:none;box-shadow:2px 2px 0 var(--ink)}
+.chip.on{background:var(--green);color:#fff}
+.result-count{font-weight:700;margin:8px 0 14px;color:var(--ink-2)}
+.cards{list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:22px}
+.card{position:relative;border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+/* photo placeholders */
+.photo{position:relative;height:150px;display:grid;place-items:center;color:var(--ink);border-bottom:2px solid var(--ink)}
+.photo svg{position:relative;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:8px;box-sizing:content-box}
+.ph-0{background:#DCEBE2}
+.ph-1{background:#EEF1EC}
+.ph-2{background:#C9DFD2}
+.ph-3{background:#E6EDE8}
+.pill{position:absolute;top:14px;left:-6px;z-index:1;background:var(--ink);color:#fff;font-weight:700;font-size:.8rem;padding:6px 12px 6px 16px;display:inline-flex;gap:5px;align-items:center;transform:rotate(-4deg);border-radius:2px}
+.card-body{padding:14px 16px 16px}
+.card h3{font-size:1.2rem;margin-bottom:6px;line-height:1.2;padding-right:4px}
+.card-link{background:none;border:0;padding:0;text-align:left;font-weight:700;color:var(--ink);font-family:var(--head)}
+.card-link::after{content:"";position:absolute;inset:0;border-radius:12px}
+.card-link:focus-visible{outline:none}
+.card-link:focus-visible::after{outline:4px solid var(--green);outline-offset:-6px}
+.mini-dates{display:grid;grid-template-columns:1fr 1fr;margin:12px 0;border:2px solid var(--ink);border-radius:8px;overflow:hidden}
+.mini-dates div{padding:8px 10px;background:var(--bg)}
+.mini-dates div+div{border-left:2px dashed var(--ink)}
+.mini-dates dt{font-size:.75rem;font-weight:700;color:var(--green-text);text-transform:uppercase;letter-spacing:.06em}
+.mini-dates dd{margin:2px 0 0;font-weight:700;font-size:.95rem}
+.price{font-size:1rem}
+.price strong{font-size:1.35rem;font-weight:800}
+.save-btn{position:absolute;top:10px;right:10px;z-index:2;width:52px;height:52px;border-radius:12px;background:#fff;border:2px solid var(--ink);display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow-sm)}
+.save-btn[aria-pressed="true"],.icon-btn[aria-pressed="true"]{color:var(--heart)}
+[aria-pressed="true"] .heart{fill:currentColor}
+
+/* ---------- detail ---------- */
+.gallery{position:relative}
+.gallery .photo{height:270px}
+.gallery .photo svg{width:56px;height:56px}
+.gallery .float{position:absolute;top:14px;z-index:2}
+.gallery .float.l{left:14px}.gallery .float.r{right:14px}
+.ph-label{position:absolute;bottom:14px;left:50%;transform:translateX(-50%) rotate(-2deg);background:#fff;color:var(--ink);font-weight:700;font-size:.85rem;padding:6px 12px;border-radius:6px;border:2px solid var(--ink);white-space:nowrap}
+.gal-nav{position:absolute;inset:auto 14px 50% 14px;display:flex;justify-content:space-between;transform:translateY(50%);pointer-events:none}
+.gal-nav button{pointer-events:auto;width:48px;height:48px;border-radius:12px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;box-shadow:var(--shadow-sm)}
+.detail-body{padding:18px 20px 8px}
+.detail-body h1{font-size:1.7rem;line-height:1.12;margin:14px 0 6px}
+.price-lg{font-size:1rem;margin:12px 0 16px}
+.price-lg strong{font-size:1.9rem;font-weight:800}
+.date-box{border:2px solid var(--ink);border-radius:12px;margin-bottom:18px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.date-box .cols{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+.date-box .cols>div{padding:12px 14px}
+.date-box .cols>div+div{border-left:2px dashed var(--ink)}
+.date-box .lbl{font-size:.8rem;font-weight:700;color:var(--green-text);text-transform:uppercase;letter-spacing:.06em}
+.date-box .val{font-weight:700;font-size:1.05rem;margin-top:2px;font-family:var(--head)}
+.date-box .wd{font-size:.85rem;color:var(--ink-2)}
+.date-box .dur{padding:10px 14px;border-top:2px solid var(--ink);background:var(--green-50);color:var(--ink);font-size:.92rem;font-weight:700}
+.section-h{font-size:1.25rem;margin:24px 0 8px}
+.desc{line-height:1.5}
+.facts{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.facts li{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px;font-size:.9rem;font-weight:700}
+.facts svg{color:var(--green-text);flex:none}
+.host{display:flex;gap:14px;align-items:center;border:2px solid var(--ink);border-radius:12px;padding:14px;margin-bottom:16px;background:#fff}
+.avatar{width:52px;height:52px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800;flex:none;border:2px solid var(--ink)}
+.avatar.y{background:var(--orange);color:var(--ink)}
+.host p{font-size:.9rem;color:var(--ink-2);line-height:1.35}
+.host strong{font-size:1.05rem;color:var(--ink)}
+.action-bar{position:sticky;bottom:0;background:var(--bg);border-top:2px solid var(--ink);padding:14px 20px 32px;display:flex;gap:14px;align-items:center;z-index:4}
+.action-bar .btn{width:auto;flex:1}
+.ab-price strong{font-size:1.3rem;font-weight:800}
+.ab-sub{font-size:.8rem;color:var(--ink-2);font-weight:700}
+
+/* ---------- messages ---------- */
+.threads{list-style:none;margin:0;padding:0 16px;display:grid;gap:12px}
+.thread{width:100%;display:flex;gap:14px;align-items:center;text-align:left;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:12px 14px;min-height:84px}
+.thread.unread{box-shadow:var(--shadow);border-left:10px solid var(--orange)}
+.t-main{flex:1;min-width:0;display:grid;gap:2px}
+.t-top{display:flex;justify-content:space-between;gap:8px}
+.t-top strong{font-family:var(--head)}
+.t-time{font-size:.8rem;color:var(--ink-2)}
+.t-listing{font-size:.82rem;color:var(--green-text);font-weight:700}
+.t-prev{font-size:.9rem;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread.unread .t-prev{color:var(--ink);font-weight:700}
+.dot{width:14px;height:14px;border-radius:4px;background:var(--orange);border:2px solid var(--ink);flex:none}
+.chat-head{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:12px;align-items:center;padding:6px 16px 12px;border-bottom:2px solid var(--ink)}
+.chat-head h1{font-size:1.2rem}
+.chat-head .verified{font-size:.75rem;padding:2px 8px;margin-top:3px}
+.chat-listing{display:flex;gap:12px;align-items:center;width:calc(100% - 32px);margin:14px 16px 0;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:10px;text-align:left;min-height:64px;box-shadow:var(--shadow-sm)}
+.chat-listing .thumb{width:48px;height:48px;border-radius:8px;flex:none;display:grid;place-items:center;border:2px solid var(--ink)}
+.chat-listing span{display:block;font-size:.85rem;color:var(--ink-2)}
+.chat-listing strong{display:block;font-size:.95rem;color:var(--ink)}
+.chat-listing .grow{flex:1;min-width:0}
+.log{list-style:none;margin:0;padding:18px 16px;display:flex;flex-direction:column;gap:12px;min-height:250px}
+.msg{max-width:80%;padding:10px 14px;border-radius:14px;line-height:1.4;font-size:.98rem;border:2px solid var(--ink)}
+.msg.them{background:#fff;align-self:flex-start;border-bottom-left-radius:3px}
+.msg.me{background:var(--green);color:#fff;align-self:flex-end;border-bottom-right-radius:3px;box-shadow:3px 3px 0 var(--ink)}
+.msg .time{display:block;font-size:.72rem;margin-top:4px}
+.quick{display:flex;gap:10px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.quick .chip{font-size:.85rem}
+.composer{position:sticky;bottom:0;background:var(--bg);border-top:2px solid var(--ink);display:flex;gap:10px;padding:10px 16px 32px}
+.composer input{flex:1;min-height:52px;border:2px solid var(--ink);border-radius:12px;padding:0 16px;font-size:1rem;min-width:0;background:#fff}
+.composer input:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.send{width:52px;height:52px;border-radius:12px;border:2px solid var(--ink);background:var(--green);color:#fff;display:grid;place-items:center;flex:none;box-shadow:var(--shadow-sm)}
+
+/* ---------- profile ---------- */
+.profile-head{text-align:center;padding:16px 20px 22px;background:var(--green-50);border-bottom:2px solid var(--ink)}
+.avatar-lg{width:92px;height:92px;font-size:2.2rem;margin:0 auto 12px;background:var(--green);color:#fff;border-radius:18px;display:grid;place-items:center;font-weight:800;border:2px solid var(--ink);box-shadow:var(--shadow);transform:rotate(-4deg)}
+.profile-head h1{font-size:1.6rem}
+.profile-head p{color:var(--ink);margin:4px 0 10px;word-break:break-all}
+.menu{list-style:none;margin:0;padding:0 16px;display:grid;gap:10px}
+.menu-h{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green-text);margin:26px 20px 10px;font-family:'Atkinson Hyperlegible',sans-serif}
+.menu-item{width:100%;display:flex;align-items:center;gap:14px;min-height:68px;border:2px solid var(--ink);border-radius:12px;background:#fff;text-align:left;padding:8px 12px;font-weight:700;font-size:1rem}
+.menu-item .mi-ic{width:44px;height:44px;border-radius:10px;background:var(--green-50);color:var(--green-text);display:grid;place-items:center;flex:none;border:2px solid var(--ink)}
+.menu-item .mi-text{flex:1}
+.menu-item small{display:block;font-weight:400;color:var(--ink-2);font-size:.82rem;margin-top:2px}
+.menu-item.danger{color:var(--danger)}
+.menu-item.danger .mi-ic{background:#FCEBEA;color:var(--danger)}
+.toggle{width:58px;height:34px;border-radius:8px;background:#fff;border:2px solid var(--ink);position:relative;flex:none;transition:background .2s}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:5px;background:var(--ink);transition:left .2s}
+[aria-checked="true"] .toggle{background:var(--green)}
+[aria-checked="true"] .toggle::after{left:27px;background:#fff;box-shadow:0 0 0 2px var(--ink)}
+.fine{text-align:center;color:var(--ink-2);font-size:.85rem;margin:20px 0}
+
+/* ---------- success ---------- */
+.success{text-align:center;padding:44px 24px}
+.success .big-ic{width:110px;height:110px;display:grid;place-items:center;margin:0 auto 24px}
+.success h1{font-size:1.8rem;margin-bottom:10px}
+.success p{color:var(--ink-2);line-height:1.5;margin-bottom:24px}
+
+/* ---------- sheet ---------- */
+#sheetRoot{position:absolute;inset:0;z-index:70}
+.scrim{position:absolute;inset:0;background:rgba(26,26,26,.6)}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;background:var(--bg);border-top:2px solid var(--ink);border-radius:22px 22px 0 0;padding:10px 20px 36px;transform:translateY(100%);transition:transform .25s ease}
+#sheetRoot.open .sheet{transform:none}
+.grab{width:56px;height:8px;border-radius:2px;background:var(--orange);border:2px solid var(--ink);margin:0 auto 10px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.sheet-head h2{font-size:1.45rem;font-weight:800}
+.sheet-sub{color:var(--ink-2);margin:-6px 0 14px}
+.sheet .section-h:first-of-type{margin-top:6px}
+.summary{margin:0 0 18px;border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:#fff}
+.summary div{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:2px dashed var(--soft)}
+.summary div:last-child{border-bottom:0;border-top:2px solid var(--ink);background:var(--orange-50)}
+.summary div:last-child dt{color:var(--ink);font-weight:700}
+.summary dt{color:var(--ink-2)}
+.summary dd{margin:0;font-weight:700;text-align:right}
+.steps{padding-left:22px;line-height:1.5;margin:0 0 16px}
+.steps li{margin-bottom:10px}
+input[type=range]{width:100%;height:44px;accent-color:var(--green)}
+.range-val{font-size:1.5rem;font-weight:800;color:var(--green-text)}
+.range-ends{display:flex;justify-content:space-between;font-size:.85rem;color:var(--ink-2)}
+.sheet-actions{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-top:8px;position:sticky;bottom:-36px;background:var(--bg);padding:12px 4px 8px 0}
+.sheet-actions .btn+.btn{margin-top:0}
+
+/* ---------- toast ---------- */
+.toast{position:absolute;left:50%;bottom:122px;transform:translateX(-50%) rotate(-1deg);background:var(--ink);color:#fff;font-weight:700;padding:12px 18px;border-radius:10px;border-left:8px solid var(--orange);z-index:75;max-width:330px;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* ---------- photos ---------- */
+.photo-grid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.photo-grid .thumb{width:70px;height:70px;border-radius:10px;display:grid;place-items:center;border:2px solid var(--ink)}
+.photo-grid .thumb::before,.chat-listing .thumb::before{display:none}
+/* ---------- roommate match ---------- */
+.match{position:relative;z-index:2;display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:10px;padding:0 12px;border:2px solid var(--ink);border-radius:8px;font-size:.9rem;font-weight:700;color:var(--ink);background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.match strong{font-family:var(--head);font-size:1.05rem}
+.match.high{background:var(--green);color:#fff}
+.match.mid{background:var(--orange)}
+.match.low{border-style:dashed}
+.match.static{min-height:0;margin:0 6px 0 0;padding:2px 8px;box-shadow:none;font-size:.82rem;vertical-align:middle}
+.match-card{width:100%;display:flex;align-items:center;gap:14px;text-align:left;border:2px solid var(--ink);border-radius:12px;padding:12px 14px;margin:0 0 16px;background:#fff;box-shadow:var(--shadow);min-height:76px}
+.match-card .pct{font-family:var(--head);font-weight:800;font-size:1.6rem;min-width:76px;height:52px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:10px;transform:rotate(-3deg);background:#fff}
+.match-card.high .pct{background:var(--green);color:#fff}
+.match-card.mid .pct{background:var(--orange)}
+.match-card.low .pct{border-style:dashed}
+.match-card .grow{flex:1}
+.match-card strong{display:block;font-family:var(--head);font-size:1.05rem}
+.match-card .grow span{display:block;font-size:.88rem;color:var(--ink-2)}
+.m-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.m-row{display:flex;gap:10px;align-items:center;border:2px solid var(--ink);border-radius:10px;padding:10px;background:#fff}
+.m-row .grow{flex:1;min-width:0}
+.m-row strong{display:block;font-family:var(--head)}
+.m-row .grow span{display:block;font-size:.85rem;color:var(--ink-2);line-height:1.35}
+.m-ic{width:40px;height:40px;flex:none;border-radius:8px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--bg)}
+.m-tag{flex:none;display:inline-flex;align-items:center;gap:3px;font-size:.78rem;font-weight:700;padding:3px 7px;border-radius:5px;border:2px solid var(--ink)}
+.m-row.s-match .m-tag{background:var(--green);color:#fff}
+.m-row.s-close .m-tag{background:var(--orange)}
+.m-row.s-diff{border-style:dashed}
+.m-row.s-diff .m-tag{background:#fff;color:var(--ink);border-style:dashed}
+
+/* ---------- preferences, banner, sort ---------- */
+.opt-tag{display:inline-block;font-size:.8rem;font-weight:700;padding:3px 10px;border-radius:6px;border:2px solid var(--ink);background:var(--orange);color:var(--ink)}
+.pref-q{margin:0;padding:16px 0;border-bottom:2px dashed var(--soft)}
+.pref-q legend{display:flex;align-items:center;gap:8px;font-family:var(--head);font-weight:700;font-size:1.1rem;padding:0;margin-bottom:10px}
+.pref-q legend svg{color:var(--green)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill-opt{position:relative;cursor:pointer}
+.pill-opt input{position:absolute;opacity:0;width:1px;height:1px}
+.pill-opt span{display:inline-flex;align-items:center;min-height:48px;padding:0 16px;border:2px solid var(--ink);border-radius:999px;background:#fff;font-weight:700;font-size:.95rem}
+.pill-opt input:checked+span{background:var(--green);color:#fff;box-shadow:2px 2px 0 var(--ink)}
+.pill-opt input:checked+span::before{content:"✓";margin-right:6px}
+.pill-opt input:focus-visible+span{outline:3px solid var(--green);outline-offset:3px}
+.pill-opt.none span{border-style:dashed;font-weight:400;color:var(--ink-2)}
+.pill-opt.none input:checked+span{background:var(--soft);color:var(--ink);font-weight:700}
+.pref-actions{margin-top:22px}
+.pref-banner{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;margin:6px 4px 10px 0;padding:14px;background:var(--orange-50);border:2px solid var(--ink);border-left:10px solid var(--orange);border-radius:12px}
+.pref-banner p{font-weight:700;line-height:1.35}
+.pref-banner .pb-ic{width:44px;height:44px;border-radius:10px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;color:var(--green)}
+.pref-banner .btn{grid-column:1/-1;min-height:52px;box-shadow:var(--shadow-sm)}
+.sort{border:0;margin:6px 0 0;padding:0}
+.sort legend{font-weight:700;font-size:.9rem;color:var(--ink-2);margin-bottom:6px;padding:0}
+.sort .pills{padding:2px 4px 4px 2px}
+.sort .pill-opt span{white-space:nowrap;min-height:44px;font-size:.88rem}
+.pref-nudge{width:100%;display:flex;align-items:center;gap:12px;text-align:left;margin:0 0 16px;padding:12px 14px;min-height:64px;border:2px dashed var(--ink);border-radius:12px;background:var(--orange-50);font-weight:700;line-height:1.35}
+.pref-nudge span{flex:1}
+.pref-nudge.info{background:#fff;font-weight:400;color:var(--ink-2)}
+.pref-nudge svg:first-child{color:var(--green);flex:none}
+
+/* ---------- landlord approval ---------- */
+.step-of{font-size:.85rem;font-weight:700;color:var(--green-text);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.ll-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;position:relative}
+.ll-steps li{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:.85rem;font-weight:700;color:var(--ink-2);position:relative}
+.ll-steps li:not(:last-child)::after{content:"";position:absolute;top:20px;left:calc(50% + 24px);right:calc(-50% + 24px);height:4px;border-radius:2px;background:var(--soft)}
+.ll-steps li.done:not(:last-child)::after{background:var(--green)}
+.ll-steps .mark{width:40px;height:40px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;background:#fff}
+.ll-steps .done{color:var(--ink)}
+.ll-steps .done .mark{background:var(--green);color:#fff}
+.ll-steps .now{color:var(--ink)}
+.ll-steps .now .mark{background:var(--orange);transform:rotate(-4deg);box-shadow:var(--shadow-sm)}
+.ll-steps .todo .mark{border-style:dashed;color:var(--ink-2)}
+.ll-now{margin:16px 0 14px;font-weight:700}
+.ll-chip{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 9px;border-radius:6px;border:2px solid var(--ink);background:#fff;color:var(--ink);white-space:nowrap}
+.ll-chip.none{border-style:dashed;color:var(--ink-2)}
+.ll-chip.requested{background:var(--orange)}
+.ll-chip.approved{background:var(--green);color:#fff}
+.ll-card{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--ink);border-radius:12px;padding:14px;line-height:1.4}
+.ll-card svg{flex:none}
+.ll-card strong{display:block;font-family:var(--head);font-size:1.05rem}
+.ll-card span{display:block;font-size:.9rem;color:var(--ink-2)}
+.ll-card.requested{background:var(--orange-50);border-left:10px solid var(--orange)}
+.ll-card.approved{background:var(--green-50);border-left:10px solid var(--green)}
+.ll-card.approved svg{color:var(--green)}
+.ll-row{width:100%;display:flex;align-items:center;gap:10px;margin-top:12px;min-height:52px;padding:8px 12px;border:2px solid var(--ink);border-radius:10px;background:var(--bg);font-weight:700;text-align:left}
+.ll-row>span:first-of-type{flex:1}
+.ll-row svg:first-child{color:var(--green)}
+.req .req-agr{margin-top:10px}
+
+/* ---------- sublease agreement ---------- */
+.agr-banner{display:flex;gap:12px;align-items:center;border:2px solid var(--ink);border-radius:12px;padding:12px 14px;margin:4px 4px 16px 0;line-height:1.35}
+.agr-banner svg{flex:none}
+.agr-banner strong{display:block;font-family:var(--head);font-size:1.1rem}
+.agr-banner span{font-size:.88rem}
+.agr-banner.done{background:var(--green);color:#fff}
+.agr-banner.wait,.agr-banner.ready{background:var(--orange-50);border-left:10px solid var(--orange)}
+.agr-banner.block{background:#fff;border-style:dashed}
+.agr-doc{background:#fff;border:2px solid var(--ink);border-radius:12px;padding:18px 16px;box-shadow:var(--shadow);margin-right:4px}
+.agr-doc h2{font-size:1.45rem;font-weight:800;text-align:center}
+.agr-sub{text-align:center;font-size:.85rem;color:var(--ink-2);margin:2px 0 14px}
+.agr-parties{margin:0 0 12px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.agr-parties div{display:flex;justify-content:space-between;gap:10px;padding:8px 0}
+.agr-parties div+div{border-top:1px dashed var(--soft)}
+.agr-parties dt{font-size:.85rem;color:var(--ink-2)}
+.agr-parties dd{margin:0;font-weight:700;text-align:right}
+.agr-terms{padding-left:22px;margin:0;line-height:1.5;font-size:.95rem}
+.agr-terms li{margin-bottom:8px}
+.agr-ll{display:flex;gap:6px;align-items:flex-start;font-size:.88rem;font-weight:700;padding:8px 10px;border-radius:8px;border:2px solid var(--ink);margin-top:8px;line-height:1.35}
+.agr-ll svg{flex:none;margin-top:1px}
+.agr-ll.ok{background:var(--green-50)}
+.agr-ll.ok svg{color:var(--green)}
+.agr-ll.no{background:#fff;border-style:dashed}
+.sigs{display:grid;gap:10px}
+.sig{border:2px dashed var(--ink);border-radius:10px;padding:10px 12px}
+.sig.signed{border-style:solid;background:var(--green-50)}
+.sig .lbl{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green-text)}
+.sig-line{min-height:40px;display:flex;align-items:flex-end;border-bottom:2px solid var(--ink);margin:4px 0 6px;padding-bottom:2px}
+.sig-line .script{font-style:italic;font-size:1.5rem;line-height:1.1}
+.sig-line .unsigned{color:var(--ink-2);font-size:.9rem}
+.sig-meta{font-size:.85rem;color:var(--ink-2)}
+.agr-actions{margin-top:18px;margin-right:4px}
+.agr-actions .btn+.btn{margin-top:12px}
+
+/* ---------- date coverage ---------- */
+.cov{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;padding:8px 10px;border:2px solid var(--ink);border-radius:8px;font-size:.9rem;font-weight:700;line-height:1.35}
+.cov svg{flex:none;margin-top:1px}
+.cov small{display:block;font-weight:400;font-size:.82rem;color:var(--ink-2);margin-top:2px}
+.cov.full{background:var(--green-50)}
+.cov.full svg{color:var(--green)}
+.cov.part{background:var(--orange-50);border-style:dashed}
+.card .cov{margin:0 0 12px}
+.detail-body .cov{margin:-6px 0 18px}
+
+/* ---------- commute ---------- */
+.commute{margin:8px 0 0}
+.commute .c-items{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.9rem;font-weight:700}
+.commute .c-items span{display:inline-flex;align-items:center;gap:5px}
+.commute .c-items svg{color:var(--green)}
+.commute-tiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.commute-tiles li{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border:2px solid var(--ink);border-radius:12px;background:#fff;text-align:center}
+.commute-tiles svg{color:var(--green)}
+.commute-tiles strong{font-family:var(--head);font-size:1.15rem;line-height:1.15}
+.commute-tiles span{font-size:.82rem;color:var(--ink-2);font-weight:700}
+
+/* ---------- list / map ---------- */
+.view-toggle{display:grid;grid-template-columns:1fr 1fr;margin:10px 4px 4px 0;border:2px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.view-toggle button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;border:0;background:#fff;font-weight:700;font-size:1rem}
+.view-toggle button+button{border-left:2px solid var(--ink)}
+.view-toggle button[aria-pressed="true"]{background:var(--green);color:#fff}
+.map{position:relative;aspect-ratio:340/400;border:2px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-right:4px;background:#EEF2EC}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.pin::before{content:"";position:absolute;inset:-6px -4px}   /* invisible padding: 48px-tall tap area */
+.pin{position:absolute;transform:translate(-50%,-100%);min-height:36px;padding:0 10px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);font-weight:700;font-size:.85rem;white-space:nowrap;box-shadow:2px 2px 0 var(--ink);z-index:2}
+.pin::after{content:"";position:absolute;left:50%;bottom:-8px;width:12px;height:12px;background:inherit;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.pin.on{background:var(--green);color:#fff;z-index:3;transform:translate(-50%,-100%) scale(1.08)}
+.pin:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.campus{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:4px;z-index:1;pointer-events:none}
+.c-dot{width:30px;height:30px;border-radius:50%;background:var(--orange);border:2px solid var(--ink);display:grid;place-items:center;color:var(--ink)}
+.c-lbl{font-size:.75rem;font-weight:700;background:#fff;border:2px solid var(--ink);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.map-key{display:flex;align-items:center;gap:8px;margin:10px 0}
+.key-dot{width:14px;height:14px;border-radius:50%;background:var(--orange);border:2px solid var(--ink);flex:none}
+.map-preview{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:14px;margin-right:4px;min-height:60px}
+.mp-top{display:flex;gap:12px;align-items:flex-start}
+.mp-top .thumb{width:56px;height:56px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;flex:none}
+.mp-top .grow{flex:1;min-width:0}
+.mp-top h3{font-size:1.1rem;line-height:1.2;margin-bottom:2px}
+.mp-top .price{font-size:.9rem;margin-top:4px}
+.mp-top .price strong{font-size:1.1rem}
+.map-preview .match{margin-top:10px}
+.map-preview .btn{min-height:52px;box-shadow:var(--shadow-sm)}
+.mp-save{position:static;width:auto;height:auto;border-radius:12px;display:flex}
+
+/* ---------- Term Swap ---------- */
+.sw-ic{width:52px;height:52px;flex:none;border-radius:12px;background:var(--orange);border:2px solid var(--ink);display:grid;place-items:center;color:var(--ink);transform:rotate(-4deg)}
+.swap-hero{display:flex;gap:14px;align-items:flex-start;background:var(--green-50);border:2px solid var(--ink);border-radius:12px;padding:14px;margin:4px 4px 18px 0;line-height:1.45}
+.swap-hero strong{display:block;font-family:var(--head);font-size:1.1rem}
+.swap-entry{width:100%;display:flex;gap:14px;align-items:center;text-align:left;margin-top:16px;padding:14px;border:2px solid var(--ink);border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);min-height:84px}
+.swap-entry .grow{flex:1}
+.swap-entry strong{display:block;font-family:var(--head);font-size:1.1rem}
+.swap-entry .grow span{display:block;font-size:.88rem;color:var(--ink-2);line-height:1.35;margin-top:2px}
+.swap-list{list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:20px}
+.swap-card{background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:14px}
+.sw-top{display:flex;gap:12px;align-items:flex-start}
+.sw-top .grow{flex:1;min-width:0}
+.sw-top strong{font-family:var(--head);font-size:1.15rem}
+.sw-top p{font-size:.88rem;color:var(--ink-2);line-height:1.35;margin:2px 0 6px}
+.verified.sm{font-size:.75rem;padding:2px 8px}
+.sw-trade{margin:14px 0 0;border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.sw-trade div{padding:10px 12px;background:var(--bg)}
+.sw-trade div+div{border-top:2px dashed var(--ink)}
+.sw-trade dt{display:flex;gap:6px;align-items:center;font-size:.78rem;font-weight:700;color:var(--green-text);text-transform:uppercase;letter-spacing:.05em}
+.sw-trade dd{margin:3px 0 0;font-weight:700}
+.sw-trade dd.sub{font-weight:400;font-size:.85rem;color:var(--ink-2)}
+.overlap{display:flex;gap:8px;align-items:flex-start;margin:12px 0;font-size:.88rem;font-weight:700;padding:8px 10px;border-radius:8px;border:2px solid var(--ink);line-height:1.35}
+.overlap svg{flex:none;margin-top:1px}
+.overlap.full{background:var(--green-50)}
+.overlap.full svg{color:var(--green)}
+.overlap.most{background:var(--orange-50)}
+.overlap.part{background:#fff;border-style:dashed}
+.swap-card .btn{min-height:52px;box-shadow:var(--shadow-sm)}
+.swap-card .req-status{margin-bottom:12px;font-size:.9rem}
+.sheet-photo{height:150px;border:2px solid var(--ink);border-radius:12px}
+
+/* ---------- trust level ---------- */
+.trust{margin:18px 20px 0 16px;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:16px}
+.trust-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.trust-top h2{font-size:1.5rem;font-weight:800}
+.level-mark{width:56px;height:56px;flex:none;border-radius:14px;background:var(--green);color:#fff;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.7rem;transform:rotate(-5deg);box-shadow:var(--shadow-sm)}
+.badges{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.badge{width:100%;height:100%;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;padding:10px 4px;border:2px solid var(--ink);border-radius:12px;background:var(--bg);text-align:center}
+.badge .b-ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;border:2px solid var(--ink)}
+.badge.earned .b-ic{background:var(--green);color:#fff;transform:rotate(-4deg)}
+.badge.locked{border-style:dashed;background:#fff}
+.badge.locked .b-ic{background:#fff;color:var(--ink-2);border-style:dashed}
+.b-name{font-weight:700;font-size:.8rem;line-height:1.2;flex:1}
+.b-state{display:inline-block;font-size:.75rem;font-weight:700;padding:1px 7px;border-radius:5px;border:2px dashed var(--ink);color:var(--ink-2);background:#fff}
+.earned .b-state,.b-state.on{border-style:solid;background:var(--green-50);color:var(--green-text)}
+.next{margin-top:16px;border-top:2px dashed var(--ink);padding-top:14px}
+.next-h{font-size:1rem}
+.next-how{color:var(--ink-2);font-size:.9rem;line-height:1.4;margin:4px 0 10px}
+.pbar{height:24px;border:2px solid var(--ink);border-radius:6px;background:var(--bg);overflow:hidden}
+.pbar span{display:block;height:100%;background:var(--green) repeating-linear-gradient(45deg,rgba(255,255,255,.2) 0 8px,transparent 8px 16px);border-right:2px solid var(--ink)}
+.pbar span[style^="width:0%"]{border-right:0}
+.pbar-lbl{font-weight:700;font-size:.88rem;margin:6px 0 12px}
+.next .btn{min-height:52px;box-shadow:var(--shadow-sm)}
+
+/* ---------- referral ---------- */
+.refer{position:relative;margin:20px 20px 0 16px;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:18px 16px 16px;overflow:hidden}
+.refer-coin{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:var(--orange);border:2px solid var(--ink)}
+.refer-coin::after{content:"$";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.3rem;color:var(--ink)}
+.refer h2{font-size:1.35rem;font-weight:800;padding-right:56px;line-height:1.15}
+.refer>p{line-height:1.45;margin:8px 0 14px;font-size:.95rem}
+.code-box{display:flex;justify-content:space-between;align-items:center;background:#fff;border:2px dashed var(--ink);border-radius:10px;padding:10px 14px;margin-bottom:14px}
+.code-lbl{font-size:.85rem;font-weight:700;color:var(--ink-2)}
+.code{font-family:var(--head);font-size:1.4rem;letter-spacing:.08em}
+.refer .btn{background-image:none}
+.refer .btn-accent{background:#fff}
+.refer>p.refer-stat{font-size:.85rem;font-weight:700;margin:14px 0 0}
+.invite-msg{margin:0 0 16px;background:#fff;border:2px solid var(--ink);border-left:8px solid var(--orange);border-radius:10px;padding:12px;line-height:1.45}
+#sheetBody .btn-ghost[data-action="sendInvite"]{justify-content:flex-start}
+
+/* ---------- review & boost ---------- */
+.boost-tag{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;font-weight:700;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:2px 8px;margin-bottom:8px;transform:rotate(-2deg)}
+.boost-tag.inline{margin:0 0 0 4px;vertical-align:middle}
+.card.preview{margin-right:4px}
+.summary.plain div:last-child{border-top:0;background:#fff}
+.summary.plain div:last-child dt{font-weight:400;color:var(--ink-2)}
+.boost-opt{width:100%;display:flex;align-items:center;gap:14px;min-height:84px;border:2px solid var(--ink);border-radius:12px;background:#fff;text-align:left;padding:12px;box-shadow:var(--shadow-sm)}
+.boost-opt[aria-checked="true"]{background:var(--green-50);box-shadow:var(--shadow)}
+.boost-opt .mi-ic{width:48px;height:48px;border-radius:10px;background:var(--orange);display:grid;place-items:center;flex:none;border:2px solid var(--ink)}
+.boost-opt .mi-text{flex:1}
+.boost-opt strong{display:block;font-family:var(--head);font-size:1.05rem}
+.boost-opt small{display:block;color:var(--ink-2);font-size:.85rem;line-height:1.35;margin-top:2px}
+.summary.fees dt small{display:block;font-size:.8rem;color:var(--ink-2)}
+.fee-note{line-height:1.45;font-size:.88rem;font-weight:700;color:var(--ink);background:var(--orange-50);border:2px dashed var(--ink);border-radius:8px;padding:8px 10px;margin-top:14px}
+.success .fee-note{margin:-8px 0 24px}
+
+/* ---------- payment ---------- */
+.pay-listing{display:flex;gap:12px;align-items:center;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:10px;margin:4px 0 16px;width:100%;text-align:left}
+.pay-listing .thumb{width:52px;height:52px;border-radius:8px;border:2px solid var(--ink);display:grid;place-items:center;flex:none}
+.pay-listing .grow{flex:1;min-width:0}
+.pay-listing strong{display:block;font-family:var(--head)}
+.pay-listing span span,.pay-listing div span{display:block;font-size:.85rem;color:var(--ink-2)}
+.pay-listing.as-btn{min-height:72px;margin:6px 0 16px;box-shadow:var(--shadow-sm)}
+.flow{list-style:none;margin:0 0 18px;padding:0}
+.flow li{position:relative;display:grid;grid-template-columns:52px 1fr;column-gap:12px;padding-bottom:16px}
+.flow li:not(:last-child)::before{content:"";position:absolute;left:24px;top:54px;bottom:2px;border-left:3px dashed var(--ink)}
+.flow-ic{grid-row:span 2;width:52px;height:52px;border-radius:12px;border:2px solid var(--ink);display:grid;place-items:center;background:#fff}
+.flow li:nth-child(2) .flow-ic{background:var(--green);color:#fff;transform:rotate(-4deg)}
+.flow li:last-child .flow-ic{background:var(--orange)}
+.flow strong{font-family:var(--head);font-size:1.05rem;align-self:end}
+.flow li>span:last-child{color:var(--ink-2);font-size:.9rem;line-height:1.4}
+.opt.agree{align-items:flex-start;padding:14px;line-height:1.4;margin-top:8px}
+.opt.agree input{margin-top:1px;flex:none}
+
+/* ---------- booking status ---------- */
+.status-hero{background:var(--green-50);border:2px solid var(--ink);border-radius:14px;padding:16px;box-shadow:var(--shadow);margin:4px 4px 16px 0}
+.status-hero h2{font-size:1.7rem;font-weight:800;margin:10px 0 4px}
+.status-hero p{font-weight:700}
+.status-hero .status{background:#fff}
+.held{display:flex;gap:12px;align-items:center;background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px;margin-right:4px;box-shadow:var(--shadow)}
+.held svg{flex:none}
+.held strong{display:block;font-family:var(--head);font-size:1.25rem}
+.held span{font-size:.9rem;line-height:1.35}
+.tracker{list-style:none;margin:4px 0 8px;padding:0}
+.tracker li{position:relative;display:grid;grid-template-columns:46px 1fr;gap:12px;padding-bottom:22px}
+.tracker li:not(:last-child)::before{content:"";position:absolute;left:21px;top:48px;bottom:2px;width:4px;background:var(--soft);border-radius:2px}
+.tracker li.done:not(:last-child)::before{background:var(--green)}
+.mark{width:46px;height:46px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;font-family:var(--head);font-size:1.1rem;background:#fff}
+.done .mark{background:var(--green);color:#fff}
+.current .mark{background:var(--orange);box-shadow:var(--shadow-sm);transform:rotate(-4deg)}
+.todo .mark{color:var(--ink-2);border-style:dashed}
+.tracker strong{font-family:var(--head);font-size:1.1rem;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:10px}
+.tag{font-family:'Atkinson Hyperlegible',sans-serif;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:5px;border:2px solid var(--ink);background:#fff}
+.done .tag{background:var(--green-50);color:var(--green-text)}
+.current .tag{background:var(--orange)}
+.todo .tag{border-style:dashed;color:var(--ink-2)}
+.tracker p{color:var(--ink-2);font-size:.92rem;line-height:1.4;margin-top:4px}
+.tracker .btn{margin-top:12px;min-height:54px}
+.tracker .help{margin-top:8px}
+
+/* ---------- role picker ---------- */
+.role-list{list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:18px}
+.role-opt{width:100%;display:flex;align-items:center;gap:14px;text-align:left;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:18px 14px;min-height:120px;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s}
+.role-opt:hover{background:var(--green-50)}
+.role-opt:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.role-ic{width:64px;height:64px;flex:none;border-radius:14px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--orange);transform:rotate(-4deg)}
+.role-list li:first-child .role-ic{background:var(--green);color:#fff}
+.role-text{flex:1}
+.role-text strong{display:block;font-family:var(--head);font-size:1.2rem;line-height:1.2;margin-bottom:4px}
+.role-text span{display:block;color:var(--ink-2);font-size:.9rem;line-height:1.4}
+
+/* ---------- host dashboard ---------- */
+.host-card{margin-top:22px;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:16px;margin-right:4px}
+.hc-top{display:flex;gap:12px;align-items:flex-start}
+.hc-top .thumb{width:60px;height:60px;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;flex:none}
+.hc-top .grow{flex:1;min-width:0}
+.hc-top h2{font-size:1.2rem;line-height:1.2;margin:6px 0 4px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;padding:3px 10px;border-radius:6px;border:2px solid var(--ink);background:var(--green-50);color:var(--green-text)}
+.status::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--green)}
+.status.booked{background:var(--orange);color:var(--ink)}
+.status.booked::before{background:var(--ink)}
+.stats{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.stats li{padding:10px 12px;display:flex;flex-direction:column}
+.stats li:nth-child(odd){border-right:2px dashed var(--ink)}
+.stats li:nth-child(-n+2){border-bottom:2px dashed var(--ink)}
+.stats .num{font-family:var(--head);font-weight:800;font-size:1.7rem;line-height:1.1}
+.stats .lbl{font-size:.82rem;font-weight:700;color:var(--green-text);text-transform:uppercase;letter-spacing:.06em}
+.hc-h{font-size:1.05rem;margin:18px 0 8px}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:110px;align-items:end;padding:0 2px}
+.bar{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.bar>span{width:100%;background:var(--green);border:2px solid var(--ink);border-radius:4px 4px 0 0;min-height:6px}
+.bar b{font-size:.75rem;color:var(--ink-2)}
+.req{border:2px solid var(--ink);border-radius:12px;padding:12px;background:var(--bg)}
+.req+.req{margin-top:10px}
+.req-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.req-top .grow{flex:1;min-width:0}
+.req-top p{font-size:.88rem;color:var(--ink-2);line-height:1.35}
+.req .btn{min-height:52px;box-shadow:var(--shadow-sm)}
+.req .req-msg{margin-top:10px}
+.row2 .btn+.btn{margin-top:0}
+.req-status{display:flex;align-items:center;gap:8px;font-weight:700;padding:10px 12px;border-radius:8px;border:2px solid var(--ink)}
+.req-status.accepted{background:var(--orange)}
+.req-status.declined{background:#fff;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<aside class="notes" aria-label="About this prototype">
+  <div id="notesLogo"></div>
+  <h2>Clickable prototype</h2>
+  <p>A student sublease app for University of Miami students. Front end only, with sample data.</p>
+  <ol>
+    <li>Sign up with any <strong>.edu</strong> email</li>
+    <li>Enter any 6-digit code</li>
+    <li>Choose: looking for a place, or subleasing yours</li>
+    <li>Switch any time from Profile</li>
+  </ol>
+  <button class="restart" type="button" onclick="location.reload()">Restart prototype</button>
+</aside>
+
+<div class="stage" id="stage">
+  <div class="phone" role="region" aria-label="TermNest app on iPhone">
+    <div class="glass">
+      <div class="island" aria-hidden="true"></div>
+      <div class="statusbar" id="statusbar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 4.5a10 10 0 0 1 14 0M3.8 7.4a6 6 0 0 1 8.4 0"/><circle cx="8" cy="10.3" r="1.2" fill="currentColor" stroke="none"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="currentColor" opacity=".5"/><rect x="2.5" y="2.5" width="19" height="8" rx="2" fill="currentColor"/><rect x="24.5" y="4.5" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>
+        </span>
+      </div>
+      <main id="app" tabindex="-1"></main>
+      <nav class="tabbar" id="tabbar" aria-label="Main navigation" hidden>
+        <button class="tab" data-action="tab" data-tab="home"><span class="tab-ic" id="homeIc"></span><span id="homeLbl">Search</span></button>
+        <button class="tab" data-action="tab" data-tab="saved"><span class="tab-ic" data-ic="heart"></span>Saved</button>
+        <button class="tab post" data-action="tab" data-tab="post"><span class="tab-ic" data-ic="plus"></span>Post</button>
+        <button class="tab" data-action="tab" data-tab="messages" id="msgTab"><span class="tab-ic" data-ic="chat"></span>Messages</button>
+        <button class="tab" data-action="tab" data-tab="profile"><span class="tab-ic" data-ic="user"></span>Profile</button>
+      </nav>
+      <div id="sheetRoot" hidden></div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="home-ind" aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= icons ================= */
+const P = {
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  heart:'<path class="heart" d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.65-7 10-7 10z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  sparkle:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  volume:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
+  paw:'<circle cx="5.5" cy="10.5" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18.5" cy="10.5" r="2"/><path d="M12 12c-3 0-5.5 3.5-5.5 6a2.5 2.5 0 0 0 3.5 2.3 5 5 0 0 1 4 0 2.5 2.5 0 0 0 3.5-2.3c0-2.5-2.5-6-5.5-6z"/>',
+  nosmoke:'<rect x="2" y="14" width="14" height="4" rx="1"/><path d="M19 14v4M22 14v4M18 10c0-2 2-2 2-4M3 3l18 18"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M19 19v2H6"/>',
+  swap:'<path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',
+  walk:'<circle cx="13" cy="4" r="2"/><path d="M10 21l2-6 3 2v4M7 12l3-3.5 4 1 2 3.5 3 1M12 15l-1.5-6"/>',
+  bike:'<circle cx="5.5" cy="17" r="3.5"/><circle cx="18.5" cy="17" r="3.5"/><path d="M5.5 17 9 9h6l3.5 8M9 9l3 8h-6.5M15 9l-1-3h-2"/>',
+  car:'<path d="M4 17V12l2-5h12l2 5v5z"/><path d="M4 12h16"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/>',
+  map:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  listv:'<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  home:'<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  dollar:'<path d="M12 3v18M17 7.5c0-1.9-2.2-3-5-3s-5 1.1-5 3 2 2.7 5 3.5 5 1.6 5 3.5-2.2 3-5 3-5-1.1-5-3"/>',
+  verified:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+  shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  back:'<path d="M15 5l-7 7 7 7"/>',
+  next:'<path d="M9 5l7 7-7 7"/>',
+  send:'<path d="M4 12 20 4l-6 16-2.5-6.5z"/>',
+  bed:'<path d="M3 18V7M3 13h18v5M21 18v-3a3 3 0 0 0-3-3h-8v1"/><circle cx="7" cy="10.5" r="1.6"/>',
+  sliders:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+  close:'<path d="M6 6l12 12M18 6 6 18"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>',
+  text:'<path d="M4 18 9 6l5 12M6 14h6M15 18l3-7 3 7M16 16h4"/>',
+  help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>',
+  logout:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
+  list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  check:'<path d="m5 12 5 5 9-10"/>',
+  sofa:'<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M3 11h18v6H3zM5 17v2M19 17v2"/>',
+  bolt:'<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
+  people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/>',
+  share:'<path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/>'
+};
+function ic(n,s=24){return `<svg aria-hidden="true" focusable="false" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n]}</svg>`}
+function logo(onGreen){
+  // TermNest placeholder mark (not a UM mark): a box with a little roof, a home for the term.
+  // On the green header the roof is white so it stays visible.
+  const ink='#1A1A1A', roof = onGreen ? '#FFFFFF' : ink;
+  return `<span class="logo" role="img" aria-label="TermNest"><svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44">
+    <rect x="3" y="12" width="36" height="28" rx="4" fill="#F47321" stroke="${ink}" stroke-width="2.5"/>
+    <path d="M3 21h36" stroke="${ink}" stroke-width="2"/>
+    <rect x="16" y="12" width="10" height="13" fill="#005030" stroke="${ink}" stroke-width="2"/>
+    <path d="M11 11 21 3l10 8" fill="none" stroke="${roof}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M15 32h12" stroke="${ink}" stroke-width="2.5" stroke-linecap="round"/></svg><span aria-hidden="true">TermNest</span></span>`;
+}
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toDate = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
+const fmt = iso => toDate(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const fmtShort = iso => toDate(iso).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const fmtLong = iso => toDate(iso).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+const weekday = iso => toDate(iso).toLocaleDateString('en-US',{weekday:'long'});
+const money = n => '$' + Number(n).toLocaleString('en-US');
+const weeks = (a,b) => Math.round((toDate(b) - toDate(a)) / 864e5 / 7);
+function termName(a){ const m = toDate(a).getMonth(); return m <= 1 || m === 11 ? 'Spring semester' : m >= 4 && m <= 6 ? 'Summer' : 'Fall semester'; }
+
+/* ================= sample data ================= */
+const state = {
+  user:{name:'', email:''}, mode:'signup',
+  current:null, params:{}, history:[],
+  saved:new Set([3]),
+  filters:{q:'', from:'', to:'', maxPrice:2000, distance:0},
+  notifications:true, largeText:false, myListings:[], photosToAdd:0, role:null, bookings:{}, fastReplies:0, invites:0,
+  swap:{city:'', from:'2027-01-10', to:'2027-05-12', searched:false}, swapSent:new Set(),
+  view:'list', mapSel:null,
+  listings:[
+    {id:1,title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
+     desc:'Bright corner bedroom in a 3-bedroom apartment, a short walk to campus and the Metrorail. Comes with a desk, full bed and closet. My two roommates are UM juniors and quiet during the week.',
+     host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['Bedroom','Living room','Kitchen','Building']},
+    {id:2,title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
+     desc:'Whole studio to yourself with a kitchenette and in-building laundry. Two minutes to University station. Great for grad students who want quiet.',
+     host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['Studio','Kitchenette','Bathroom','Building']},
+    {id:3,title:'Summer room in the Grove',area:'Coconut Grove',dist:3.1,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+     desc:'Leafy, walkable neighborhood with cafes and the bay nearby. Room has a window AC, queen bed and a big desk. One roommate who is a UM senior staying for summer research.',
+     host:{name:'Priya K.',initials:'PK',about:'UM sophomore · Home for the summer'},photos:['Bedroom','Patio','Kitchen','Street']},
+    {id:4,boosted:true,title:'Furnished room on Red Road',area:'Coral Gables',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
+     desc:'Room in a house shared with three UM students. Shared backyard, parking spot included, and bikeable to campus in under 10 minutes.',
+     host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['Bedroom','Backyard','Kitchen','Driveway']},
+    {id:5,title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+     desc:'Room with a city view, building pool and gym. Ideal for a summer internship downtown. About 20 minutes to campus on the Metrorail.',
+     host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['Bedroom','View','Pool','Lobby']},
+    {id:6,title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
+     desc:'Shared room in a calm household of graduate students. Lots of natural light and a study nook. Bring your own bed or ask about borrowing one.',
+     host:{name:'Jordan L.',initials:'JL',about:'UM PhD student · Fieldwork in Peru'},photos:['Room','Study nook','Kitchen','Building']}
+  ],
+  threads:[
+    {id:'t1',name:'Maya R.',initials:'MR',listingId:1,unread:true,msgs:[
+      {me:false,text:'Hi! Thanks for your interest in my room near Ponce.',time:'Mon 4:12 PM'},
+      {me:true,text:'Hi Maya! I start a co-op in Miami in January. Is the room free Jan 8 through May 14?',time:'Mon 4:20 PM'},
+      {me:false,text:'Yes, those exact dates. I fly to Madrid on Jan 7.',time:'Mon 4:31 PM'},
+      {me:true,text:'Great. And the rent is held in TermNest until I move in?',time:'Mon 4:33 PM'},
+      {me:false,text:'Yep! It’s released to me only after you check in on move-in day. Want to do a video tour this week?',time:'9:02 AM'}]},
+    {id:'t2',name:'Diego M.',initials:'DM',listingId:2,unread:false,msgs:[
+      {me:true,text:'Is laundry in the building?',time:'Sun 1:05 PM'},
+      {me:false,text:'Yes, on the first floor. Card-operated, about $2 a load.',time:'Sun 1:40 PM'}]},
+    {id:'t3',name:'TermNest Support',initials:'TN',listingId:null,unread:false,support:true,msgs:[
+      {me:false,text:'Welcome to TermNest! We’re here if you need help with a listing, booking or payment. Remember: never pay outside the app.',time:'Oct 30'}]}
+  ]
+};
+const L = id => state.listings.find(l => l.id == id);
+
+/* ---------- roommate preferences & match ----------
+   Every question is optional. Answers are stored as an index into `opts`.
+   How two answers are compared:
+     scale     – 3-step scale: same = match, 1 step apart = close (half credit), 2 apart = different
+     equal     – same = match, otherwise different
+     tolerance – option 0 means "okay with it". If you're okay, any household matches.
+                 If you said no, it only matches a household that also says no. */
+const PREFS = [
+  {key:'sleep',  label:'Sleep schedule', icon:'moon',    type:'equal',     opts:['Early bird','Night owl']},
+  {key:'clean',  label:'Cleanliness',    icon:'sparkle', type:'scale',     opts:['Very tidy','Average','Relaxed']},
+  {key:'guests', label:'Guests over',    icon:'people',  type:'scale',     opts:['Rarely','Sometimes','Often']},
+  {key:'noise',  label:'Noise',          icon:'volume',  type:'scale',     opts:['Quiet','Some','Lively']},
+  {key:'pets',   label:'Pets',           icon:'paw',     type:'tolerance', opts:['Okay with pets','No pets'],       house:['Has or allows pets','No pets']},
+  {key:'smoking',label:'Smoking',        icon:'nosmoke', type:'tolerance', opts:['Okay with smoking','No smoking'], house:['Smoking allowed','No smoking']},
+  {key:'study',  label:'Study style',    icon:'book',    type:'equal',     opts:['At home','Mostly out']}
+];
+state.habits = null;      // null = the user hasn't set any preferences yet
+state.sort = 'featured';  // 'featured' | 'match' | 'price' | 'dist'
+const hasPrefs = () => !!state.habits && Object.keys(state.habits).length > 0;
+
+// Each sample listing's household answers. The studio is an entire place, so only
+// building rules apply (noise, pets, smoking); the other habits are left out.
+const HOUSE = {
+  1:{sleep:0,clean:0,guests:1,noise:1,pets:1,smoking:1,study:0},  // Ponce: two juniors, quiet weeknights
+  2:{noise:0,pets:1,smoking:1},                                     // Studio: quiet building, no pets, no smoking
+  3:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:1,study:1},  // Grove: night owl senior with a cat
+  4:{sleep:1,clean:1,guests:2,noise:2,pets:0,smoking:0,study:1},  // Red Road: busy house, dog, backyard smoking
+  5:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:1},  // Brickell: interns, out all day
+  6:{sleep:0,clean:1,guests:0,noise:0,pets:1,smoking:1,study:0}   // Grad household: quiet, study at home
+};
+state.listings.forEach(l => { if (HOUSE[l.id]) l.habits = HOUSE[l.id]; });
+
+/* ---------- landlord approval & sublease agreements ---------- */
+const todayISO = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+const LL_STEPS = [['none','Not started'],['requested','Requested'],['approved','Approved']];
+const llLabel = s => (LL_STEPS.find(x=>x[0]===s)||LL_STEPS[0])[1];
+// Sample listings from other students already have landlord approval
+state.listings.forEach(l => { l.landlord = {status:'approved', name:'their landlord', on:'2026-10-28'}; });
+state.agreements = {};   // keyed by listing id: {sublessor:{name,signed,typed}, subtenant:{...}}
+function ensureAgreement(l, sublessor, subtenant){
+  return state.agreements[l.id] ||= {sublessor:{name:sublessor,signed:null}, subtenant:{name:subtenant,signed:null}};
+}
+
+/* ---------- commute & map ----------
+   Commute times are estimates from distance: walking ~20 min/mi, biking ~6 min/mi + 2,
+   driving ~2.6 min/mi + 4 (typical traffic, not parking). A real app would use a maps API. */
+const COMMUTE = [['walk','Walk','walking',20,0],['bike','Bike','biking',6,2],['car','Drive','driving',2.6,4]];
+const commute = dist => COMMUTE.map(([icon,label,verb,perMile,base]) => ({icon,label,verb,min:Math.max(1,Math.round(base+dist*perMile))}));
+const fmtMin = m => m<60 ? `${m} min` : `${Math.floor(m/60)} hr${m%60?` ${m%60} min`:''}`;
+function commuteLine(l){
+  const c=commute(l.dist);
+  return `<p class="commute"><span class="sr-only">Commute to UM Coral Gables campus: ${c.map(x=>`${fmtMin(x.min)} ${x.verb}`).join(', ')}.</span>
+    <span aria-hidden="true" class="c-items">${c.map(x=>`<span>${ic(x.icon,18)}${fmtMin(x.min)}</span>`).join('')}</span></p>`;
+}
+// Sample map: positions in a 340 × 400 drawing, campus at (140,305). Not to exact scale.
+const MAP_W=340, MAP_H=400, CAMPUS=[140,305];
+const MAP_POS = {1:[152,272], 2:[78,356], 3:[222,228], 4:[66,282], 5:[262,112], 6:[125,232]};
+state.listings.forEach(l => { if (MAP_POS[l.id]) l.pos = MAP_POS[l.id]; });
+function mapHTML(list){
+  const pins=list.filter(l=>l.pos), sel=pins.find(l=>l.id===state.mapSel);
+  const pct=(x,y)=>`left:${(x/MAP_W*100).toFixed(2)}%;top:${(y/MAP_H*100).toFixed(2)}%`;
+  return `<div class="map" role="region" aria-label="Map of ${pins.length} rooms near the UM Coral Gables campus">
+      <svg viewBox="0 0 ${MAP_W} ${MAP_H}" aria-hidden="true" focusable="false">
+        <rect width="${MAP_W}" height="${MAP_H}" fill="#EEF2EC"/>
+        <path d="M262 400 C248 330 240 285 262 232 C284 180 300 125 292 60 L300 0 L340 0 L340 400 Z" fill="#D5E4E6"/>
+        <ellipse cx="60" cy="150" rx="40" ry="26" fill="#DCEAD9"/><ellipse cx="200" cy="360" rx="34" ry="20" fill="#DCEAD9"/>
+        <rect x="112" y="290" width="58" height="40" rx="10" fill="#FDE7D6"/>
+        <g stroke="#D3DBD4" stroke-width="9" fill="none" stroke-linecap="round">
+          <path d="M30 395 L175 305 L230 245 L285 128"/><path d="M150 400 L138 120"/><path d="M95 400 L95 30"/>
+          <path d="M0 250 L262 245"/><path d="M0 338 L176 334"/></g>
+        <g stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round">
+          <path d="M30 395 L175 305 L230 245 L285 128"/><path d="M150 400 L138 120"/><path d="M95 400 L95 30"/>
+          <path d="M0 250 L262 245"/><path d="M0 338 L176 334"/></g>
+        <g font-family="Atkinson Hyperlegible, sans-serif" font-weight="700" font-size="11" fill="#3E4642" letter-spacing=".06em">
+          <text x="14" y="200">CORAL GABLES</text><text x="10" y="385">SOUTH MIAMI</text>
+          <text x="168" y="190">COCONUT GROVE</text><text x="196" y="72">BRICKELL</text>
+          <text x="300" y="300" font-style="italic" font-weight="400" transform="rotate(-80 300 300)">Biscayne Bay</text>
+          <text x="236" y="168" font-size="10" font-weight="400">US-1</text></g>
+      </svg>
+      <div class="campus" style="${pct(...CAMPUS)}" aria-hidden="true"><span class="c-dot">${ic('book',16)}</span><span class="c-lbl">UM campus</span></div>
+      ${pins.map(l=>`<button class="pin ${l.id===state.mapSel?'on':''}" style="${pct(...l.pos)}" data-action="mapPin" data-id="${l.id}"
+          aria-pressed="${l.id===state.mapSel}" aria-label="${esc(l.title)}, ${money(l.price)} a month, ${l.dist} miles from campus">${money(l.price)}</button>`).join('')}
+    </div>
+    <p class="help map-key"><span class="key-dot" aria-hidden="true"></span> Orange marker: UM Coral Gables campus. Map is a sample, not to scale.</p>
+    <div class="map-preview" aria-live="polite">${sel ? mapPreview(sel) : `<p class="help" style="margin:0">Tap a price pin to preview a room.</p>`}</div>`;
+}
+function mapPreview(l){
+  return `<div class="mp-top"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',26)}</span>
+      <div class="grow"><h3>${esc(l.title)}</h3><p class="meta">${ic('pin',16)} ${esc(l.area)} · ${l.dist} mi</p>
+      <p class="price"><strong>${money(l.price)}</strong> / month · ${fmtShort(l.moveIn)} – ${fmtShort(l.moveOut)}</p></div></div>
+    ${commuteLine(l)}
+    ${coverageHTML(l)}
+    ${matchBtn(l)}
+    <div class="row2" style="margin-top:12px">
+      ${saveBtn(l,'btn btn-ghost mp-save').replace(/<\/button>$/,' Save</button>')}
+      <button class="btn btn-primary" data-action="open" data-id="${l.id}">View listing</button>
+    </div>`;
+}
+
+function compare(q, you, them){
+  if (q.type==='scale'){ const d=Math.abs(you-them); return [['match',1],['close',.5],['diff',0]][d]; }
+  if (q.type==='equal') return you===them ? ['match',1] : ['diff',0];
+  return (you===0 || you===them) ? ['match',1] : ['diff',0];   // tolerance
+}
+// A match is only shown when at least this many of your answers can be compared with the listing
+const MIN_SHARED = 3;
+const answeredCount = () => state.habits ? Object.keys(state.habits).length : 0;
+const canMatch = () => answeredCount() >= MIN_SHARED;
+const sharedCount = l => (l.habits && state.habits) ? PREFS.filter(q=>state.habits[q.key]!==undefined && l.habits[q.key]!==undefined).length : 0;
+function matchFor(l){
+  if (l.mine || !canMatch() || !l.habits) return null;
+  const rows=[], skipped=[];
+  PREFS.forEach(q=>{
+    const you=state.habits[q.key], them=l.habits[q.key];
+    if (you===undefined) return;
+    if (them===undefined){ skipped.push(q.label); return; }
+    const [status,score]=compare(q,you,them);
+    rows.push({...q, you:q.opts[you], them:(q.house||q.opts)[them], status, score});
+  });
+  if (rows.length < MIN_SHARED) return null;
+  return {pct:Math.round(rows.reduce((s,r)=>s+r.score,0)/rows.length*100), rows, skipped,
+          unanswered:PREFS.filter(q=>state.habits[q.key]===undefined).map(q=>q.label)};
+}
+const tier = p => p>=75 ? ['high','Great match'] : p>=50 ? ['mid','Good match'] : ['low','Low match'];
+function matchBtn(l, big){
+  const m = matchFor(l);
+  if (!m){
+    if (!big || l.mine) return '';
+    // On listing details, explain why there's no match and how to get one
+    if (!canMatch()){
+      const n=answeredCount();
+      const msg = n ? `Answer at least ${MIN_SHARED} preferences to see your roommate match (you’ve answered ${n})`
+                    : 'Add your preferences to see your roommate match';
+      return `<button class="pref-nudge" data-action="editHabits">${ic('people',22)}<span>${msg}</span>${ic('next')}</button>`;
+    }
+    const s=sharedCount(l);
+    return `<div class="pref-nudge info">${ic('people',22)}<span>No roommate match for this listing. Only ${s} of your answers apply here${l.roommates?'':' since it’s an entire place'}, and we need at least ${MIN_SHARED} to compare.</span></div>`;
+  }
+  const [cls, word] = tier(m.pct);
+  const label = `${m.pct}% roommate match, ${word.toLowerCase()}. Show what matches`;
+  return big
+    ? `<button class="match-card ${cls}" data-action="match" data-id="${l.id}" aria-label="${label}">
+        <span class="pct">${m.pct}%</span>
+        <span class="grow"><strong>Roommate match</strong><span>${word} · See what matches</span></span>${ic('next')}</button>`
+    : `<button class="match ${cls}" data-action="match" data-id="${l.id}" aria-label="${label}">${ic('people',18)}<strong>${m.pct}%</strong> match</button>`;
+}
+const T = id => state.threads.find(t => t.id === id);
+const BOOK_STEPS = ['Reserved','Lease signed','Moved in','Payment released'];
+const TAB_SCREENS = ['home','saved','post','messages','profile','myListings','postSuccess'];
+const TAB_FOR = {home:'home',saved:'saved',post:'post',postSuccess:'post',messages:'messages',chat:'messages',profile:'profile',myListings:'profile'};
+
+/* ================= helpers ================= */
+/* ---------- date coverage ----------
+   How much of the user's searched dates (filters.from → filters.to) a listing covers. */
+const dayDiff = (a,b) => Math.round((toDate(b)-toDate(a))/864e5);
+function coverage(l, f=state.filters){
+  if (!(f.from && f.to)) return null;
+  const a = l.moveIn>f.from ? l.moveIn : f.from, b = l.moveOut<f.to ? l.moveOut : f.to;
+  const total = Math.max(1, dayDiff(f.from,f.to)), days = Math.max(0, dayDiff(a,b));
+  const late = Math.max(0, dayDiff(f.from,l.moveIn)), early = Math.max(0, dayDiff(l.moveOut,f.to));
+  const full = !late && !early;
+  const pct = full ? 100 : Math.min(99, Math.round(days/total*100));   // never say 100% for a partial match
+  return {full, pct, days, late, early};
+}
+const gapText = d => d<7 ? `${d} day${d===1?'':'s'}` : `${Math.round(d/7)} week${Math.round(d/7)===1?'':'s'}`;
+function coverageText(c){
+  if (c.full) return 'Covers 100% of your dates';
+  const parts=[];
+  if (c.late) parts.push(`starts ${gapText(c.late)} late`);
+  if (c.early) parts.push(`ends ${gapText(c.early)} early`);
+  return `Covers ${c.pct}%, ${parts.join(' and ')}`;
+}
+function coverageHTML(l, withDates){
+  const c=coverage(l); if (!c) return '';
+  const f=state.filters;
+  return `<p class="cov ${c.full?'full':'part'}">${ic(c.full?'check':'calendar',18)}<span>${coverageText(c)}${withDates?`<small>Your dates: ${fmtShort(f.from)} – ${fmt(f.to)}</small>`:''}</span></p>`;
+}
+function matches(l,f){
+  if (l.mine) return false; // your own listings don't show up in your search
+  if (f.q){ const q=f.q.toLowerCase(); if(!(l.title+' '+l.area+' '+l.type).toLowerCase().includes(q)) return false; }
+  if (l.price > f.maxPrice) return false;
+  if (f.distance && l.dist > f.distance) return false;
+  if (f.from && f.to){
+    if (coverage(l,f).days <= 0) return false;          // keep partial matches, drop rooms with no overlap
+  } else {
+    if (f.from && l.moveIn > f.from) return false;      // only one date set: must be available on it
+    if (f.to && l.moveOut < f.to) return false;
+  }
+  return true;
+}
+function saveBtn(l, cls='save-btn'){
+  return `<button class="${cls}" data-action="toggleSave" data-id="${l.id}" aria-pressed="${state.saved.has(l.id)}" aria-label="Save ${esc(l.title)}">${ic('heart',26)}</button>`;
+}
+function cardHTML(l){
+  return `<li class="card">
+    <div class="photo ph-${l.tone}" role="img" aria-label="Photo placeholder: ${esc(l.photos[0])}">${ic('bed',48)}</div>
+    <span class="pill" aria-hidden="true">${ic('verified',16)}Verified student</span>
+    <div class="card-body">
+      ${l.boosted?`<p class="boost-tag">${ic('bolt',16)} Boosted</p>`:''}
+      <h3><button class="card-link" data-action="open" data-id="${l.id}">${esc(l.title)}</button></h3>
+      <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
+      ${commuteLine(l)}
+      ${matchBtn(l)}
+      <dl class="mini-dates"><div><dt>Move-in</dt><dd>${fmt(l.moveIn)}</dd></div><div><dt>Move-out</dt><dd>${fmt(l.moveOut)}</dd></div></dl>
+      ${coverageHTML(l)}
+      <p class="price"><strong>${money(l.price)}</strong> / month <span class="sr-only">. Host is a verified student.</span></p>
+    </div>
+    ${saveBtn(l)}
+  </li>`;
+}
+function chipLabels(){
+  const f=state.filters;
+  return {
+    dates: f.from || f.to ? `${f.from?fmtShort(f.from):'Any'} – ${f.to?fmtShort(f.to):'Any'}` : 'Any dates',
+    price: f.maxPrice < 2000 ? `Up to ${money(f.maxPrice)}` : 'Any price',
+    distance: f.distance ? `Within ${f.distance} mi` : 'Any distance'
+  };
+}
+function emptyState(icon,title,text,btnLabel,action,attrs=''){
+  return `<div class="empty"><div class="big-ic">${ic(icon,44)}</div><h2>${title}</h2><p>${text}</p><button class="btn btn-primary" data-action="${action}" ${attrs}>${btnLabel}</button></div>`;
+}
+function topbar(title, withBack, backLabel='Back'){
+  return `<header class="topbar">${withBack?`<button class="icon-btn" data-action="back" aria-label="${backLabel}">${ic('back')}</button>`:''}<h1>${title}</h1></header>`;
+}
+
+/* ================= screens ================= */
+const screens = {
+  welcome(){
+    const login = state.mode==='login';
+    return `<div class="hero">
+      ${logo(true)}
+      <h1>${login?'Welcome back':'Sublet your room. Find your next one.'}</h1>
+      <p>Short-term rooms for University of Miami students, from students.</p>
+      <ul class="props">
+        <li>${ic('verified',28)}<span>Every student is verified with a school email</span></li>
+        <li>${ic('calendar',28)}<span>Exact move-in and move-out dates</span></li>
+        <li>${ic('shield',28)}<span>Rent is held in the app until move-in day</span></li>
+      </ul>
+    </div>
+    <form id="signupForm" class="pad form" novalidate>
+      <h2>${login?'Log in with your school email':'Create your account'}</h2>
+      ${login?'':`<div class="field"><label for="fName">First name</label>
+        <input id="fName" name="name" autocomplete="given-name" aria-describedby="fNameErr" value="${esc(state.user.name)}">
+        <p class="error" id="fNameErr"></p></div>`}
+      <div class="field"><label for="fEmail">School email</label>
+        <input id="fEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@miami.edu" aria-describedby="fEmailHelp fEmailErr" value="${esc(state.user.email)}">
+        <p class="help" id="fEmailHelp">Must end in .edu. We use it to confirm you’re a student.</p>
+        <p class="error" id="fEmailErr"></p></div>
+      <button class="btn btn-primary" type="submit">Send verification code ${ic('arrow')}</button>
+      <p class="switch-mode">${login?'New to TermNest?':'Already have an account?'} <button type="button" class="link" data-action="toggleMode">${login?'Create an account':'Log in'}</button></p>
+      <div class="endspace"></div>
+    </form>`;
+  },
+  verify(){
+    return `${topbar('',true,'Back to sign up').replace('<h1></h1>','')}
+    <div class="pad form">
+      <div class="mail-ill">${ic('mail',44)}</div>
+      <h1 style="font-size:1.6rem">Check your school email</h1>
+      <p style="margin:10px 0 20px;line-height:1.45">We sent a 6-digit code to <strong>${esc(state.user.email)}</strong>.</p>
+      <form id="verifyForm" novalidate>
+        <div class="field"><label for="fCode">Verification code</label>
+          <input id="fCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-describedby="fCodeHelp fCodeErr">
+          <p class="help" id="fCodeHelp">Prototype tip: any 6 digits will work.</p>
+          <p class="error" id="fCodeErr"></p></div>
+        <button class="btn btn-primary" type="submit">Verify and continue</button>
+        <button class="btn btn-ghost" type="button" data-action="resend">Resend code</button>
+      </form>
+      <p class="switch-mode"><button type="button" class="link" data-action="back">Use a different email</button></p>
+    </div>`;
+  },
+  role(){
+    const opt=(role,icon,title,sub)=>`<li><button class="role-opt" data-action="chooseRole" data-role="${role}">
+        <span class="role-ic">${ic(icon,34)}</span><span class="role-text"><strong>${title}</strong><span>${sub}</span></span>${ic('next',28)}</button></li>`;
+    return `<div class="pad" style="padding-top:20px">
+      <span class="verified">${ic('verified',18)} ${esc(state.user.email)} verified</span>
+      <h1 style="font-size:1.9rem;line-height:1.12;margin:18px 0 10px">What brings you to TermNest, ${esc(state.user.name)}?</h1>
+      <p style="color:var(--ink-2);line-height:1.45;margin-bottom:22px">We’ll set up your home screen to match. You can switch any time in Profile.</p>
+      <ul class="role-list">
+        ${opt('renter','search',"I’m looking for a place",'Find a verified student’s room for a semester or summer.')}
+        ${opt('host','home',"I’m subleasing my place",'Post your room while you’re away. Rent is held safely until move-in.')}
+      </ul>
+      <div class="endspace"></div></div>`;
+  },
+  swap(){
+    const s=state.swap;
+    return `${topbar('Term Swap',true,'Back')}
+      <div class="pad">
+        <div class="swap-hero"><span class="sw-ic" aria-hidden="true">${ic('swap',28)}</span>
+          <p><strong>Going away for a term?</strong> Swap rooms with a verified student from that city who needs a place in Miami at the same time. You stay in theirs, they stay in yours.</p></div>
+        <form id="swapForm" class="form" novalidate>
+          <div class="field"><label for="swCity">Where are you going?</label>
+            <select id="swCity" name="city" aria-describedby="err-city"><option value="">Choose a city</option>
+              ${SWAP_CITIES.map(c=>`<option ${s.city===c?'selected':''}>${c}</option>`).join('')}</select>
+            <p class="error" id="err-city"></p></div>
+          <div class="field"><label for="swFrom">Leaving Miami</label>
+            <input type="date" id="swFrom" name="from" value="${s.from}" aria-describedby="err-from"><p class="error" id="err-from"></p></div>
+          <div class="field"><label for="swTo">Coming back</label>
+            <input type="date" id="swTo" name="to" value="${s.to}" aria-describedby="err-to"><p class="error" id="err-to"></p></div>
+          <button class="btn btn-primary" type="submit">${ic('search')} Find swaps</button>
+        </form>
+        <div id="swapResults" aria-live="polite">${s.searched?swapResults():''}</div>
+        <div class="endspace"></div>
+      </div>`;
+  },
+  prefs({onboarding}={}){
+    const h=state.habits||{};
+    const head = onboarding
+      ? `<div class="pad" style="padding-top:16px"><span class="opt-tag">Optional</span>
+           <h1 style="font-size:1.8rem;line-height:1.12;margin:12px 0 8px">My preferences</h1></div>`
+      : topbar('My preferences',true,'Back');
+    return `${head}
+      <form id="prefsForm" class="pad form" novalidate>
+        <p style="color:var(--ink-2);line-height:1.45;margin-bottom:6px">Tell us how you like to live and we’ll show your roommate match on every listing. Answer as many as you like; matches appear once you’ve answered at least ${MIN_SHARED}. Others only see your match score, not your answers.</p>
+        ${PREFS.map(q=>`<fieldset class="pref-q"><legend>${ic(q.icon,22)} ${q.label}</legend>
+          <div class="pills">
+            ${q.opts.map((o,i)=>`<label class="pill-opt"><input type="radio" name="${q.key}" value="${i}" ${h[q.key]===i?'checked':''}><span>${o}</span></label>`).join('')}
+            <label class="pill-opt none"><input type="radio" name="${q.key}" value="" ${h[q.key]===undefined?'checked':''}><span>No preference</span></label>
+          </div></fieldset>`).join('')}
+        <div class="pref-actions">
+          <button class="btn btn-primary" type="submit">Save preferences</button>
+          ${onboarding
+            ? `<button class="btn btn-ghost" type="button" data-action="skipPrefs">Skip for now</button>
+               <p class="help" style="text-align:center;margin-top:10px">You can add or change these anytime in Profile.</p>`
+            : hasPrefs() ? `<button class="btn btn-ghost" type="button" data-action="clearPrefs">Clear all preferences</button>` : ''}
+        </div>
+        <div class="endspace"></div>
+      </form>`;
+  },
+  landlord({id}={}){
+    // Works on the listing draft (post flow), or on a published listing when an id is given
+    const src = id ? L(id) : state.draft; if(!src) return screens.post();
+    const ll = src.landlord ||= {status:'none',name:'',email:''};
+    const idx = LL_STEPS.findIndex(s=>s[0]===ll.status);
+    const steps = LL_STEPS.map((s,i)=>{
+      const st = i<idx || (i===idx && ll.status==='approved') ? 'done' : i===idx ? 'now' : 'todo';
+      return `<li class="${st}" ${i===idx?'aria-current="step"':''}><span class="mark" aria-hidden="true">${st==='done'?ic('check',18):i+1}</span>
+        <span>${s[1]}</span><span class="sr-only">${st==='done'?' (done)':st==='now'?' (current status)':''}</span></li>`;
+    }).join('');
+    const body = ll.status==='none' ? `
+        <form id="landlordForm" class="form" novalidate>
+          <div class="field"><label for="llName">Landlord or property manager</label>
+            <input id="llName" name="name" value="${esc(ll.name)}" placeholder="e.g. Coral Gables Property Mgmt" aria-describedby="err-llName"><p class="error" id="err-llName"></p></div>
+          <div class="field"><label for="llEmail">Their email</label>
+            <input id="llEmail" name="email" type="email" inputmode="email" value="${esc(ll.email)}" placeholder="leasing@example.com" aria-describedby="err-llEmail"><p class="error" id="err-llEmail"></p></div>
+          <button class="btn btn-primary" type="submit">${ic('mail')} Send approval request</button>
+        </form>
+        <p class="help" style="margin-top:12px">We’ll show you the pre-written request before it’s sent.</p>`
+      : ll.status==='requested' ? `
+        <div class="ll-card requested">${ic('mail',28)}<div><strong>Request sent to ${esc(ll.name)}</strong>
+          <span>${esc(ll.email)} · ${fmt(ll.on)}</span><span>We’ll update this as soon as they reply.</span></div></div>
+        <div class="row2" style="margin-top:14px">
+          <button class="btn btn-ghost" data-action="llResend">Resend</button>
+          <button class="btn btn-ghost" data-action="llChange">Change landlord</button></div>
+        <button class="btn btn-accent" data-action="llApprove" style="margin-top:14px">Demo: landlord approves</button>
+        <p class="help" style="margin-top:8px">Prototype only. In the real app, your landlord approves from a link in the email.</p>`
+      : `
+        <div class="ll-card approved">${ic('check',28)}<div><strong>Approved by ${esc(ll.name)}</strong>
+          <span>${fmt(ll.on)}</span><span>Your subletter can sign the agreement as soon as you accept them.</span></div></div>`;
+    return `${topbar('Landlord approval',true,id?'Back':'Back to details')}
+      <div class="pad">
+        ${id?'':`<p class="step-of">Step 2 of 3 · Post your room</p>`}
+        <p style="line-height:1.45;color:var(--ink-2);margin:4px 0 14px">Most leases need your landlord’s OK before you sublet. Ask now so your subletter can sign as soon as you pick one.</p>
+        <ol class="ll-steps" aria-label="Landlord approval status">${steps}</ol>
+        <p class="ll-now">Status: <span class="ll-chip ${ll.status}">${llLabel(ll.status)}</span></p>
+        ${body}
+        ${!id && ll.status!=='approved' ? `<p class="help" style="margin-top:14px">You can continue and publish now. Subletters can’t sign the agreement until your landlord approves.</p>`:''}
+        <div class="endspace"></div>
+      </div>
+      ${id?'':`<div class="action-bar"><button class="btn btn-primary" data-action="toReview">Continue to review ${ic('arrow')}</button></div>`}`;
+  },
+  agreement({id, as}){
+    const l=L(id), a=state.agreements[id], ll=l.landlord||{status:'approved'};
+    const otherKey = as==='sublessor'?'subtenant':'sublessor', me=a[as], other=a[otherKey];
+    const otherFirst=esc(other.name.split(' ')[0]), both=a.sublessor.signed&&a.subtenant.signed, llOk=ll.status==='approved';
+    const banner = both ? ['done','check','Signed by both','Both signatures are on file with TermNest.']
+      : me.signed ? ['wait','calendar',`Waiting for ${otherFirst} to sign`,'We’ve sent them a reminder.']
+      : !llOk ? ['block','lock','Waiting for landlord approval','Signing opens once the landlord approves.']
+      : ['ready','book','Ready for your signature','Read it through, then sign at the bottom.'];
+    const sig=(key,role)=>{ const p=a[key], mine=key===as;
+      return `<div class="sig ${p.signed?'signed':''}"><p class="lbl">${role}</p>
+        <p class="sig-line">${p.signed?`<span class="script">${esc(p.typed||p.name)}</span>`:'<span class="unsigned">Not signed yet</span>'}</p>
+        <p class="sig-meta">${esc(p.name)}${mine?' (you)':''} · ${p.signed?`Signed ${fmt(p.signed)}`:'Waiting'}</p></div>`; };
+    const terms=[
+      ['The room', `${esc(l.type)} at “${esc(l.title)},” ${esc(l.area)}, Miami.`],
+      ['Dates', `Move-in ${fmtLong(l.moveIn)}. Move-out ${fmtLong(l.moveOut)} (${weeks(l.moveIn,l.moveOut)} weeks).`],
+      ['Rent', `${money(l.price)} per month, paid through TermNest. The first month is held by TermNest and released to the sublessor after the subtenant confirms move-in.`],
+      ['Deposit', 'None.'],
+      ['Utilities', l.utilities?'Included in rent.':'Split with the household.'],
+      ['Original lease', 'The subtenant follows the rules of the original lease. The sublessor stays responsible to the landlord.'],
+      ['Cancelling', 'Either person can cancel before move-in for a full refund.'],
+      ['Condition', 'The subtenant reports any problems within 24 hours of move-in.']];
+    let action='';
+    if(both) action = `<button class="btn btn-ghost" data-action="emailCopy">${ic('mail')} Email me a copy</button>`;
+    else if(me.signed) action = `<button class="btn btn-ghost" data-action="remindSign">${ic('bell')} Send ${otherFirst} a reminder</button>
+        <button class="btn btn-accent" data-action="otherSigns">Demo: ${otherFirst} signs now</button>
+        <p class="help" style="margin-top:8px">Prototype only, so you can see the finished agreement.</p>`;
+    else if(!llOk) action = as==='sublessor'
+        ? `<button class="btn btn-primary" data-action="go" data-to="landlord" data-id="${l.id}">Check landlord approval</button>`
+        : `<button class="btn btn-ghost" data-action="messageHost" data-id="${l.id}">${ic('chat')} Message ${otherFirst}</button>`;
+    else action = `<form id="signForm" class="form" novalidate>
+        <label class="opt agree"><input type="checkbox" name="agree" aria-describedby="err-agreeSign">I’ve read this sublease agreement and agree to its terms.</label>
+        <p class="error" id="err-agreeSign"></p>
+        <div class="field" style="margin-top:12px"><label for="sigName">Type your full name to sign</label>
+          <input id="sigName" name="sig" autocomplete="name" placeholder="${esc(state.user.name)}" aria-describedby="err-sigName"><p class="error" id="err-sigName"></p></div>
+        <button class="btn btn-primary" type="submit">Sign agreement</button></form>`;
+    return `${topbar('Sublease agreement',true,'Back')}
+      <div class="pad">
+        <div class="agr-banner ${banner[0]}" id="agrBanner" tabindex="-1">${ic(banner[1],26)}<div><strong>${banner[2]}</strong><span>${banner[3]}</span></div></div>
+        <article class="agr-doc" aria-labelledby="agrTitle">
+          <h2 id="agrTitle">Sublease Agreement</h2>
+          <p class="agr-sub">Made through TermNest on ${fmt(todayISO())}</p>
+          <dl class="agr-parties">
+            <div><dt>Sublessor (current tenant)</dt><dd>${esc(a.sublessor.name)}</dd></div>
+            <div><dt>Subtenant</dt><dd>${esc(a.subtenant.name)}</dd></div>
+          </dl>
+          <ol class="agr-terms">${terms.map(([h,t])=>`<li><strong>${h}.</strong> ${t}</li>`).join('')}</ol>
+          <p class="agr-ll ${llOk?'ok':'no'}">${ic(llOk?'check':'lock',18)} Landlord approval: ${llOk?`approved by ${esc(ll.name)} on ${fmt(ll.on)}`:llLabel(ll.status).toLowerCase()}</p>
+          <h3 class="section-h">Signatures</h3>
+          <div class="sigs">${sig('sublessor','Sublessor')}${sig('subtenant','Subtenant')}</div>
+        </article>
+        <div class="agr-actions">${action}</div>
+        <div class="endspace"></div>
+      </div>`;
+  },
+  pay({id}){
+    const l=L(id), first=esc(l.host.name.split(' ')[0]);
+    const methods=['Debit card ending 4242','Bank account ending 6789','Apple Pay'];
+    return `${topbar('Reserve and pay',true,'Back to listing')}
+      <form id="payForm" class="pad form" novalidate data-id="${l.id}">
+        <div class="pay-listing"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',26)}</span>
+          <div><strong>${esc(l.title)}</strong><span>${esc(l.area)} · Host: ${esc(l.host.name)}</span></div></div>
+        <dl class="summary">
+          <div><dt>Move-in</dt><dd>${fmtLong(l.moveIn)}</dd></div>
+          <div><dt>Move-out</dt><dd>${fmtLong(l.moveOut)}</dd></div>
+          <div><dt>First month’s rent</dt><dd>${money(l.price)}</dd></div>
+          <div><dt>Service fee</dt><dd>$0</dd></div>
+          <div><dt>Due today</dt><dd>${money(l.price)}</dd></div>
+        </dl>
+        <h2 class="section-h">Where your money goes</h2>
+        <ol class="flow">
+          <li><span class="flow-ic">${ic('dollar',26)}</span><strong>You pay today</strong><span>${money(l.price)} goes to TermNest, not to ${first}.</span></li>
+          <li><span class="flow-ic">${ic('shield',26)}</span><strong>TermNest holds it</strong><span>Your rent is held safely until move-in on ${fmtShort(l.moveIn)}.</span></li>
+          <li><span class="flow-ic">${ic('home',26)}</span><strong>You move in</strong><span>Check the room matches the listing, then confirm in the app.</span></li>
+          <li><span class="flow-ic">${ic('check',26)}</span><strong>${first} gets paid</strong><span>The money is released only after you confirm.</span></li>
+        </ol>
+        <div class="protect">${ic('shield',28)}<div><strong>Full refund if something’s wrong</strong>If ${first} cancels, or the room isn’t as listed, report it within 24 hours of move-in and you get your money back.</div></div>
+        <fieldset style="margin-top:6px"><legend class="section-h" style="padding:0">Payment method</legend>
+          ${methods.map((m,i)=>`<label class="opt"><input type="radio" name="method" value="${m}" ${i===0?'checked':''}>${m}</label>`).join('')}
+          <p class="help">Sample payment methods. No real payment is made in this prototype.</p>
+        </fieldset>
+        <label class="opt agree"><input type="checkbox" name="agree" aria-describedby="err-agree">I understand TermNest holds my rent until I move in and confirm the room.</label>
+        <p class="error" id="err-agree"></p>
+        <div class="endspace"></div>
+      </form>
+      <div class="action-bar">
+        <div><p class="ab-price"><strong>${money(l.price)}</strong></p><p class="ab-sub">Held until move-in</p></div>
+        <button class="btn btn-primary" type="submit" form="payForm">Pay and reserve</button>
+      </div>`;
+  },
+  booking({id}){
+    const l=L(id), b=state.bookings[id], step=b.step, first=esc(l.host.name.split(' ')[0]);
+    const info=[
+      `You paid ${money(l.price)} with ${esc(b.method)}. TermNest is holding it.`,
+      `Review and sign the sublease agreement with ${first}.`,
+      `On ${fmtShort(l.moveIn)}, check the room matches the listing and confirm in the app.`,
+      `${money(l.price)} is sent to ${first} after you confirm move-in.`];
+    const ag=state.agreements[id], iSigned=!!ag?.subtenant.signed;
+    if(step===1 && iSigned) info[1]=`You signed. Waiting for ${first} to sign the sublease agreement.`;
+    const next = step===1 ? ['signLease', iSigned?'View agreement':'Review and sign agreement'] : step===2 ? ['moveIn','I’ve moved in'] : null;
+    const head = [null,
+      ['Reserved!','Next: sign your lease'],
+      ['Lease signed',`Next: move in on ${fmtLong(l.moveIn)}`],
+      null,
+      ['All set!',`Payment released to ${first}. Enjoy your stay.`]][step];
+    return `${topbar('Your booking',true,'Back')}
+      <div class="pad">
+        <div class="status-hero"><span class="status ${step===4?'booked':''}">${BOOK_STEPS[step-1]}</span>
+          <h2>${head[0]}</h2><p>${head[1]}</p></div>
+        <div class="held">${ic(step===4?'check':'shield',32)}<div>
+          <strong>${money(l.price)} ${step===4?`paid to ${first}`:'held by TermNest'}</strong>
+          <span>${step===4?'Released after you confirmed move-in.':`Released to ${first} only after you move in.`}</span></div></div>
+        <h2 class="section-h">Booking status</h2>
+        <ol class="tracker">
+          ${BOOK_STEPS.map((s,i)=>{ const n=i+1, st=n<=step?'done':n===step+1?'current':'todo';
+            return `<li class="${st}" ${st==='current'?'aria-current="step"':''}>
+              <span class="mark" aria-hidden="true">${st==='done'?ic('check',22):n}</span>
+              <div><strong>${s} <span class="tag">${st==='done'?'Done':st==='current'?'Up next':'Later'}</span></strong>
+              <p>${info[i]}</p>
+              ${st==='current'&&next?`<button class="btn btn-primary" data-action="${next[0]}" data-id="${l.id}">${next[1]}</button>
+                ${n===3?'<p class="help">Prototype: you can try this step now.</p>':''}`:''}</div></li>`; }).join('')}
+        </ol>
+        <button class="pay-listing as-btn" data-action="open" data-id="${l.id}"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',26)}</span>
+          <span class="grow"><strong>${esc(l.title)}</strong><span>${fmtShort(l.moveIn)} – ${fmt(l.moveOut)} · View listing</span></span>${ic('next')}</button>
+        <button class="btn btn-ghost" data-action="messageHost" data-id="${l.id}">${ic('chat')} Message ${first}</button>
+        <button class="btn btn-ghost" data-action="tab" data-tab="home">Back to search</button>
+        <div class="endspace"></div>
+      </div>`;
+  },
+  home(){ return state.role==='host' ? screens.hostHome() : screens.renterHome(); },
+  hostHome(){
+    const mine=state.myListings.map(L);
+    return `<header class="topbar" style="display:block">
+        <p class="eyebrow">Hi, ${esc(state.user.name)}</p>
+        <h1>Your sublease</h1>
+      </header>
+      <div class="pad">
+        <button class="btn btn-primary" data-action="tab" data-tab="post">${ic('plus')} ${mine.length?'Post another room':'Post your room'}</button>
+        <button class="swap-entry" data-action="go" data-to="swap"><span class="sw-ic" aria-hidden="true">${ic('swap',26)}</span>
+          <span class="grow"><strong>Term Swap</strong><span>Leaving Miami? Trade rooms with a student coming here from where you’re going.</span></span>${ic('next')}</button>
+        ${mine.length ? mine.map(hostCard).join('')
+          : `<div class="empty" style="padding:30px 8px 10px"><div class="big-ic">${ic('home',44)}</div><h2>No listing yet</h2><p>Post your room and you’ll see views, saves, messages and booking requests here.</p></div>`}
+        <div class="protect" style="margin-top:22px">${ic('camera',28)}<div><strong>Tip: add 4 or more photos</strong>Listings with more photos get about twice as many booking requests.</div></div>
+        <div class="endspace"></div>
+      </div>`;
+  },
+  renterHome(){
+    const c = chipLabels(), f = state.filters;
+    return `<header class="topbar" style="display:block">
+        <p class="eyebrow">Hi, ${esc(state.user.name)}</p>
+        <h1>Find a short-term room</h1>
+      </header>
+      <div class="pad">
+        <div class="search">${ic('search')}
+          <label for="q" class="sr-only">Search by neighborhood or keyword</label>
+          <input id="q" type="search" placeholder="Neighborhood or keyword" value="${esc(f.q)}" autocomplete="off">
+        </div>
+        <div class="chips" role="group" aria-label="Filters">
+          <button class="chip ${f.from||f.to?'on':''}" data-action="filters" data-section="dates">${ic('calendar',20)}<span class="sr-only">Dates filter: </span>${c.dates}</button>
+          <button class="chip ${f.maxPrice<2000?'on':''}" data-action="filters" data-section="price">${ic('dollar',20)}<span class="sr-only">Price filter: </span>${c.price}</button>
+          <button class="chip ${f.distance?'on':''}" data-action="filters" data-section="distance">${ic('pin',20)}<span class="sr-only">Distance filter: </span>${c.distance}</button>
+          <button class="chip" data-action="filters" data-section="dates">${ic('sliders',20)}All filters</button>
+        </div>
+        ${canMatch() ? '' : `<div class="pref-banner">
+          <span class="pb-ic" aria-hidden="true">${ic('people',24)}</span>
+          <p>${hasPrefs()
+              ? `Answer at least ${MIN_SHARED} preferences to see your roommate match (you’ve answered ${answeredCount()})`
+              : 'Add your preferences to see your roommate match'}</p>
+          <button class="btn btn-primary" data-action="editHabits">${hasPrefs()?'Answer more':'Add preferences'}</button>
+        </div>`}
+        <div class="view-toggle" role="group" aria-label="Show results as">
+          <button data-action="setView" data-view="list" aria-pressed="${state.view==='list'}">${ic('listv',20)} List</button>
+          <button data-action="setView" data-view="map" aria-pressed="${state.view==='map'}">${ic('map',20)} Map</button>
+        </div>
+        <fieldset class="sort" ${state.view==='map'?'hidden':''}><legend>Sort by</legend>
+          <div class="pills">
+            ${(canMatch() ? [['match','Best match']] : [['featured','Featured']]).concat([['price','Lowest price'],['dist','Closest to campus']])
+              .map(([v,t])=>`<label class="pill-opt"><input type="radio" name="sort" value="${v}" ${state.sort===v?'checked':''}><span>${t}</span></label>`).join('')}
+          </div>
+        </fieldset>
+        <p class="result-count" id="resultCount" aria-live="polite"></p>
+        <div id="results"></div>
+        <div class="endspace"></div>
+      </div>`;
+  },
+  detail({id, photo=0}){
+    const l = L(id), mine = !!l.mine;
+    return `<div class="gallery">
+        <div class="photo ph-${l.tone}" id="galPhoto" role="img" aria-label="Photo ${photo+1} of ${l.photos.length}: ${esc(l.photos[photo])} (placeholder)">${ic('bed',64)}
+          <span class="ph-label" aria-hidden="true">Photo ${photo+1} of ${l.photos.length} · ${esc(l.photos[photo])}</span></div>
+        <button class="icon-btn float l" data-action="back" aria-label="Back">${ic('back')}</button>
+        ${saveBtn(l,'icon-btn float r')}
+        <div class="gal-nav">
+          <button data-action="photo" data-dir="-1" aria-label="Previous photo">${ic('back')}</button>
+          <button data-action="photo" data-dir="1" aria-label="Next photo">${ic('next')}</button>
+        </div>
+      </div>
+      <div class="detail-body">
+        <span class="verified">${ic('verified',18)} Verified student · .edu</span>
+        <h1>${esc(l.title)}</h1>
+        <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
+        <p class="price-lg"><strong>${money(l.price)}</strong> / month</p>
+        ${matchBtn(l,true)}
+        <div class="date-box">
+          <div class="cols">
+            <div><p class="lbl">Move-in</p><p class="val">${fmt(l.moveIn)}</p><p class="wd">${weekday(l.moveIn)}</p></div>
+            <div><p class="lbl">Move-out</p><p class="val">${fmt(l.moveOut)}</p><p class="wd">${weekday(l.moveOut)}</p></div>
+          </div>
+          <p class="dur">${weeks(l.moveIn,l.moveOut)} weeks · ${termName(l.moveIn)}</p>
+        </div>
+        ${coverageHTML(l,true)}
+        <h2 class="section-h" style="margin-top:4px">Commute to UM Coral Gables campus</h2>
+        <ul class="commute-tiles">
+          ${commute(l.dist).map(x=>`<li>${ic(x.icon,28)}<strong>${fmtMin(x.min)}</strong><span>${x.label==='Walk'?'Walking':x.label==='Bike'?'Biking':'Driving'}</span></li>`).join('')}
+        </ul>
+        <p class="help" style="margin:8px 0 18px">Estimates for ${l.dist} mi. Driving includes typical traffic, not parking.</p>
+        <div class="protect">${ic('shield',28)}<div><strong>Rent held until move-in</strong>Your payment stays safe in TermNest and is released to ${esc(l.host.name.split(' ')[0])} only after you check in.</div></div>
+        <h2 class="section-h">About this room</h2>
+        <p class="desc">${esc(l.desc)}</p>
+        <ul class="facts">
+          <li>${ic('bed',20)}${esc(l.type)}</li>
+          <li>${ic('people',20)}${l.roommates ? l.roommates+' roommate'+(l.roommates>1?'s':'') : 'No roommates'}</li>
+          <li>${ic('sofa',20)}${l.furnished?'Furnished':'Unfurnished'}</li>
+          <li>${ic('bolt',20)}${l.utilities?'Utilities included':'Utilities extra'}</li>
+          <li>${ic(l.landlord?.status==='approved'?'check':'home',20)}Landlord ${l.landlord?.status==='approved'?'approved':llLabel(l.landlord?.status).toLowerCase()}</li>
+        </ul>
+        <h2 class="section-h">${mine?'Posted by you':'Your host'}</h2>
+        <div class="host"><span class="avatar">${esc(l.host.initials)}</span>
+          <div><strong>${esc(l.host.name)}</strong><p>${esc(l.host.about)}</p><p style="color:var(--green-text);font-weight:700">${ic('verified',16)} Verified school email</p></div></div>
+        ${mine?'':`<button class="btn btn-ghost" data-action="messageHost" data-id="${l.id}">${ic('chat')} Message ${esc(l.host.name.split(' ')[0])}</button>`}
+        <div style="height:20px"></div>
+      </div>
+      <div class="action-bar">
+        <div><p class="ab-price"><strong>${money(l.price)}</strong> / mo</p><p class="ab-sub">Held until move-in</p></div>
+        ${mine?`<button class="btn btn-accent" data-action="share">${ic('share')} Share</button>`
+              : state.bookings[l.id]
+                ? `<button class="btn btn-primary" data-action="openBooking" data-id="${l.id}">${ic('calendar')} View booking</button>`
+                : `<button class="btn btn-primary" data-action="reserve" data-id="${l.id}">Reserve this place</button>`}
+      </div>`;
+  },
+  saved(){
+    const items = state.listings.filter(l => state.saved.has(l.id));
+    return `${topbar('Saved rooms')}
+      <div class="pad">${items.length
+        ? `<p class="result-count">${items.length} saved room${items.length>1?'s':''}</p><ul class="cards">${items.map(cardHTML).join('')}</ul>`
+        : emptyState('heart','No saved rooms yet','Tap the heart on any listing to keep it here for later.','Browse rooms','tab','data-tab="home"')}
+      <div class="endspace"></div></div>`;
+  },
+  messages(){
+    return `${topbar('Messages')}
+      <ul class="threads">${state.threads.map(t=>{
+        const last=t.msgs[t.msgs.length-1]||{text:'No messages yet',time:''}, l=L(t.listingId);
+        return `<li><button class="thread ${t.unread?'unread':''}" data-action="openThread" data-id="${t.id}">
+          <span class="avatar ${t.support?'y':''}">${esc(t.initials)}</span>
+          <span class="t-main">
+            <span class="t-top"><strong>${esc(t.name)}</strong><span class="t-time">${esc(last.time)}</span></span>
+            <span class="t-listing">${l?esc(l.title):t.swap?'Term Swap · '+esc(t.swap):'Help & safety'}</span>
+            <span class="t-prev">${last.me?'You: ':''}${esc(last.text)}</span>
+          </span>${t.unread?'<span class="dot"></span><span class="sr-only">Unread</span>':''}</button></li>`;}).join('')}</ul>
+      <div class="pad" style="margin-top:18px"><div class="protect">${ic('shield',28)}<div><strong>Keep it in TermNest</strong>We’ll never ask you to pay by Zelle, Venmo, cash or wire. Report anyone who does.</div></div></div>
+      <div class="endspace"></div>`;
+  },
+  chat({id}){
+    const t=T(id), l=L(t.listingId);
+    return `<header class="chat-head">
+        <button class="icon-btn" data-action="back" aria-label="Back to messages">${ic('back')}</button>
+        <span class="avatar ${t.support?'y':''}">${esc(t.initials)}</span>
+        <div><h1>${esc(t.name)}</h1><span class="verified">${ic('verified',14)} ${t.support?'Official account':'Verified student'}</span></div>
+      </header>
+      ${l?`<button class="chat-listing" data-action="open" data-id="${l.id}"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',24)}</span>
+        <span class="grow"><strong>${esc(l.title)}</strong><span>${money(l.price)}/mo · ${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}</span></span>${ic('next')}<span class="sr-only">View listing</span></button>`:''}
+      <ol class="log" id="log" role="log" aria-label="Conversation with ${esc(t.name)}">
+        ${t.msgs.map(m=>msgHTML(m,t)).join('')}
+      </ol>
+      <div class="quick" role="group" aria-label="Quick replies">
+        ${(t.support?['How does rent protection work?','I want to report a listing']:['Is it still available?','Can we do a video tour?','Are pets OK?']).map(q=>`<button class="chip" data-action="quick">${q}</button>`).join('')}
+      </div>
+      <form class="composer" id="chatForm">
+        <label for="msgInput" class="sr-only">Message ${esc(t.name)}</label>
+        <input id="msgInput" autocomplete="off" placeholder="Write a message">
+        <button class="send" type="submit" aria-label="Send message">${ic('send')}</button>
+      </form>`;
+  },
+  post(){
+    const today='2026-11-04', d=state.draft||{type:'Private room',furnished:'on'};
+    const val=k=>`value="${esc(d[k]||'')}"`;
+    return `${topbar('Post your room')}
+      <form id="postForm" class="pad form" novalidate>
+        <p style="color:var(--ink-2);line-height:1.45;margin-bottom:14px">Leaving for a semester or summer? Sublet to a verified student. Rent is held until they move in.</p>
+        <div id="postErrors" tabindex="-1"></div>
+        <div class="field"><label for="pTitle">Listing title</label>
+          <input id="pTitle" name="title" ${val('title')} placeholder="e.g. Bright room near campus" aria-describedby="err-title"><p class="error" id="err-title"></p></div>
+        <div class="field"><label for="pArea">Neighborhood</label>
+          <select id="pArea" name="area" aria-describedby="err-area"><option value="">Choose one</option>
+          ${['Coral Gables','South Miami','Coconut Grove','Brickell','Kendall','Other'].map(a=>`<option ${d.area===a?'selected':''}>${a}</option>`).join('')}</select><p class="error" id="err-area"></p></div>
+        <div class="row2">
+          <div class="field"><label for="pPrice">Rent / month ($)</label><input id="pPrice" name="price" ${val('price')} type="number" inputmode="numeric" min="100" placeholder="1100" aria-describedby="err-price"><p class="error" id="err-price"></p></div>
+          <div class="field"><label for="pDist">Miles to campus</label><input id="pDist" name="dist" ${val('dist')} type="number" inputmode="decimal" min="0" step="0.1" placeholder="0.5" aria-describedby="err-dist"><p class="error" id="err-dist"></p></div>
+        </div>
+        <div class="field"><label for="pIn">Move-in date</label><input id="pIn" name="moveIn" ${val('moveIn')} type="date" min="${today}" aria-describedby="err-moveIn"><p class="error" id="err-moveIn"></p></div>
+        <div class="field"><label for="pOut">Move-out date</label><input id="pOut" name="moveOut" ${val('moveOut')} type="date" min="${today}" aria-describedby="err-moveOut"><p class="error" id="err-moveOut"></p></div>
+        <fieldset><legend class="legend">Room type</legend>
+          ${['Private room','Entire place','Shared room'].map((t,i)=>`<label class="opt"><input type="radio" name="type" value="${t}" ${d.type===t?'checked':''}>${t}</label>`).join('')}
+        </fieldset>
+        <fieldset><legend class="legend">Included</legend>
+          <label class="opt"><input type="checkbox" name="furnished" ${d.furnished?'checked':''}>Furnished</label>
+          <label class="opt"><input type="checkbox" name="utilities" ${d.utilities?'checked':''}>Utilities included</label>
+        </fieldset>
+        <div class="field"><span class="legend" id="photosLbl">Photos</span>
+          <div class="photo-grid" id="photoGrid" aria-live="polite"></div>
+          <button type="button" class="btn btn-ghost" data-action="addPhoto" aria-describedby="photosLbl">${ic('camera')} Add a photo</button></div>
+        <div class="field"><label for="pDesc">Description <span style="font-weight:400">(optional)</span></label>
+          <textarea id="pDesc" name="desc" placeholder="Roommates, nearby spots, what’s included…">${esc(d.desc||'')}</textarea></div>
+        <div class="protect" style="margin-bottom:18px">${ic('verified',28)}<div><strong>Verified student badge</strong>Your listing shows this badge because you signed up with ${esc(state.user.email)}.</div></div>
+        <button class="btn btn-primary" type="submit">Review listing ${ic('arrow')}</button>
+        <p class="help" style="text-align:center;margin-top:12px">Next you’ll review the $15 listing fee, charged only after a subletter signs.</p>
+        <div class="endspace"></div>
+      </form>`;
+  },
+  postReview(){
+    const d=state.draft; if(!d) return screens.post();
+    const today=d.boost?BOOST_FEE:0, method=d.method||'Debit card ending 4242';
+    const included=[d.furnished?'Furnished':'Unfurnished', d.utilities?'Utilities included':'Utilities extra'].join(' · ');
+    return `${topbar('Review your listing',true,'Back to edit')}
+      <div class="pad">
+        <p style="color:var(--ink-2);line-height:1.45;margin-bottom:16px">This is how students will see it. Check the details, then publish.</p>
+        <h2 class="section-h" style="margin-top:0">Preview</h2>
+        <div class="card preview">
+          <div class="photo ph-${state.listings.length%4}" role="img" aria-label="Photo placeholder">${ic('bed',48)}</div>
+          <span class="pill" aria-hidden="true">${ic('verified',16)}Verified student</span>
+          <div class="card-body">
+            ${d.boost?`<p class="boost-tag">${ic('bolt',16)} Boosted · top of search</p>`:''}
+            <h3>${esc(d.title)}</h3>
+            <p class="meta">${ic('pin',18)} ${esc(d.area)} · ${+d.dist} mi to campus</p>
+            <dl class="mini-dates"><div><dt>Move-in</dt><dd>${fmt(d.moveIn)}</dd></div><div><dt>Move-out</dt><dd>${fmt(d.moveOut)}</dd></div></dl>
+            <p class="price"><strong>${money(d.price)}</strong> / month</p>
+          </div>
+        </div>
+        <h2 class="section-h">Details</h2>
+        <dl class="summary plain">
+          <div><dt>Room type</dt><dd>${esc(d.type)}</dd></div>
+          <div><dt>Included</dt><dd>${included}</dd></div>
+          <div><dt>Photos</dt><dd>${d.photos||'None yet'}</dd></div>
+          <div><dt>Description</dt><dd>${d.desc?'Added':'None'}</dd></div>
+          <div><dt>Landlord approval</dt><dd><span class="ll-chip ${d.landlord?.status||'none'}">${llLabel(d.landlord?.status)}</span></dd></div>
+        </dl>
+        <div class="row2"><button class="btn btn-ghost" data-action="go" data-to="post">Edit details</button>
+          <button class="btn btn-ghost" data-action="back">Landlord step</button></div>
+
+        <h2 class="section-h">Boost <span style="font-weight:400;font-size:.9rem">(optional)</span></h2>
+        <button class="boost-opt" role="switch" aria-checked="${!!d.boost}" data-action="toggleBoost">
+          <span class="mi-ic">${ic('bolt',26)}</span>
+          <span class="mi-text"><strong>Boost my listing · ${money(BOOST_FEE)}</strong><small>Show it at the top of search results with a Boosted tag. Paid today when you publish.</small></span>
+          <span class="toggle" aria-hidden="true"></span>
+        </button>
+        ${d.boost?`<fieldset style="margin:16px 0 0"><legend class="legend">Pay ${money(BOOST_FEE)} for Boost with</legend>
+          ${['Debit card ending 4242','Bank account ending 6789','Apple Pay'].map(m=>`<label class="opt"><input type="radio" name="boostMethod" value="${m}" ${m===method?'checked':''}>${m}</label>`).join('')}
+          <p class="help">Sample payment methods. No real payment is made in this prototype.</p></fieldset>`:''}
+
+        <h2 class="section-h">Fees</h2>
+        <dl class="summary fees">
+          <div><dt>Boost <small>paid today</small></dt><dd>${d.boost?money(BOOST_FEE):'Not added'}</dd></div>
+          <div><dt>Listing fee <small>after a subletter signs</small></dt><dd>${money(LISTING_FEE)}</dd></div>
+          <div><dt>Due today</dt><dd>${money(today)}</dd></div>
+        </dl>
+        <div class="protect">${ic('shield',28)}<div><strong>The listing fee is only charged if it works</strong>The ${money(LISTING_FEE)} listing fee is charged only after a subletter signs your lease. If nobody books, you don’t pay it.${d.boost?` The ${money(BOOST_FEE)} Boost is paid today and isn’t refunded if nobody books.`:''}</div></div>
+        <div class="endspace"></div>
+      </div>
+      <div class="action-bar">
+        <div><p class="ab-price"><strong>${money(today)}</strong> today</p><p class="ab-sub">${money(LISTING_FEE)} after signing</p></div>
+        <button class="btn btn-primary" data-action="publish">${d.boost?`Pay ${money(BOOST_FEE)} and publish`:'Publish listing'}</button>
+      </div>`;
+  },
+  postSuccess({id}){
+    const l=L(id);
+    return `<div class="success"><div class="big-ic">${ic('check',56)}</div>
+      <h1>Your room is live!</h1>
+      <p><strong>${esc(l.title)}</strong> is now visible to verified students looking for ${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}${l.boosted?', at the top of search':''}. We’ll message you when someone requests to book.</p>
+      <p class="fee-note">${l.boosted?`Boost paid: ${money(BOOST_FEE)} with ${esc(l.boostMethod)}.<br>`:''}The ${money(LISTING_FEE)} listing fee is charged only after a subletter signs.</p>
+      <button class="btn btn-primary" data-action="open" data-id="${l.id}">View your listing</button>
+      ${state.role==='host'
+        ? `<button class="btn btn-ghost" data-action="tab" data-tab="home">Go to your dashboard</button>`
+        : `<button class="btn btn-ghost" data-action="switchRole" data-role="host">Track it on your subleaser dashboard</button>
+           <button class="btn btn-ghost" data-action="tab" data-tab="home">Back to search</button>`}</div>`;
+  },
+  profile(){
+    const u=state.user, initials=u.name.slice(0,1).toUpperCase();
+    const sw=(key,icon,label,sub)=>`<li><button class="menu-item" role="switch" aria-checked="${state[key]}" data-action="switch" data-key="${key}">
+      <span class="mi-ic">${ic(icon)}</span><span class="mi-text">${label}<small>${sub}</small></span><span class="toggle" aria-hidden="true"></span></button></li>`;
+    const item=(action,attrs,icon,label,sub,cls='')=>`<li><button class="menu-item ${cls}" data-action="${action}" ${attrs}>
+      <span class="mi-ic">${ic(icon)}</span><span class="mi-text">${label}${sub?`<small>${sub}</small>`:''}</span>${cls?'':ic('next')}</button></li>`;
+    return `<header class="profile-head">
+        <div class="avatar-lg" aria-hidden="true">${esc(initials)}</div>
+        <h1>${esc(u.name)}</h1><p>${esc(u.email)}</p>
+        <span class="verified">${ic('verified',18)} Verified student</span>
+      </header>
+      ${trustHTML()}
+      ${referHTML()}
+      <h2 class="menu-h" id="mh-stays">Your rooms</h2>
+      <ul class="menu" aria-labelledby="mh-stays">
+        ${Object.keys(state.bookings).map(id=>{ const l=L(id), b=state.bookings[id];
+            return item('openBooking',`data-id="${id}"`,'calendar','My booking',`${esc(l.title)} · ${BOOK_STEPS[b.step-1]}`); }).join('')}
+        ${item('tab','data-tab="saved"','heart','Saved rooms',`${state.saved.size} saved`)}
+        ${item('go','data-to="myListings"','list','My listings',`${state.myListings.length} posted`)}
+        ${item('go','data-to="swap"','swap','Term Swap','Trade rooms with a student coming to Miami')}
+      </ul>
+      <h2 class="menu-h" id="mh-settings">Preferences & settings</h2>
+      <ul class="menu" aria-labelledby="mh-settings">
+        ${item('editHabits','','people','My preferences', canMatch()
+            ? `${answeredCount()} of ${PREFS.length} answered · tap to edit`
+            : hasPrefs() ? `${answeredCount()} of ${PREFS.length} answered · answer ${MIN_SHARED} to see matches`
+            : 'Not set · add them to see roommate matches')}
+        ${sw('notifications','bell','Notifications','Messages and booking updates')}
+        ${sw('largeText','text','Larger text','Make all text bigger')}
+        ${state.role==='host'
+          ? item('switchRole','data-role="renter"','search','Switch to finding a place','Browse rooms from verified students')
+          : item('switchRole','data-role="host"','home','Switch to subleasing','See your listing stats and post a room')}
+      </ul>
+      <h2 class="menu-h" id="mh-help">Help</h2>
+      <ul class="menu" aria-labelledby="mh-help">
+        ${item('info','data-key="protection"','shield','Rent protection & payments','How your money is held')}
+        ${item('info','data-key="help"','help','Help & safety','Tips and support')}
+        ${item('logout','','logout','Log out','','danger')}
+      </ul>
+      <p class="fine">TermNest prototype · sample data only</p>
+      <div class="endspace"></div>`;
+  },
+  myListings(){
+    const items=state.myListings.map(L);
+    return `${topbar('My listings',true,'Back to profile')}
+      <div class="pad">${items.length?`<ul class="cards">${items.map(cardHTML).join('')}</ul>`
+        : emptyState('list','No listings yet','Leaving for a semester or summer? Post your room in about two minutes.','Post a room','tab','data-tab="post"')}
+      <div class="endspace"></div></div>`;
+  }
+};
+/* ---------- subleaser dashboard ---------- */
+function hostCard(l){
+  const s=l.stats, max=Math.max(1,...s.week), days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const booked=s.requests.some(r=>r.status==='accepted');
+  const live=s.requests.filter(r=>r.status!=='declined').length;
+  return `<section class="host-card" aria-labelledby="hl-${l.id}">
+    <div class="hc-top"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',28)}</span>
+      <div class="grow"><span class="status ${booked?'booked':''}">${booked?'Booked':'Live'}</span>${l.boosted?` <span class="boost-tag inline">${ic('bolt',14)} Boosted</span>`:''}
+        <h2 id="hl-${l.id}">${esc(l.title)}</h2>
+        <p class="meta">${fmtShort(l.moveIn)} – ${fmt(l.moveOut)} · ${money(l.price)}/mo</p></div></div>
+    <button class="ll-row" data-action="go" data-to="landlord" data-id="${l.id}">${ic('home',20)}<span>Landlord approval</span>
+      <span class="ll-chip ${l.landlord?.status||'none'}">${llLabel(l.landlord?.status)}</span>${ic('next',20)}</button>
+    <ul class="stats" aria-label="Listing stats">
+      ${[['Views',s.views],['Saves',s.saves],['Messages',s.messages],['Requests',live]].map(([k,v])=>`<li><span class="num">${v}</span><span class="lbl">${k}</span></li>`).join('')}
+    </ul>
+    <h3 class="hc-h">Views this week</h3>
+    <div class="bars" role="img" aria-label="Views this week: ${s.week.map((v,i)=>days[i]+' '+v).join(', ')}">
+      ${s.week.map((v,i)=>`<span class="bar"><span style="height:${Math.max(4,v/max*100)}%"></span><b>${days[i][0]}</b></span>`).join('')}
+    </div>
+    <h3 class="hc-h">Booking requests</h3>
+    ${s.requests.length ? s.requests.map((r,i)=>reqHTML(l,r,i)).join('')
+      : `<p class="help" style="margin:0">No requests yet. We’ll notify you when a student asks to book.</p>`}
+    <p class="fee-note">${l.feeCharged?'Charged after lease signing':'Due after a subletter signs'}: ${money(LISTING_FEE)} listing fee${l.boosted?`<br>Boost: ${money(BOOST_FEE)} paid`:''}</p>
+    <div class="row2" style="margin-top:12px">
+      <button class="btn btn-ghost" data-action="open" data-id="${l.id}">View listing</button>
+      <button class="btn btn-ghost" data-action="share">${ic('share')} Share</button>
+    </div>
+  </section>`;
+}
+function reqHTML(l,r,i){
+  const first=esc(r.name.split(' ')[0]);
+  const act = r.status==='pending'
+    ? `<div class="row2"><button class="btn btn-primary" data-action="acceptReq" data-id="${l.id}" data-i="${i}">Accept<span class="sr-only"> ${esc(r.name)}</span></button>
+       <button class="btn btn-ghost" data-action="declineReq" data-id="${l.id}" data-i="${i}">Decline<span class="sr-only"> ${esc(r.name)}</span></button></div>`
+    : r.status==='accepted' ? (()=>{
+        const a=state.agreements[l.id], both=a&&a.sublessor.signed&&a.subtenant.signed, mine=a?.sublessor.signed;
+        const txt = both ? 'Agreement signed by both' : mine ? `Agreement: waiting for ${first} to sign` : 'Agreement: ready for your signature';
+        return `<p class="req-status accepted">${ic('shield',20)} Accepted · ${money(l.price)} held until ${fmtShort(l.moveIn)}</p>
+          <button class="btn ${both||mine?'btn-ghost':'btn-primary'} req-agr" data-action="openAgreement" data-id="${l.id}" data-as="sublessor">${ic('book')} ${both?'View signed agreement':mine?'View agreement':'Sign sublease agreement'}</button>
+          <p class="help" style="margin-top:6px">${txt}</p>`; })()
+    : `<p class="req-status declined">Declined</p>`;
+  return `<div class="req">
+    <div class="req-top"><span class="avatar">${esc(r.initials)}</span>
+      <div class="grow"><strong>${esc(r.name)}</strong><p>${esc(r.about)}</p>
+      <span class="verified" style="font-size:.75rem;padding:2px 8px;margin-top:4px">${ic('verified',14)} Verified student</span></div></div>
+    ${act}
+    <button class="btn btn-ghost req-msg" data-action="openThread" data-id="${r.threadId}">${ic('chat')} Message ${first}</button>
+  </div>`;
+}
+// Landlord approval being edited: a published listing's (when the screen has an id) or the draft's
+function currentLL(){ return state.params.id ? L(state.params.id).landlord : state.draft.landlord; }
+function llRequestText(ll){
+  const src=state.params.id?L(state.params.id):state.draft, u=state.user;
+  return `Hi ${ll.name},
+
+I’m ${u.name}, a current tenant and University of Miami student. I’ll be away from ${fmtLong(src.moveIn)} to ${fmtLong(src.moveOut)} and would like your approval to sublet my ${String(src.type).toLowerCase()} in ${src.area} during that time.
+
+• The subtenant will be a student verified with a school email through TermNest.
+• Rent stays the same, and I remain responsible for my lease.
+• The first month’s rent is held by TermNest until move-in.
+
+You can approve with one tap using the link below, or reply to this email with any questions.
+
+Thank you,
+${u.name}
+${u.email}`;
+}
+// Called after anyone signs: when both have signed, move the booking forward and charge the listing fee
+function finishSigning(id){
+  const a=state.agreements[id], l=L(id), both=a.sublessor.signed&&a.subtenant.signed;
+  if(both){
+    if(state.bookings[id] && state.bookings[id].step<2) state.bookings[id].step=2;
+    if(l.mine) l.feeCharged=true;
+  }
+  render(); document.getElementById('agrBanner')?.focus({preventScroll:true});
+  toast(!both ? 'You signed. Waiting for the other person.'
+    : l.mine ? `Signed by both · ${money(LISTING_FEE)} listing fee charged` : 'Signed by both. Next: move in!');
+}
+function seedHostListing(){
+  if(state.seeded) return; state.seeded=true;
+  const u=state.user, l={id:100,mine:true,title:'Your room on Mariposa Ct',area:'Coral Gables',dist:0.7,price:1100,moveIn:'2027-01-10',moveOut:'2027-05-12',
+    type:'Private room',roommates:2,furnished:true,utilities:true,tone:1,
+    desc:'Sample listing for this prototype. Furnished bedroom in a 3-bedroom apartment, 10 minutes’ walk to campus.',
+    host:{name:u.name,initials:u.name.slice(0,1).toUpperCase(),about:'You · '+u.email},photos:['Bedroom','Living room','Kitchen','Building'],
+    landlord:{status:'approved',name:'Coral Gables Property Mgmt',email:'leasing@cgpm.example',on:'2026-11-02'},
+    stats:{views:128,saves:14,messages:5,week:[9,14,11,22,18,27,27],
+      requests:[{name:'Chris P.',initials:'CP',about:'UM grad student · Spring internship',threadId:'t4',status:'pending'}]}};
+  state.listings.push(l); state.myListings.push(l.id);
+  state.threads.unshift({id:'t4',name:'Chris P.',initials:'CP',listingId:100,unread:true,msgs:[
+    {me:false,text:'Hi! I have a spring internship at a hospital nearby. Is your room still free Jan 10 to May 12?',time:'8:15 AM'},
+    {me:false,text:'I just sent a booking request. Happy to do a video call first!',time:'8:17 AM'}]});
+  updateBadge();
+}
+function setRole(role, switching){
+  if(!sheetRoot.hidden) closeSheet();
+  state.role=role;
+  if(role==='host') seedHostListing();
+  go('home',{}, {reset:true});
+  toast(switching ? (role==='host'?'Switched to subleasing':'Switched to finding a place')
+                  : (role==='host'?'Here’s your sublease dashboard':'Here are rooms near campus'));
+}
+/* ---------- trust level & referrals ---------- */
+function trust(){
+  const fast=Math.min(3,state.fastReplies);
+  const ids=Object.keys(state.bookings), maxStep=Math.max(0,...ids.map(id=>state.bookings[id].step));
+  const bookingId=ids.find(id=>state.bookings[id].step===maxStep);
+  const findCta = maxStep ? ['openBooking',`data-id="${bookingId}"`,'View your booking']
+    : state.role==='host' ? ['switchRole','data-role="renter"','Find a place'] : ['tab','data-tab="home"','Find a place'];
+  const badges=[
+    {key:'verified',name:'Verified Student',icon:'verified',earned:true,how:`Confirm your school email (${esc(state.user.email)}).`,done:1,total:1,unit:'steps'},
+    {key:'fast',name:'Fast Replier',icon:'bolt',earned:fast>=3,how:'Reply to 3 messages within an hour.',done:fast,total:3,unit:'fast replies',cta:['tab','data-tab="messages"','Go to messages']},
+    {key:'sublet',name:'First Sublet Completed',icon:'home',earned:maxStep>=4,how:'Finish a sublet: reserve, sign the lease, move in and confirm.',done:maxStep,total:4,unit:'booking steps',cta:findCta}
+  ];
+  const n=badges.filter(b=>b.earned).length;
+  return {badges, n, level:['','Verified','Trusted','Super Nester'][n], next:badges.find(b=>!b.earned)};
+}
+function trustHTML(){
+  const t=trust(), nx=t.next;
+  return `<section class="trust" aria-labelledby="trustH">
+    <div class="trust-top"><div><p class="eyebrow">Trust level ${t.n} of 3</p><h2 id="trustH">${t.level}</h2></div>
+      <span class="level-mark" aria-hidden="true">${t.n}</span></div>
+    <ul class="badges" aria-label="Your badges">
+      ${t.badges.map(b=>`<li><button class="badge ${b.earned?'earned':'locked'}" data-action="badgeInfo" data-key="${b.key}">
+        <span class="b-ic" aria-hidden="true">${ic(b.earned?b.icon:'lock',24)}</span>
+        <span class="b-name">${b.name}</span><span class="b-state">${b.earned?'Earned':'Locked'}</span></button></li>`).join('')}
+    </ul>
+    ${nx?`<div class="next">
+      <p class="next-h">Next badge: <strong>${nx.name}</strong></p>
+      <p class="next-how">${nx.how}</p>
+      <div class="pbar" role="progressbar" aria-label="Progress to ${nx.name}" aria-valuemin="0" aria-valuemax="${nx.total}" aria-valuenow="${nx.done}" aria-valuetext="${nx.done} of ${nx.total} ${nx.unit}"><span style="width:${nx.done/nx.total*100}%"></span></div>
+      <p class="pbar-lbl" aria-hidden="true">${nx.done} of ${nx.total} ${nx.unit}</p>
+      <button class="btn btn-ghost" data-action="${nx.cta[0]}" ${nx.cta[1]}>${nx.cta[2]} ${ic('arrow')}</button>
+    </div>`
+    : `<div class="next"><p class="next-h"><strong>All badges unlocked!</strong></p><p class="next-how">You’re a Super Nester. Other students can see you’re verified, responsive and have completed a sublet.</p></div>`}
+  </section>`;
+}
+function referCode(){ return (state.user.name.replace(/[^a-z]/gi,'').toUpperCase().slice(0,6)||'NEST')+'10'; }
+function referHTML(){
+  const code=referCode();
+  return `<section class="refer" aria-labelledby="referH">
+    <span class="refer-coin" aria-hidden="true"></span>
+    <h2 id="referH">Refer a friend, get $10 off</h2>
+    <p>When a friend signs up with their school email and reserves or posts a room, you both get $10 off your next rent payment or listing fee.</p>
+    <div class="code-box"><span class="code-lbl">Your code</span><strong class="code">${code}</strong></div>
+    <div class="row2">
+      <button class="btn btn-accent" data-action="copyCode">Copy code</button>
+      <button class="btn btn-primary" data-action="shareInvite">${ic('share')} Invite</button>
+    </div>
+    <p class="refer-stat">${state.invites} invite${state.invites===1?'':'s'} sent · $0 earned so far</p>
+  </section>`;
+}
+/* ---------- Term Swap ----------
+   Sample students from other cities who need a place in Miami. Only cities listed here have results. */
+const SWAP_CITIES = ['New York, NY','Washington, DC','Boston, MA','Chicago, IL','Atlanta, GA','Los Angeles, CA','San Francisco, CA'];
+const SWAPS = {
+  'New York, NY':[
+    {id:'s1',name:'Jordan K.',initials:'JK',school:'NYU',domain:'nyu.edu',about:'Junior · Spring internship in Brickell',
+     from:'2027-01-08',to:'2027-05-15',place:'Private room in Greenwich Village',type:'Private room',roommates:2,value:1650,near:'0.3 mi to NYU',tone:0,
+     desc:'Sunny room in a walk-up with two NYU seniors. Steps from Washington Square Park and the subway. Desk, full bed and a radiator that actually works.'},
+    {id:'s2',name:'Sam R.',initials:'SR',school:'Columbia',domain:'columbia.edu',about:'Grad student · Marine science research at UM',
+     from:'2027-01-15',to:'2027-05-10',place:'Studio in Morningside Heights',type:'Entire place',roommates:0,value:1900,near:'0.4 mi to Columbia',tone:2,
+     desc:'Small, quiet studio with a kitchenette and laundry in the building. Ten minutes’ walk to Columbia and Riverside Park.'},
+    {id:'s3',name:'Taylor B.',initials:'TB',school:'The New School',domain:'newschool.edu',about:'Senior · Design co-op in Wynwood',
+     from:'2027-02-01',to:'2027-06-01',place:'Shared room in Williamsburg, Brooklyn',type:'Shared room',roommates:1,value:1100,near:'25 min to campus by subway',tone:3,
+     desc:'Shared bedroom in a creative household with a big living room. Close to the L train, cafes and the waterfront.'}
+  ],
+  'Washington, DC':[
+    {id:'s4',name:'Malik J.',initials:'MJ',school:'Georgetown',domain:'georgetown.edu',about:'Junior · Exchange semester at UM',
+     from:'2027-01-06',to:'2027-05-08',place:'Private room in Georgetown',type:'Private room',roommates:3,value:1450,near:'0.5 mi to Georgetown',tone:1,
+     desc:'Room in a rowhouse with three Georgetown students. Quiet street, shared kitchen and a small backyard.'},
+    {id:'s5',name:'Chloe D.',initials:'CD',school:'George Washington',domain:'gwu.edu',about:'Sophomore · Spring internship in Coral Gables',
+     from:'2027-01-20',to:'2027-04-30',place:'Room in Foggy Bottom',type:'Private room',roommates:1,value:1500,near:'0.2 mi to GWU',tone:0,
+     desc:'Bright room in a two-bedroom apartment near the Metro. One roommate who studies at home and keeps things tidy.'}
+  ]
+};
+const findSwap = id => Object.values(SWAPS).flat().find(m=>m.id===id);
+function overlapWith(m){
+  const s=state.swap, a=s.from>m.from?s.from:m.from, b=s.to<m.to?s.to:m.to;
+  const days=Math.max(0,(toDate(b)-toDate(a))/864e5), total=Math.max(1,(toDate(s.to)-toDate(s.from))/864e5);
+  const frac=days/total;
+  const fit = (a===s.from && b===s.to) ? ['full','check','Covers your whole trip']
+            : frac>=.6 ? ['most','calendar','Covers most of your trip'] : ['part','calendar','Covers part of your trip'];
+  return {os:a, oe:b, days, weeks:Math.round(days/7), fit};
+}
+function swapCard(m){
+  const o=overlapWith(m), sent=state.swapSent.has(m.id), first=esc(m.name.split(' ')[0]);
+  return `<li class="swap-card">
+    <div class="sw-top"><span class="avatar">${esc(m.initials)}</span>
+      <div class="grow"><strong>${esc(m.name)}</strong><p>${esc(m.school)} · ${esc(m.about)}</p>
+      <span class="verified sm">${ic('verified',14)} ${esc(m.domain)} verified</span></div></div>
+    <dl class="sw-trade">
+      <div><dt>${ic('home',18)} You’d stay in</dt><dd>${esc(m.place)}</dd><dd class="sub">${esc(m.near)} · ${money(m.value)}/mo value</dd></div>
+      <div><dt>${ic('calendar',18)} They need Miami</dt><dd>${fmtShort(m.from)} – ${fmt(m.to)}</dd></div>
+    </dl>
+    <p class="overlap ${o.fit[0]}">${ic(o.fit[1],18)}<span>${o.fit[2]}: ${o.weeks} weeks together, ${fmtShort(o.os)} – ${fmt(o.oe)}</span></p>
+    ${sent ? `<p class="req-status accepted">${ic('check',18)} Proposal sent. ${first} usually replies within a day.</p>` : ''}
+    <div class="row2">
+      <button class="btn btn-ghost" data-action="swapDetails" data-id="${m.id}">Their place<span class="sr-only"> (${first})</span></button>
+      ${sent ? `<button class="btn btn-primary" data-action="openThread" data-id="sw-${m.id}">${ic('chat')} Chat</button>`
+             : `<button class="btn btn-primary" data-action="proposeSwap" data-id="${m.id}">Propose swap<span class="sr-only"> to ${first}</span></button>`}
+    </div>
+  </li>`;
+}
+function swapResults(){
+  const s=state.swap, city=s.city.split(',')[0];
+  const list=(SWAPS[s.city]||[]).filter(m=>overlapWith(m).days>0).sort((a,b)=>overlapWith(b).days-overlapWith(a).days);
+  if(!list.length) return `<div class="empty" style="padding:24px 8px">
+      <div class="big-ic">${ic('swap',44)}</div>
+      <h2 id="swapH" tabindex="-1">No swaps from ${esc(city)} yet</h2>
+      <p>No students from ${esc(city)} need Miami between ${fmtShort(s.from)} and ${fmt(s.to)} right now.</p>
+      <button class="btn btn-ghost" data-action="swapNotify">${ic('bell')} Notify me when one does</button></div>`;
+  return `<h2 class="section-h" id="swapH" tabindex="-1">${list.length} student${list.length>1?'s':''} from ${esc(city)} need${list.length>1?'':'s'} Miami while you’re away</h2>
+    <p class="help" style="margin:-2px 0 14px">Your trip: ${fmtShort(s.from)} – ${fmt(s.to)} · best overlap first</p>
+    <ul class="swap-list">${list.map(swapCard).join('')}</ul>`;
+}
+function msgHTML(m,t){
+  return `<li class="msg ${m.me?'me':'them'}"><span class="sr-only">${m.me?'You':esc(t.name)}: </span>${esc(m.text)}<span class="time">${esc(m.time)}</span></li>`;
+}
+
+/* after-render hooks */
+const after = {
+  home(){ if(state.role!=='host') renderResults(); },
+  chat(){ const t=T(state.params.id); t.unread=false; updateBadge(); app.scrollTop=app.scrollHeight; },
+  post(){ state.photosToAdd=state.draft?.photos||0; renderPhotos(); }
+};
+function renderResults(){
+  if(state.sort==='match' && !canMatch()) state.sort='featured';
+  const pct=l=>matchFor(l)?.pct ?? -1;
+  const sorters={
+    featured:(a,b)=>(b.boosted?1:0)-(a.boosted?1:0) || (coverage(b)?.pct??0)-(coverage(a)?.pct??0),  // Boosted first, then most date coverage
+    match:(a,b)=>pct(b)-pct(a) || a.price-b.price,            // best match, then cheaper
+    price:(a,b)=>a.price-b.price,
+    dist:(a,b)=>a.dist-b.dist
+  };
+  // Rooms that cover all of the searched dates always come first; the chosen sort applies within each group
+  const partial=l=>{ const c=coverage(l); return c && !c.full ? 1 : 0; };
+  const list=state.listings.filter(l=>matches(l,state.filters)).sort((a,b)=>partial(a)-partial(b) || sorters[state.sort](a,b));
+  const fullCount=(state.filters.from && state.filters.to) ? list.filter(l=>coverage(l).full).length : null;
+  if(state.mapSel && !list.some(l=>l.id===state.mapSel)) state.mapSel=null;   // selected pin got filtered out
+  const empty=`<div class="empty" style="padding:20px 8px"><h2>No rooms match</h2><p>Try different dates, a higher price, or a longer distance.</p><button class="btn btn-ghost" data-action="resetFilters">Clear all filters</button></div>`;
+  document.getElementById('results').innerHTML = !list.length ? empty
+    : state.view==='map' ? mapHTML(list) : `<ul class="cards">${list.map(cardHTML).join('')}</ul>`;
+  const sortName={featured:'featured first',match:'best match first',price:'lowest price first',dist:'closest to campus first'}[state.sort];
+  document.getElementById('resultCount').textContent = state.view==='map'
+    ? `${list.length} room${list.length===1?'':'s'} on the map`
+    : fullCount!==null
+      ? `${list.length} room${list.length===1?'':'s'} · ${fullCount} cover${fullCount===1?'s':''} all your dates · full matches first, then ${sortName}`
+      : `${list.length} room${list.length===1?'':'s'} available · ${sortName}`;
+}
+function renderPhotos(){
+  const g=document.getElementById('photoGrid'); if(!g) return;
+  g.innerHTML = state.photosToAdd
+    ? Array.from({length:state.photosToAdd},(_,i)=>`<span class="thumb ph-${i%4}" role="img" aria-label="Photo ${i+1} placeholder">${ic('camera',24)}</span>`).join('') + `<span class="sr-only">${state.photosToAdd} photo${state.photosToAdd>1?'s':''} added</span>`
+    : `<p class="help" style="margin:0">No photos yet. Listings with photos get more requests.</p>`;
+}
+
+/* ================= router ================= */
+const app=document.getElementById('app'), tabbar=document.getElementById('tabbar'), sheetRoot=document.getElementById('sheetRoot'), statusbar=document.getElementById('statusbar');
+function go(name, params={}, opts={}){
+  if (opts.reset) state.history=[];
+  else if (state.current && !opts.replace) state.history.push({name:state.current, params:state.params, scroll:app.scrollTop});
+  state.current=name; state.params=params; render();
+}
+function back(){
+  const prev=state.history.pop();
+  if(!prev) return go('home',{}, {reset:true});
+  state.current=prev.name; state.params=prev.params; render(prev.scroll);
+}
+function render(scroll=0){
+  const name=state.current;
+  app.innerHTML=screens[name](state.params);
+  const tabs=TAB_SCREENS.includes(name);
+  tabbar.hidden=!tabs; app.classList.toggle('no-tabs',!tabs);
+  statusbar.classList.toggle('dark', name==='welcome');
+  const host=state.role==='host';
+  document.getElementById('homeIc').innerHTML=ic(host?'home':'search',26);
+  document.getElementById('homeLbl').textContent=host?'Home':'Search';
+  tabbar.querySelectorAll('.tab').forEach(b=>{ if(b.dataset.tab===TAB_FOR[name]) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
+  app.scrollTop=scroll;
+  after[name]?.();
+  if(scroll) app.scrollTop=scroll;
+  const h=app.querySelector('h1');
+  if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+  document.title = 'TermNest · ' + ({welcome:'Welcome',verify:'Verify email',role:'Get started',prefs:'My preferences',swap:'Term Swap',landlord:'Landlord approval',agreement:'Sublease agreement',postReview:'Review listing',pay:'Reserve and pay',booking:'Your booking',home:state.role==='host'?'Your sublease':'Search',detail:'Listing',saved:'Saved',messages:'Messages',chat:'Chat',post:'Post a listing',postSuccess:'Posted',profile:'Profile',myListings:'My listings'}[name]);
+}
+function updateBadge(){
+  const n=state.threads.filter(t=>t.unread).length, tab=document.getElementById('msgTab');
+  tab.querySelector('.count')?.remove();
+  tab.setAttribute('aria-label', n ? `Messages, ${n} unread` : 'Messages');
+  if(n) tab.insertAdjacentHTML('beforeend',`<span class="count" aria-hidden="true">${n}</span>`);
+}
+
+/* ================= sheets & toast ================= */
+let lastFocus=null;
+function openSheet(title, body){
+  lastFocus=document.activeElement;
+  sheetRoot.innerHTML=`<div class="scrim" data-action="closeSheet"></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="grab" aria-hidden="true"></div>
+      <div class="sheet-head"><h2 id="sheetTitle" tabindex="-1">${title}</h2><button class="icon-btn" data-action="closeSheet" aria-label="Close">${ic('close')}</button></div>
+      <div id="sheetBody">${body}</div></div>`;
+  sheetRoot.hidden=false; app.inert=true; tabbar.inert=true;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>sheetRoot.classList.add('open')));
+  sheetRoot.querySelector('#sheetTitle').focus();
+}
+function setSheet(title, body){
+  sheetRoot.querySelector('#sheetTitle').innerHTML=title;
+  sheetRoot.querySelector('#sheetBody').innerHTML=body;
+  sheetRoot.querySelector('.sheet').scrollTop=0;
+  sheetRoot.querySelector('#sheetTitle').focus();
+}
+function closeSheet(){
+  sheetRoot.classList.remove('open'); sheetRoot.hidden=true; sheetRoot.innerHTML='';
+  app.inert=false; tabbar.inert=false;
+  if(lastFocus && document.contains(lastFocus)) lastFocus.focus();
+}
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+function filterSheet(section){
+  const f=state.filters;
+  openSheet('Filters',`
+    <form id="filterForm">
+      <h3 class="section-h" id="fs-dates">Your dates</h3>
+      <p class="help" style="margin:-4px 0 12px">Set both dates to see how much of your stay each room covers. Rooms that cover all of it show first.</p>
+      <div class="field"><label for="fFrom">I need to move in by</label><input id="fFrom" type="date" value="${f.from}"></div>
+      <div class="field"><label for="fTo">I need to stay until</label><input id="fTo" type="date" value="${f.to}"></div>
+      <h3 class="section-h" id="fs-price">Max monthly rent</h3>
+      <p class="range-val" id="priceOut" aria-hidden="true">${f.maxPrice>=2000?'Any price':'Up to '+money(f.maxPrice)}</p>
+      <label for="fPrice" class="sr-only">Maximum monthly rent</label>
+      <input id="fPrice" type="range" min="800" max="2000" step="50" value="${f.maxPrice}" aria-valuetext="${f.maxPrice>=2000?'Any price':money(f.maxPrice)}">
+      <div class="range-ends" aria-hidden="true"><span>$800</span><span>$2,000+</span></div>
+      <fieldset style="margin-top:8px"><legend class="section-h" id="fs-distance" style="padding:0">Distance to campus</legend>
+        ${[[0,'Any distance'],[1,'Within 1 mile'],[3,'Within 3 miles'],[5,'Within 5 miles']].map(([v,t])=>`<label class="opt"><input type="radio" name="dist" value="${v}" ${f.distance==v?'checked':''}>${t}</label>`).join('')}
+      </fieldset>
+      <div class="sheet-actions">
+        <button type="button" class="btn btn-ghost" data-action="resetFilters">Reset</button>
+        <button type="submit" class="btn btn-primary" id="applyBtn">Show rooms</button>
+      </div>
+    </form>`);
+  const form=document.getElementById('filterForm');
+  const read=()=>({q:state.filters.q, from:form.fFrom.value, to:form.fTo.value, maxPrice:+form.fPrice.value, distance:+(form.querySelector('[name=dist]:checked')?.value||0)});
+  const update=()=>{
+    const tmp=read(), n=state.listings.filter(l=>matches(l,tmp)).length, p=tmp.maxPrice>=2000?'Any price':money(tmp.maxPrice);
+    document.getElementById('priceOut').textContent = tmp.maxPrice>=2000?'Any price':'Up to '+p;
+    form.fPrice.setAttribute('aria-valuetext',p);
+    document.getElementById('applyBtn').textContent=`Show ${n} room${n===1?'':'s'}`;
+  };
+  form.addEventListener('input',update); update();
+  form.addEventListener('submit',e=>{ e.preventDefault(); state.filters=read(); closeSheet(); render(); toast('Filters applied'); });
+  if(section!=='dates') document.getElementById('fs-'+section).scrollIntoView({block:'start'});
+}
+
+const INFO = {
+  protection:['Rent protection & payments',`
+    <ol class="steps">
+      <li><strong>You request to book.</strong> Your first month’s rent is paid into TermNest, not to the host.</li>
+      <li><strong>We hold it safely</strong> until move-in day. The host can see it’s there.</li>
+      <li><strong>You move in and check in</strong> in the app within 24 hours. Then the rent is released to the host.</li>
+      <li><strong>Something wrong?</strong> Report it within 24 hours and we pause the payment while we help.</li>
+    </ol>
+    <div class="summary"><div><dt>Payment method</dt><dd>Not added yet</dd></div><div><dt>Rent currently held</dt><dd>$0</dd></div></div>
+    <button class="btn btn-primary" data-action="closeSheet">Got it</button>`],
+  help:['Help & safety',`
+    <ul class="steps">
+      <li>Only pay inside TermNest. Never use Zelle, Venmo, cash or wire.</li>
+      <li>Ask for a video tour before you book.</li>
+      <li>Every user has a verified .edu email. Report anyone who asks to move off the app.</li>
+    </ul>
+    <button class="btn btn-primary" data-action="support">${ic('chat')} Chat with support</button>
+    <button class="btn btn-ghost" data-action="closeSheet">Close</button>`]
+};
+
+/* ================= actions ================= */
+const actions = {
+  tab:el=>{ if(sheetRoot.hidden===false) closeSheet(); go(el.dataset.tab,{}, {reset:true}); },
+  go:el=>go(el.dataset.to, el.dataset.id?{id:+el.dataset.id}:{}),
+  back:()=>back(),
+  open:el=>go('detail',{id:+el.dataset.id, photo:0}),
+  toggleMode:()=>{ state.mode = state.mode==='login'?'signup':'login'; render(); },
+  resend:()=>toast(`New code sent to ${state.user.email}`),
+  toggleSave:el=>{
+    const id=+el.dataset.id, on=!state.saved.has(id);
+    on?state.saved.add(id):state.saved.delete(id);
+    document.querySelectorAll(`[data-action="toggleSave"][data-id="${id}"]`).forEach(b=>b.setAttribute('aria-pressed',on));
+    toast(on?'Saved to your list':'Removed from saved');
+    if(state.current==='saved'){ render(app.scrollTop); }
+  },
+  filters:el=>filterSheet(el.dataset.section),
+  resetFilters:()=>{ state.filters={q:'',from:'',to:'',maxPrice:2000,distance:0}; if(!sheetRoot.hidden) closeSheet(); render(); toast('Filters cleared'); },
+  photo:el=>{
+    const l=L(state.params.id), n=l.photos.length;
+    state.params.photo=(state.params.photo+ +el.dataset.dir+n)%n;
+    const i=state.params.photo, ph=document.getElementById('galPhoto');
+    ph.setAttribute('aria-label',`Photo ${i+1} of ${n}: ${l.photos[i]} (placeholder)`);
+    ph.className=`photo ph-${(l.tone+i)%4}`;
+    ph.querySelector('.ph-label').textContent=`Photo ${i+1} of ${n} · ${l.photos[i]}`;
+    toast(`Photo ${i+1} of ${n}: ${l.photos[i]}`);
+  },
+  reserve:el=>go('pay',{id:+el.dataset.id}),
+  setView:el=>{
+    state.view=el.dataset.view;
+    document.querySelectorAll('[data-action="setView"]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===state.view));
+    const s=document.querySelector('.sort'); if(s) s.hidden=state.view==='map';
+    renderResults();
+  },
+  mapPin:el=>{
+    const id=+el.dataset.id; state.mapSel = state.mapSel===id ? null : id;
+    renderResults();
+    document.querySelector(`.pin[data-id="${id}"]`)?.focus({preventScroll:true});
+  },
+  swapDetails:el=>{
+    const m=findSwap(el.dataset.id), first=esc(m.name.split(' ')[0]), sent=state.swapSent.has(m.id);
+    openSheet(esc(m.place),`
+      <div class="photo ph-${m.tone} sheet-photo" role="img" aria-label="Photo placeholder: ${esc(m.place)}">${ic('bed',48)}</div>
+      <p class="sheet-sub" style="margin-top:12px">${esc(state.swap.city)} · ${esc(m.near)}</p>
+      <ul class="facts">
+        <li>${ic('bed',20)}${esc(m.type)}</li>
+        <li>${ic('people',20)}${m.roommates?m.roommates+' roommate'+(m.roommates>1?'s':''):'No roommates'}</li>
+        <li>${ic('dollar',20)}${money(m.value)}/mo value</li>
+        <li>${ic('verified',20)}${esc(m.domain)}</li>
+      </ul>
+      <p class="desc" style="margin:14px 0 18px">${esc(m.desc)}</p>
+      ${sent?'':`<button class="btn btn-primary" data-action="proposeSwap" data-id="${m.id}">Propose swap to ${first}</button>`}
+      <button class="btn btn-ghost" data-action="closeSheet">Close</button>`);
+  },
+  proposeSwap:el=>{
+    const m=findSwap(el.dataset.id), o=overlapWith(m), first=esc(m.name.split(' ')[0]);
+    const mine=state.myListings.length?L(state.myListings[0]):null, city=state.swap.city.split(',')[0];
+    const body = `
+      <dl class="summary">
+        <div><dt>You stay in</dt><dd>${esc(m.place)}</dd></div>
+        <div><dt>${first} stays in</dt><dd>${mine?esc(mine.title):'Your Miami room'}</dd></div>
+        <div><dt>Swap dates</dt><dd>${fmtShort(o.os)} – ${fmt(o.oe)}</dd></div>
+        <div><dt>Rent between you</dt><dd>$0 · you each keep paying your own</dd></div>
+      </dl>
+      ${mine ? `<div class="field"><label for="swapMsg">Message to ${first}</label>
+          <textarea id="swapMsg">Hi ${first}! I’m heading to ${esc(city)} from ${fmtShort(o.os)} to ${fmtShort(o.oe)}. Want to swap? You’d stay in my room in ${esc(mine.area)}, ${mine.dist} mi from UM.</textarea></div>
+        <div class="protect" style="margin-bottom:16px">${ic('shield',28)}<div><strong>How swaps work</strong>You’re both verified students. If ${first} says yes, you’ll both sign a swap agreement in the app. Either of you can cancel before move-in at no cost.</div></div>
+        <button class="btn btn-primary" data-action="sendSwap" data-id="${m.id}">Send proposal</button>`
+      : `<div class="protect" style="margin-bottom:16px">${ic('home',28)}<div><strong>Add your Miami room first</strong>${first} needs to see where they’d stay before saying yes. Post your room, then come back to propose.</div></div>
+        <button class="btn btn-primary" data-action="tab" data-tab="post">${ic('plus')} Post your room</button>`}
+      <button class="btn btn-ghost" data-action="closeSheet">Not now</button>`;
+    (sheetRoot.hidden?openSheet:setSheet)(`Propose a swap to ${first}`, body);
+  },
+  sendSwap:el=>{
+    const m=findSwap(el.dataset.id), first=m.name.split(' ')[0];
+    const text=(document.getElementById('swapMsg').value||'').trim()||`Hi ${first}! Want to swap rooms?`;
+    state.swapSent.add(m.id);
+    state.threads.unshift({id:'sw-'+m.id,name:m.name,initials:m.initials,listingId:null,swap:state.swap.city.split(',')[0],unread:false,
+      msgs:[{me:true,text,time:'Now'}]});
+    const y=app.scrollTop; closeSheet(); render(y);
+    toast(`Swap proposal sent to ${first}`);
+  },
+  swapNotify:()=>toast(`We’ll notify you when a student from ${state.swap.city.split(',')[0]} needs Miami`),
+  match:el=>{
+    const l=L(el.dataset.id), m=matchFor(l), first=esc(l.host.name.split(' ')[0]);
+    const [cls,word]=tier(m.pct), them=l.roommates?'Household':'Building';
+    const row=r=>`<li class="m-row s-${r.status}">
+        <span class="m-ic" aria-hidden="true">${ic(r.icon,22)}</span>
+        <div class="grow"><strong>${r.label}</strong>
+          <span>You: ${r.you}</span><span>${them}: ${r.them}</span></div>
+        <span class="m-tag">${r.status==='match'?ic('check',16)+' Match':r.status==='close'?'≈ Close':ic('close',16)+' Different'}</span></li>`;
+    const yes=m.rows.filter(r=>r.status==='match'), no=m.rows.filter(r=>r.status!=='match');
+    openSheet(`${m.pct}% roommate match`,`
+      <p class="sheet-sub"><span class="match ${cls} static">${word}</span> Based on ${m.rows.length} of your answers</p>
+      ${l.roommates?'':`<p class="help" style="margin-bottom:8px">This is an entire place, so only building rules are compared.</p>`}
+      <h3 class="section-h">What matches (${yes.length})</h3>
+      ${yes.length?`<ul class="m-list">${yes.map(row).join('')}</ul>`:'<p class="help">Nothing matches exactly.</p>'}
+      <h3 class="section-h">What doesn’t (${no.length})</h3>
+      ${no.length?`<ul class="m-list">${no.map(row).join('')}</ul>`:'<p class="help">Everything you answered matches!</p>'}
+      ${no.some(r=>r.status==='close')?`<p class="help" style="margin-top:12px">“Close” means one step apart, like Average and Relaxed.</p>`:''}
+      ${m.skipped.length?`<p class="help" style="margin-top:8px">Not compared (you’d live alone): ${m.skipped.join(', ')}.</p>`:''}
+      ${m.unanswered.length?`<p class="help" style="margin-top:8px">You skipped: ${m.unanswered.join(', ')}. Answer more for a more accurate match.</p>`:''}
+      <div style="height:16px"></div>
+      ${no.length?`<button class="btn btn-primary" data-action="messageHost" data-id="${l.id}">${ic('chat')} Ask ${first} about this</button>`:''}
+      <button class="btn btn-ghost" data-action="editHabits">${ic('people')} Edit my preferences</button>`);
+  },
+  editHabits:()=>{ if(!sheetRoot.hidden) closeSheet(); go('prefs'); },
+  skipPrefs:()=>{ go('home',{}, {reset:true}); toast('Skipped. Add preferences anytime in Profile.'); },
+  clearPrefs:()=>{ state.habits=null; if(state.sort==='match') state.sort='featured'; back(); toast('Preferences cleared · matches hidden'); },
+  badgeInfo:el=>{
+    const b=trust().badges.find(x=>x.key===el.dataset.key);
+    openSheet(b.name,`
+      <p class="sheet-sub"><span class="b-state ${b.earned?'on':''}">${b.earned?'Earned':'Locked'}</span></p>
+      <p style="line-height:1.5;margin-bottom:12px">${b.earned?`You earned this badge. ${b.how}`:`To earn it: ${b.how}`}</p>
+      ${b.earned?'':`<div class="pbar" role="progressbar" aria-label="Progress to ${b.name}" aria-valuemin="0" aria-valuemax="${b.total}" aria-valuenow="${b.done}" aria-valuetext="${b.done} of ${b.total} ${b.unit}"><span style="width:${b.done/b.total*100}%"></span></div>
+        <p class="pbar-lbl" aria-hidden="true">${b.done} of ${b.total} ${b.unit}</p>`}
+      <p class="help" style="margin-bottom:16px">Badges help other students know they can trust you.</p>
+      ${!b.earned&&b.cta?`<button class="btn btn-primary" data-action="${b.cta[0]}" ${b.cta[1]}>${b.cta[2]}</button>`:''}
+      <button class="btn btn-ghost" data-action="closeSheet">Close</button>`);
+  },
+  copyCode:()=>{ const c=referCode(); try{ navigator.clipboard?.writeText(c).catch(()=>{}); }catch(e){} toast(`Code ${c} copied`); },
+  shareInvite:()=>{
+    const c=referCode();
+    openSheet('Invite a friend',`
+      <p class="sheet-sub">Your friend sees this message:</p>
+      <p class="invite-msg">I’m using TermNest to find and sublet rooms with verified UM students. Sign up with your school email and use my code <strong>${c}</strong> for $10 off.</p>
+      ${[['Text message','chat'],['Email','mail'],['Copy invite link','share']].map(([v,i])=>`<button class="btn btn-ghost" data-action="sendInvite" data-via="${v}">${ic(i)} ${v}</button>`).join('')}`);
+  },
+  sendInvite:el=>{
+    state.invites++; const y=app.scrollTop; closeSheet(); render(y);
+    toast(el.dataset.via==='Copy invite link'?'Invite link copied':`Invite ready to send by ${el.dataset.via.toLowerCase()}`);
+  },
+  toggleBoost:()=>{
+    state.draft.boost=!state.draft.boost; render(app.scrollTop);
+    document.querySelector('[data-action="toggleBoost"]').focus({preventScroll:true});
+    toast(state.draft.boost?`Boost added · ${money(BOOST_FEE)} due today`:'Boost removed · $0 due today');
+  },
+  publish:()=>{
+    const d=state.draft, b=d.boost;
+    if(b) d.method=document.querySelector('[name=boostMethod]:checked')?.value||'Debit card ending 4242';
+    publishDraft(); toast(b?`Paid ${money(BOOST_FEE)} · published and boosted!`:'Your listing is live');
+  },
+  openBooking:el=>{ if(!sheetRoot.hidden) closeSheet(); go('booking',{id:+el.dataset.id}); },
+  signLease:el=>{
+    // Renter side: the subletter signs with the host
+    const l=L(el.dataset.id);
+    ensureAgreement(l, l.host.name, state.user.name);
+    go('agreement',{id:l.id, as:'subtenant'});
+  },
+  openAgreement:el=>go('agreement',{id:+el.dataset.id, as:el.dataset.as}),
+  remindSign:()=>{ const a=state.agreements[state.params.id], o=a[state.params.as==='sublessor'?'subtenant':'sublessor']; toast(`Reminder sent to ${o.name.split(' ')[0]}`); },
+  otherSigns:()=>{
+    const {id,as}=state.params, a=state.agreements[id], o=a[as==='sublessor'?'subtenant':'sublessor'];
+    o.signed=todayISO(); o.typed=o.name;
+    finishSigning(id);
+  },
+  emailCopy:()=>toast(`Copy sent to ${state.user.email}`),
+  toReview:()=>go('postReview'),
+  llResend:()=>{ const ll=currentLL(); ll.on=todayISO(); toast(`Request sent again to ${ll.name}`); render(app.scrollTop); },
+  llChange:()=>{ currentLL().status='none'; render(); },
+  llApprove:()=>{ const ll=currentLL(); ll.status='approved'; ll.on=todayISO(); render(); toast(`${ll.name} approved your sublease`); },
+  sendLL:()=>{
+    const ll=currentLL(); ll.status='requested'; ll.on=todayISO(); ll.message=document.getElementById('llMsg').value;
+    closeSheet(); render(); toast(`Approval request sent to ${ll.name}`);
+  },
+  moveIn:el=>{
+    const l=L(el.dataset.id), first=esc(l.host.name.split(' ')[0]);
+    openSheet('Confirm move-in',`
+      <p style="line-height:1.5;margin-bottom:16px">Does the room match the listing? When you confirm, TermNest releases ${money(l.price)} to ${first}.</p>
+      <button class="btn btn-primary" data-action="confirmMoveIn" data-id="${l.id}">Yes, release payment to ${first}</button>
+      <button class="btn btn-accent" data-action="reportProblem">Something’s wrong</button>
+      <button class="btn btn-ghost" data-action="closeSheet">Not moved in yet</button>`);
+  },
+  confirmMoveIn:el=>{
+    const first=!trust().badges[2].earned;
+    const l=L(el.dataset.id); state.bookings[l.id].step=4; closeSheet(); render();
+    toast(`Payment released to ${l.host.name.split(' ')[0]}${first?' · Badge unlocked: First Sublet Completed!':''}`);
+  },
+  reportProblem:()=>setSheet('Payment paused',`
+      <p style="line-height:1.5;margin-bottom:16px">Your rent stays held by TermNest while we sort this out. A support team member will contact you within 1 hour. If the room isn’t as listed, you get a full refund.</p>
+      <button class="btn btn-primary" data-action="support">${ic('chat')} Chat with support</button>
+      <button class="btn btn-ghost" data-action="closeSheet">Close</button>`),
+  messageHost:el=>{ if(!sheetRoot.hidden) closeSheet(); go('chat',{id:threadFor(L(el.dataset.id)).id}); },
+  openThread:el=>go('chat',{id:el.dataset.id}),
+  support:()=>{ closeSheet(); go('chat',{id:'t3'}); },
+  quick:el=>sendMessage(el.textContent),
+  addPhoto:()=>{
+    if(state.photosToAdd>=6) return toast('You can add up to 6 photos');
+    state.photosToAdd++; renderPhotos(); toast(`Photo ${state.photosToAdd} added`);
+  },
+  share:()=>toast('Listing link copied'),
+  info:el=>openSheet(...INFO[el.dataset.key]),
+  switch:el=>{
+    const k=el.dataset.key; state[k]=!state[k]; el.setAttribute('aria-checked',state[k]);
+    if(k==='largeText') document.documentElement.classList.toggle('lg',state[k]);
+    toast(`${k==='largeText'?'Larger text':'Notifications'} ${state[k]?'on':'off'}`);
+  },
+  logout:()=>openSheet('Log out?',`<p class="sheet-sub" style="margin:0 0 18px">You’ll need your school email to log back in.</p>
+      <button class="btn btn-primary" data-action="confirmLogout">Log out</button><button class="btn btn-ghost" data-action="closeSheet">Cancel</button>`),
+  confirmLogout:()=>{ closeSheet(); state.mode='login'; go('welcome',{}, {reset:true}); },
+  closeSheet:()=>closeSheet(),
+  chooseRole:el=>{
+    // Renters get the optional preferences step right after sign-up
+    if(el.dataset.role==='renter' && !hasPrefs()){ state.role='renter'; go('prefs',{onboarding:true},{reset:true}); }
+    else setRole(el.dataset.role,false);
+  },
+  switchRole:el=>setRole(el.dataset.role,true),
+  acceptReq:el=>{
+    const l=L(el.dataset.id), r=l.stats.requests[+el.dataset.i], first=esc(r.name.split(' ')[0]);
+    openSheet(`Accept ${first}’s request?`,`
+      <dl class="summary">
+        <div><dt>Student</dt><dd>${esc(r.name)}</dd></div>
+        <div><dt>Move-in</dt><dd>${fmtLong(l.moveIn)}</dd></div>
+        <div><dt>Move-out</dt><dd>${fmtLong(l.moveOut)}</dd></div>
+        <div><dt>Paid to you on move-in day</dt><dd>${money(l.price)}</dd></div>
+      </dl>
+      <div class="protect" style="margin-bottom:16px">${ic('shield',28)}<div><strong>How you get paid</strong>${first}’s first month is held by TermNest now and released to you once they check in on ${fmtShort(l.moveIn)}.</div></div>
+      <button class="btn btn-primary" data-action="confirmAccept" data-id="${l.id}" data-i="${el.dataset.i}">Accept request</button>
+      <button class="btn btn-ghost" data-action="closeSheet">Not yet</button>`);
+  },
+  confirmAccept:el=>{
+    const l=L(el.dataset.id), r=l.stats.requests[+el.dataset.i];
+    r.status='accepted';
+    l.stats.requests.forEach(o=>{ if(o!==r && o.status==='pending') o.status='declined'; });
+    T(r.threadId)?.msgs.push({me:true,text:`I accepted your request! Next we both sign the sublease agreement in the app.`,time:'Now'});
+    ensureAgreement(l, state.user.name, r.name);
+    closeSheet(); go('agreement',{id:l.id, as:'sublessor'});
+    toast(`${r.name.split(' ')[0]} accepted · now sign the sublease agreement`);
+  },
+  declineReq:el=>{
+    const l=L(el.dataset.id), r=l.stats.requests[+el.dataset.i];
+    r.status='declined'; render(app.scrollTop); toast(`Request declined. ${r.name.split(' ')[0]} has been notified.`);
+  }
+};
+function threadFor(l){
+  let t=state.threads.find(t=>t.listingId===l.id);
+  if(!t){ t={id:'t'+l.id+'x',name:l.host.name,initials:l.host.initials,listingId:l.id,unread:false,msgs:[]}; state.threads.unshift(t); }
+  return t;
+}
+const REPLIES=['Thanks! I’ll get back to you shortly.','Good question, let me check with my roommates.','Sure! Does Thursday at 6 PM work for a video tour?','Sounds good. You can request to book whenever you’re ready.'];
+function sendMessage(text){
+  text=text.trim(); if(!text) return;
+  const t=T(state.params.id), log=document.getElementById('log');
+  const m={me:true,text,time:'Now'}; t.msgs.push(m);
+  state.fastReplies++;
+  if(state.fastReplies===3) setTimeout(()=>toast('Badge unlocked: Fast Replier!'),300);
+  log.insertAdjacentHTML('beforeend',msgHTML(m,t)); app.scrollTop=app.scrollHeight;
+  const id=t.id;
+  setTimeout(()=>{
+    const r={me:false,text:t.support?'Thanks for reaching out. A TermNest team member will reply within 1 hour.':REPLIES[t.msgs.length%REPLIES.length],time:'Now'};
+    t.msgs.push(r);
+    if(state.current==='chat'&&state.params.id===id){ document.getElementById('log').insertAdjacentHTML('beforeend',msgHTML(r,t)); app.scrollTop=app.scrollHeight; }
+    else { t.unread=true; updateBadge(); }
+  },1400);
+}
+
+/* ================= events ================= */
+document.querySelector('.glass').addEventListener('click',e=>{
+  const el=e.target.closest('[data-action]'); if(!el) return;
+  const fn=actions[el.dataset.action]; if(fn){ e.preventDefault(); fn(el,e); }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && !sheetRoot.hidden) closeSheet();
+  if(e.key==='Tab' && !sheetRoot.hidden){
+    const f=[...sheetRoot.querySelectorAll('button,input,select,textarea,[tabindex="-1"]')].filter(x=>!x.disabled);
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
+app.addEventListener('input',e=>{
+  if(e.target.id==='q'){ state.filters.q=e.target.value; renderResults(); }
+  if(e.target.name==='sort'){ state.sort=e.target.value; renderResults(); }
+});
+function setErr(input,id,msg){ document.getElementById(id).textContent=msg; input.setAttribute('aria-invalid',msg?'true':'false'); return !msg; }
+app.addEventListener('submit',e=>{
+  e.preventDefault(); const f=e.target;
+  if(f.id==='signupForm'){
+    const nameEl=f.querySelector('#fName'), emailEl=f.querySelector('#fEmail'), email=emailEl.value.trim();
+    let ok=true, firstBad=null;
+    if(nameEl){ if(!setErr(nameEl,'fNameErr',nameEl.value.trim()?'':'Enter your first name.')){ ok=false; firstBad=nameEl; } }
+    const em = !email ? 'Enter your school email.' : !/^[^\s@]+@([a-z0-9-]+\.)+edu$/i.test(email) ? 'Use a school email that ends in .edu, like you@miami.edu.' : '';
+    if(!setErr(emailEl,'fEmailErr',em)){ ok=false; firstBad=firstBad||emailEl; }
+    if(!ok) return firstBad.focus();
+    state.user.email=email;
+    if(nameEl) state.user.name=nameEl.value.trim();
+    else if(!state.user.name){ const n=email.split('@')[0].replace(/[^a-z].*$/i,''); state.user.name=n?n[0].toUpperCase()+n.slice(1).toLowerCase():'Student'; }
+    go('verify');
+  }
+  if(f.id==='verifyForm'){
+    const c=f.querySelector('#fCode');
+    if(!setErr(c,'fCodeErr',/^\d{6}$/.test(c.value.trim())?'':'Enter the 6-digit code from your email.')) return c.focus();
+    go('role',{}, {reset:true}); toast('Email verified');
+  }
+  if(f.id==='chatForm'){ const i=f.querySelector('#msgInput'); sendMessage(i.value); i.value=''; i.focus(); }
+  if(f.id==='postForm') submitPost(f);
+  if(f.id==='landlordForm'){
+    const n=f.elements.name, e=f.elements.email;
+    const ok=[setErr(n,'err-llName',n.value.trim()?'':'Enter your landlord or property manager’s name.'),
+              setErr(e,'err-llEmail',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value.trim())?'':'Enter a valid email, like leasing@example.com.')];
+    if(ok.includes(false)) return (ok[0]?e:n).focus();
+    const ll=currentLL(); ll.name=n.value.trim(); ll.email=e.value.trim();
+    openSheet('Send approval request',`
+      <dl class="summary plain">
+        <div><dt>To</dt><dd>${esc(ll.name)}<br>${esc(ll.email)}</dd></div>
+        <div><dt>Subject</dt><dd>Request to sublet my room</dd></div>
+      </dl>
+      <div class="field"><label for="llMsg">Message (you can edit it)</label>
+        <textarea id="llMsg" rows="12">${esc(llRequestText(ll))}</textarea></div>
+      <button class="btn btn-primary" data-action="sendLL">${ic('send')} Send request</button>
+      <button class="btn btn-ghost" data-action="closeSheet">Not now</button>`);
+  }
+  if(f.id==='signForm'){
+    const agree=f.elements.agree, sig=f.elements.sig;
+    const ok=[setErr(agree,'err-agreeSign',agree.checked?'':'Please confirm you agree to the terms.'),
+              setErr(sig,'err-sigName',sig.value.trim().length>=2?'':'Type your full name to sign.')];
+    if(ok.includes(false)) return (ok[0]?sig:agree).focus();
+    const {id,as}=state.params, me=state.agreements[id][as];
+    me.signed=todayISO(); me.typed=sig.value.trim();
+    finishSigning(id);
+  }
+  if(f.id==='swapForm'){
+    const city=f.elements.city, from=f.elements.from, to=f.elements.to;
+    const ok=[setErr(city,'err-city',city.value?'':'Choose where you’re going.'),
+              setErr(from,'err-from',from.value?'':'Choose the date you leave Miami.'),
+              setErr(to,'err-to',!to.value?'Choose the date you come back.':(from.value&&to.value<=from.value)?'Coming back must be after leaving.':'')];
+    if(ok.includes(false)) return [city,from,to][ok.indexOf(false)].focus();
+    state.swap={city:city.value, from:from.value, to:to.value, searched:true};
+    render(app.scrollTop);
+    const h=document.getElementById('swapH'); h.scrollIntoView({block:'start'}); h.focus({preventScroll:true});
+  }
+  if(f.id==='prefsForm'){
+    const h={};
+    PREFS.forEach(q=>{ const v=f.elements[q.key].value; if(v!=='') h[q.key]=+v; });
+    state.habits = Object.keys(h).length ? h : null;
+    if(canMatch() && state.sort==='featured') state.sort='match';
+    if(!canMatch() && state.sort==='match') state.sort='featured';
+    const n=Object.keys(h).length;
+    const msg = !n ? 'No answers picked, so matches stay off'
+      : n<MIN_SHARED ? `Saved ${n} answer${n>1?'s':''}. Answer at least ${MIN_SHARED} to see matches`
+      : `Preferences saved (${n} of ${PREFS.length}) · matches on`;
+    if(state.params.onboarding){ go('home',{}, {reset:true}); } else back();
+    toast(msg);
+  }
+  if(f.id==='payForm'){
+    const agree=f.elements.agree;
+    if(!setErr(agree,'err-agree',agree.checked?'':'Please confirm you understand how your rent is held.')) return agree.focus();
+    const l=L(f.dataset.id);
+    state.bookings[l.id]={step:1, method:f.elements.method.value};
+    threadFor(l).msgs.push({me:true,text:`Hi ${l.host.name.split(' ')[0]}! I just reserved your room for ${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}.`,time:'Now'});
+    go('booking',{id:l.id},{replace:true});
+    toast(`Reserved! ${money(l.price)} is held by TermNest`);
+  }
+});
+function submitPost(f){
+  const v=Object.fromEntries(new FormData(f)), errs=[];
+  const chk=(name,cond,msg)=>{ const el=f.elements[name]; setErr(el,'err-'+name,cond?'':msg); if(!cond) errs.push([el,msg]); };
+  chk('title',v.title.trim().length>=4,'Add a title of at least 4 characters.');
+  chk('area',!!v.area,'Choose a neighborhood.');
+  chk('price',+v.price>=100,'Enter a monthly rent of at least $100.');
+  chk('dist',v.dist!==''&&+v.dist>=0,'Enter the distance to campus in miles.');
+  chk('moveIn',!!v.moveIn,'Choose a move-in date.');
+  chk('moveOut',!!v.moveOut&&(!v.moveIn||v.moveOut>v.moveIn),v.moveOut?'Move-out must be after move-in.':'Choose a move-out date.');
+  const box=document.getElementById('postErrors');
+  if(errs.length){
+    box.innerHTML=`<div class="err-summary" role="alert"><h2>Please fix ${errs.length} thing${errs.length>1?'s':''}</h2><ul>${errs.map(([el,m])=>`<li><button type="button" data-focus="${el.id}">${m}</button></li>`).join('')}</ul></div>`;
+    box.querySelectorAll('[data-focus]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.focus).focus()));
+    box.focus(); return;
+  }
+  state.draft={...v, title:v.title.trim(), desc:v.desc.trim(), photos:state.photosToAdd, boost:state.draft?.boost||false,
+    landlord:state.draft?.landlord||{status:'none',name:'',email:''}};
+  go('landlord');
+}
+const LISTING_FEE=15, BOOST_FEE=5;
+function draftToListing(d){
+  const names=['Bedroom','Living room','Kitchen','Bathroom','Building','View'];
+  return {id:Date.now(),mine:true,title:d.title,area:d.area,dist:+(+d.dist).toFixed(1),price:+d.price,moveIn:d.moveIn,moveOut:d.moveOut,type:d.type,
+    roommates:d.type==='Entire place'?0:1,furnished:!!d.furnished,utilities:!!d.utilities,tone:state.listings.length%4,boosted:!!d.boost,boostMethod:d.method,
+    desc:d.desc||'No description yet.',host:{name:state.user.name,initials:state.user.name.slice(0,1).toUpperCase(),about:'You · '+state.user.email},
+    photos:names.slice(0,Math.max(1,d.photos)), landlord:{...(d.landlord||{status:'none',name:'',email:''})}};
+}
+function publishDraft(){
+  const l=draftToListing(state.draft);
+  l.stats={views:0,saves:0,messages:0,week:[0,0,0,0,0,0,0],requests:[]};
+  state.listings.unshift(l); state.myListings.unshift(l.id); state.draft=null;
+  go('postSuccess',{id:l.id},{reset:true});
+}
+
+/* ================= boot ================= */
+tabbar.querySelectorAll('[data-ic]').forEach(s=>s.innerHTML=ic(s.dataset.ic,26));
+document.getElementById('notesLogo').innerHTML=logo(false);
+function fit(){
+  const s=Math.min(1,(innerHeight-32)/868,(innerWidth-24)/414);
+  document.documentElement.style.setProperty('--s',s.toFixed(3));
+}
+addEventListener('resize',fit); fit();
+updateBadge();
+go('welcome',{}, {reset:true});
+</script>
+</body>
+</html>
