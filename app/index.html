@@ -147,13 +147,12 @@ fieldset{border:0;padding:0;margin:0 0 18px}
 .result-count{font-weight:700;margin:8px 0 14px;color:var(--ink-2)}
 .cards{list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:22px}
 .card{position:relative;border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
-/* photo placeholders */
-.photo{position:relative;height:150px;display:grid;place-items:center;color:var(--ink);border-bottom:2px solid var(--ink)}
-.photo svg{position:relative;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:8px;box-sizing:content-box}
-.ph-0{background:#DCEBE2}
-.ph-1{background:#EEF1EC}
-.ph-2{background:#C9DFD2}
-.ph-3{background:#E6EDE8}
+/* listing photos (sample photos from ../images) */
+.photo{position:relative;height:170px;overflow:hidden;background:var(--green-50);border-bottom:2px solid var(--ink)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.sample-tag{position:absolute;left:10px;bottom:10px;z-index:1;background:rgba(255,255,255,.94);color:var(--ink);font-size:.75rem;font-weight:700;line-height:1;padding:5px 8px;border:1.5px solid var(--ink);border-radius:6px;pointer-events:none}
+.thumb{overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .pill{position:absolute;top:14px;left:-6px;z-index:1;background:var(--ink);color:#fff;font-weight:700;font-size:.8rem;padding:6px 12px 6px 16px;display:inline-flex;gap:5px;align-items:center;transform:rotate(-4deg);border-radius:2px}
 .card-body{padding:14px 16px 16px}
 .card h3{font-size:1.2rem;margin-bottom:6px;line-height:1.2;padding-right:4px}
@@ -174,11 +173,11 @@ fieldset{border:0;padding:0;margin:0 0 18px}
 
 /* ---------- detail ---------- */
 .gallery{position:relative}
-.gallery .photo{height:270px}
-.gallery .photo svg{width:56px;height:56px}
+.gallery .photo{height:280px}
+.gallery .sample-tag{left:14px;bottom:14px}
 .gallery .float{position:absolute;top:14px;z-index:2}
 .gallery .float.l{left:14px}.gallery .float.r{right:14px}
-.ph-label{position:absolute;bottom:14px;left:50%;transform:translateX(-50%) rotate(-2deg);background:#fff;color:var(--ink);font-weight:700;font-size:.85rem;padding:6px 12px;border-radius:6px;border:2px solid var(--ink);white-space:nowrap}
+.ph-label{position:absolute;bottom:14px;right:14px;transform:rotate(-2deg);background:#fff;color:var(--ink);font-weight:700;font-size:.85rem;padding:6px 12px;border-radius:6px;border:2px solid var(--ink);white-space:nowrap}
 .gal-nav{position:absolute;inset:auto 14px 50% 14px;display:flex;justify-content:space-between;transform:translateY(50%);pointer-events:none}
 .gal-nav button{pointer-events:auto;width:48px;height:48px;border-radius:12px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;box-shadow:var(--shadow-sm)}
 .detail-body{padding:18px 20px 8px}
@@ -632,6 +631,23 @@ input[type=range]{width:100%;height:44px;accent-color:var(--green)}
 .req-top p{font-size:.88rem;color:var(--ink-2);line-height:1.35}
 .req .btn{min-height:52px;box-shadow:var(--shadow-sm)}
 .req .req-msg{margin-top:10px}
+/* students looking */
+.looking{margin-top:26px}
+.sl-list{list-style:none;margin:0;padding:0 4px 0 0;display:grid;gap:16px}
+.sl-card{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.sl-card .req-top{margin-bottom:10px}
+.sl-card .req-top strong{font-family:var(--head);font-size:1.1rem}
+.sl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.sl-tags .verified,.sl-tags .match.static{white-space:nowrap;margin:0}
+.sl-facts{margin:0 0 10px;border:2px solid var(--ink);border-radius:8px;overflow:hidden}
+.sl-facts div{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--bg)}
+.sl-facts div+div{border-top:2px dashed var(--soft)}
+.sl-facts dt{font-size:.85rem;font-weight:700;color:var(--green-text)}
+.sl-facts dd{margin:0;font-weight:700;text-align:right;font-size:.92rem}
+.sl-card .cov{margin:0 0 10px}
+.sl-habits{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.sl-habits li{font-size:.82rem;font-weight:700;padding:3px 9px;border:2px solid var(--ink);border-radius:999px;background:var(--green-50)}
+.sl-card .btn{min-height:52px;box-shadow:var(--shadow-sm)}
 .row2 .btn+.btn{margin-top:0}
 .req-status{display:flex;align-items:center;gap:8px;font-weight:700;padding:10px 12px;border-radius:8px;border:2px solid var(--ink)}
 .req-status.accepted{background:var(--orange)}
@@ -762,22 +778,58 @@ const state = {
   listings:[
     {id:1,title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
      desc:'Bright corner bedroom in a 3-bedroom apartment, a short walk to campus and the Metrorail. Comes with a desk, full bed and closet. My two roommates are UM juniors and quiet during the week.',
-     host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['Bedroom','Living room','Kitchen','Building']},
+     host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['bedroom1','livingroom2','kitchen1','bathroom1']},
     {id:2,title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
      desc:'Whole studio to yourself with a kitchenette and in-building laundry. Two minutes to University station. Great for grad students who want quiet.',
-     host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['Studio','Kitchenette','Bathroom','Building']},
+     host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['studio1','bathroom1','laundry1']},
     {id:3,title:'Summer room in the Grove',area:'Coconut Grove',dist:3.1,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Leafy, walkable neighborhood with cafes and the bay nearby. Room has a window AC, queen bed and a big desk. One roommate who is a UM senior staying for summer research.',
-     host:{name:'Priya K.',initials:'PK',about:'UM sophomore · Home for the summer'},photos:['Bedroom','Patio','Kitchen','Street']},
-    {id:4,boosted:true,title:'Furnished room on Red Road',area:'Coral Gables',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
+     host:{name:'Priya K.',initials:'PK',about:'UM sophomore · Home for the summer'},photos:['bedroom8','kitchen1','bathroom1']},
+    {id:4,boosted:true,title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
      desc:'Room in a house shared with three UM students. Shared backyard, parking spot included, and bikeable to campus in under 10 minutes.',
-     host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['Bedroom','Backyard','Kitchen','Driveway']},
+     host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['study-bedroom1','kitchen1','laundry1']},
     {id:5,title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Room with a city view, building pool and gym. Ideal for a summer internship downtown. About 20 minutes to campus on the Metrorail.',
-     host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['Bedroom','View','Pool','Lobby']},
+     host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['brickell-bedroom1','balcony1','pool1','kitchen1']},
     {id:6,title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
      desc:'Shared room in a calm household of graduate students. Lots of natural light and a study nook. Bring your own bed or ask about borrowing one.',
-     host:{name:'Jordan L.',initials:'JL',about:'UM PhD student · Fieldwork in Peru'},photos:['Room','Study nook','Kitchen','Building']}
+     host:{name:'Jordan L.',initials:'JL',about:'UM PhD student · Fieldwork in Peru'},photos:['unfurnished-bedroom1','livingroom2','kitchen1']},
+    {id:7,title:'Fall room off Sunset Drive',area:'South Miami',dist:1.4,price:1100,moveIn:'2027-08-16',moveOut:'2027-12-18',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+     desc:'Furnished room in a 2-bedroom condo with a small balcony and covered parking. Close to shops on Sunset Drive and a quick bike ride to campus. My roommate is a UM senior who studies late.',
+     host:{name:'Lena V.',initials:'LV',about:'UM junior · Fall semester in London'},photos:['bedroom7','balcony1','livingroom1','kitchen1']},
+    {id:8,title:'Full-year room by Miracle Mile',area:'Coral Gables',dist:1.6,price:1250,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Private room',roommates:2,furnished:true,utilities:false,tone:3,
+     desc:'Room for the whole school year in a quiet 3-bedroom apartment near Miracle Mile. Big closet, desk and blackout curtains. Two roommates who are UM grad students and keep a tidy home.',
+     host:{name:'Omar H.',initials:'OH',about:'UM junior · Year abroad in Tokyo'},photos:['bedroom8-bed','livingroom2','kitchen1','laundry1']},
+    {id:9,title:'Shared room steps from campus',area:'Coral Gables',dist:0.3,price:800,moveIn:'2027-01-03',moveOut:'2027-05-15',type:'Shared room',roommates:1,furnished:true,utilities:true,tone:1,
+     desc:'Share a big double room in an apartment right across from campus. Two beds, two desks and a walk-in closet. My roommate is a UM junior who is up late and out a lot.',
+     host:{name:'Nia W.',initials:'NW',about:'UM sophomore · Spring internship in D.C.'},photos:['study-bedroom1-desk','kitchen1','bathroom1']},
+    {id:10,title:'Budget summer room near Red Road',area:'Red Road',dist:0.8,price:785,moveIn:'2027-05-15',moveOut:'2027-08-15',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:0,
+     desc:'Shared room in a lively house with two UM students who stay for summer classes. Bring your own bed. Big kitchen, backyard and a short bike ride to campus.',
+     host:{name:'Carlos D.',initials:'CD',about:'UM junior · Summer research in Boston'},photos:['unfurnished-bedroom1-window','kitchen1','laundry1']},
+    {id:11,title:'Fall shared room by the Metrorail',area:'South Miami',dist:0.7,price:795,moveIn:'2027-08-14',moveOut:'2027-12-20',type:'Shared room',roommates:1,furnished:true,utilities:false,tone:2,
+     desc:'Shared room in a quiet, tidy apartment a few minutes from South Miami station. Furnished with a twin bed and desk. My roommate is an early riser who studies at home.',
+     host:{name:'Hannah S.',initials:'HS',about:'UM junior · Fall abroad in Florence'},photos:['bedroom2-bed','livingroom2','kitchen1']},
+    {id:12,title:'Full-year shared room near Red Road',area:'Red Road',dist:0.9,price:800,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Shared room',roommates:2,furnished:true,utilities:true,tone:3,
+     desc:'Shared room for the whole school year in a friendly house off Red Road. Utilities and Wi-Fi are included. The household has a cat and likes a movie night now and then.',
+     host:{name:'Kofi A.',initials:'KA',about:'UM senior · Year-long co-op in Seattle'},photos:['bedroom7-bed','livingroom1','kitchen1']},
+    {id:13,title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:2.8,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
+     desc:'Private room with a peek of the bay, a queen bed and a ceiling fan. Walk to cafes and the marina. My roommate is a grad student with a friendly dog.',
+     host:{name:'Grace L.',initials:'GL',about:'UM senior · Summer internship in Chicago'},photos:['grove-bedroom1','balcony1','kitchen1']},
+    {id:14,title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
+     desc:'Whole studio on a high floor with a pool, gym and front desk. Steps from Brickell City Centre and the Metromover. About 25 minutes to campus on the Metrorail.',
+     host:{name:'Mateo G.',initials:'MG',about:'UM grad student · Summer fellowship in D.C.'},photos:['studio3','pool1','balcony1','laundry1']},
+    {id:15,title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.4,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
+     desc:'Unfurnished private room in a two-story townhouse with a patio. The two roommates are social, have friends over often and keep things relaxed. Smoking is OK on the patio.',
+     host:{name:'Zoe M.',initials:'ZM',about:'UM junior · Fall semester in Sydney'},photos:['unfurnished-bedroom1-closet','kitchen1','livingroom1']},
+    {id:16,title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+     desc:'Furnished room with a city view and its own bathroom. The building has a pool and a study lounge. My roommate is a very tidy night owl who works downtown.',
+     host:{name:'Ethan B.',initials:'EB',about:'UM senior · Fall co-op in New York'},photos:['bedroom2','bathroom1','pool1','livingroom1']},
+    {id:17,title:'Garden room on Red Road',area:'Red Road',dist:1.0,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
+     desc:'Private room that opens onto a garden in a house with three UM students. Unfurnished, so bring your own things. Early risers who often have friends over for dinner.',
+     host:{name:'Ava P.',initials:'AP',about:'UM sophomore · Spring abroad in Barcelona'},photos:['unfurnished-bedroom1-light','kitchen1','laundry1']},
+    {id:18,title:'Year-long room in South Miami',area:'South Miami',dist:1.3,price:1150,moveIn:'2027-08-12',moveOut:'2028-05-15',type:'Private room',roommates:1,furnished:false,utilities:true,tone:1,
+     desc:'Unfurnished private room for the full school year in a calm two-bedroom near Sunset Place. My roommate is a quiet law student who studies at home.',
+     host:{name:'Rahul N.',initials:'RN',about:'UM junior · Year abroad in Singapore'},photos:['unfurnished-bedroom1-door','livingroom2','kitchen1','bathroom1']}
   ],
   threads:[
     {id:'t1',name:'Maya R.',initials:'MR',listingId:1,unread:true,msgs:[
@@ -823,9 +875,39 @@ const HOUSE = {
   3:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:1,study:1},  // Grove: night owl senior with a cat
   4:{sleep:1,clean:1,guests:2,noise:2,pets:0,smoking:0,study:1},  // Red Road: busy house, dog, backyard smoking
   5:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:1},  // Brickell: interns, out all day
-  6:{sleep:0,clean:1,guests:0,noise:0,pets:1,smoking:1,study:0}   // Grad household: quiet, study at home
+  6:{sleep:0,clean:1,guests:0,noise:0,pets:1,smoking:1,study:0},  // Grad household: quiet, study at home
+  7:{sleep:1,clean:1,guests:1,noise:1,pets:1,smoking:1,study:1},  // Sunset Drive: night owl senior, out to study
+  8:{sleep:0,clean:0,guests:1,noise:0,pets:1,smoking:1,study:0},  // Miracle Mile: tidy grad students, quiet
+  9:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:1,study:1},  // Steps from campus: night owl, out a lot
+  10:{sleep:1,clean:2,guests:1,noise:2,pets:0,smoking:0,study:1}, // Budget summer: lively house
+  11:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:0}, // Fall shared: quiet, tidy early riser
+  12:{sleep:1,clean:1,guests:1,noise:1,pets:0,smoking:1,study:1}, // Full-year shared: has a cat, movie nights
+  13:{sleep:0,clean:1,guests:1,noise:1,pets:0,smoking:1,study:0}, // Bayview: grad student with a dog
+  14:{noise:1,pets:0,smoking:1},                                    // Brickell studio: building rules only
+  15:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:0,study:1}, // Grove townhouse: social, relaxed
+  16:{sleep:1,clean:0,guests:1,noise:1,pets:1,smoking:1,study:1}, // Brickell fall: tidy night owl
+  17:{sleep:0,clean:1,guests:2,noise:1,pets:0,smoking:1,study:0}, // Garden room: early risers, dinner guests
+  18:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:0}  // Year-long South Miami: quiet law student
 };
 state.listings.forEach(l => { if (HOUSE[l.id]) l.habits = HOUSE[l.id]; });
+
+// Students looking for a place (subleasees). Same data as the website's "Students looking right now".
+// habits use the same keys and answer numbers as PREFS.
+const STUDENTS = [
+  {id:'s1',name:'Jasmine',year:'Junior',major:'Nursing',from:'2027-01-06',to:'2027-05-12',budget:1200,area:'Coral Gables',habits:{sleep:0,clean:0,guests:1,noise:0,pets:1,smoking:1,study:0}},
+  {id:'s2',name:'Marcus',year:'Senior',major:'Finance',from:'2027-01-10',to:'2027-05-08',budget:1000,area:'Red Road',habits:{sleep:1,clean:1,guests:2,noise:1,pets:0,smoking:1,study:1}},
+  {id:'s3',name:'Sofia',year:'Grad student',major:'Marine Science',from:'2027-01-04',to:'2027-05-20',budget:1400,area:'Coconut Grove',habits:{sleep:0,clean:1,guests:0,noise:0,pets:0,smoking:1,study:0}},
+  {id:'s4',name:'Daniel',year:'Sophomore',major:'Computer Science',from:'2027-01-12',to:'2027-04-30',budget:900,area:'South Miami',habits:{sleep:1,clean:2,guests:1,noise:2,pets:0,smoking:1,study:1}},
+  {id:'s5',name:'Aisha',year:'Junior',major:'Public Health',from:'2027-02-01',to:'2027-05-15',budget:1100,area:'Coral Gables',habits:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:0}},
+  {id:'s6',name:'Tyler',year:'Senior',major:'Architecture',from:'2027-05-17',to:'2027-08-13',budget:1300,area:'Coconut Grove',habits:{sleep:1,clean:1,guests:1,noise:1,pets:0,smoking:1,study:1}},
+  {id:'s7',name:'Mei',year:'Grad student',major:'Biomedical Engineering',from:'2027-05-24',to:'2027-08-16',budget:1700,area:'Brickell',habits:{sleep:0,clean:0,guests:0,noise:1,pets:1,smoking:1,study:0}},
+  {id:'s8',name:'Luis',year:'Junior',major:'Music Business',from:'2027-08-15',to:'2027-12-18',budget:950,area:'South Miami',habits:{sleep:1,clean:1,guests:2,noise:2,pets:0,smoking:0,study:1}},
+  {id:'s9',name:'Emma',year:'Sophomore',major:'Psychology',from:'2027-08-16',to:'2027-12-17',budget:1200,area:'Coral Gables',habits:{sleep:0,clean:1,guests:1,noise:0,pets:1,smoking:1,study:0}},
+  {id:'s10',name:'Noah',year:'Grad student',major:'Law',from:'2027-08-12',to:'2028-05-15',budget:1500,area:'Brickell',habits:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:1}}
+];
+// Sample listings run from the earliest move-in to the latest move-out; the date filter stays inside this window
+// so a search always finds rooms (four budget rooms within 1 mile cover it back to back).
+const DATE_MIN = '2027-01-03', DATE_MAX = '2028-05-20';
 
 /* ---------- landlord approval & sublease agreements ---------- */
 const todayISO = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
@@ -851,7 +933,9 @@ function commuteLine(l){
 }
 // Sample map: positions in a 340 × 400 drawing, campus at (140,305). Not to exact scale.
 const MAP_W=340, MAP_H=400, CAMPUS=[140,305];
-const MAP_POS = {1:[152,272], 2:[78,356], 3:[222,228], 4:[66,282], 5:[262,112], 6:[125,232]};
+// Pins sit on a grid (columns 76 apart, rows 44 apart) so none overlap each other or the campus marker.
+const MAP_POS = {1:[116,280], 2:[116,368], 3:[268,192], 4:[40,280], 5:[268,104], 6:[116,192], 7:[192,368], 8:[40,104],
+  9:[192,280], 10:[40,324], 11:[268,368], 12:[40,236], 13:[268,148], 14:[268,60], 15:[192,148], 16:[192,60], 17:[116,236], 18:[268,324]};
 state.listings.forEach(l => { if (MAP_POS[l.id]) l.pos = MAP_POS[l.id]; });
 function mapHTML(list){
   const pins=list.filter(l=>l.pos), sel=pins.find(l=>l.id===state.mapSel);
@@ -870,9 +954,10 @@ function mapHTML(list){
           <path d="M0 250 L262 245"/><path d="M0 338 L176 334"/></g>
         <g font-family="Atkinson Hyperlegible, sans-serif" font-weight="700" font-size="11" fill="#3E4642" letter-spacing=".06em">
           <text x="14" y="200">CORAL GABLES</text><text x="10" y="385">SOUTH MIAMI</text>
-          <text x="168" y="190">COCONUT GROVE</text><text x="196" y="72">BRICKELL</text>
+          <text x="168" y="214">COCONUT GROVE</text><text x="196" y="72">BRICKELL</text>
           <text x="300" y="300" font-style="italic" font-weight="400" transform="rotate(-80 300 300)">Biscayne Bay</text>
-          <text x="236" y="168" font-size="10" font-weight="400">US-1</text></g>
+          <text x="236" y="168" font-size="10" font-weight="400">US-1</text>
+          <text x="101" y="40" font-size="10" transform="rotate(90 101 40)">RED ROAD</text></g>
       </svg>
       <div class="campus" style="${pct(...CAMPUS)}" aria-hidden="true"><span class="c-dot">${ic('book',16)}</span><span class="c-lbl">UM campus</span></div>
       ${pins.map(l=>`<button class="pin ${l.id===state.mapSel?'on':''}" style="${pct(...l.pos)}" data-action="mapPin" data-id="${l.id}"
@@ -882,7 +967,7 @@ function mapHTML(list){
     <div class="map-preview" aria-live="polite">${sel ? mapPreview(sel) : `<p class="help" style="margin:0">Tap a price pin to preview a room.</p>`}</div>`;
 }
 function mapPreview(l){
-  return `<div class="mp-top"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',26)}</span>
+  return `<div class="mp-top"><span class="thumb" aria-hidden="true">${thumbImg(l)}</span>
       <div class="grow"><h3>${esc(l.title)}</h3><p class="meta">${ic('pin',16)} ${esc(l.area)} · ${l.dist} mi</p>
       <p class="price"><strong>${money(l.price)}</strong> / month · ${fmtShort(l.moveIn)} – ${fmtShort(l.moveOut)}</p></div></div>
     ${commuteLine(l)}
@@ -985,12 +1070,65 @@ function matches(l,f){
   }
   return true;
 }
+/* ---------- listing photos ----------
+   AI-generated sample photos in ../images (each in a 640px and 1280px version).
+   Same keys and alt text as the website (index.html), so a listing shows the same photos in both. */
+const IMG_DIR = '../images/';
+const PHOTOS = {
+  'bedroom1':{label:'Bedroom',alt:'Bright bedroom with a full bed in white linens, a wooden desk and chair by a large window with palm trees outside, a bookshelf, and photos on the wall'},
+  'bedroom2':{label:'Bedroom',alt:'Sunny bedroom with a queen bed in white bedding, a wooden desk and chair under a big window looking out at high-rise towers and the water, a tall mirror and hanging plants'},
+  'bedroom8':{label:'Bedroom',alt:'Warm bedroom with a queen bed, a wooden dresser with a mirror, an arched window onto trees, a ceiling fan, a woven rug and a small desk with a chair'},
+  'brickell-bedroom1':{label:'Bedroom',alt:'High-rise bedroom with a queen bed in gray bedding, two nightstands with lamps, an armchair, and floor-to-ceiling windows showing the city skyline and bay at dusk'},
+  'grove-bedroom1':{label:'Bedroom',alt:'Light bedroom with a rattan headboard, a matching nightstand and lamp, a ceiling fan, a bookshelf, lots of plants and a window onto tropical trees'},
+  'bedroom7':{label:'Bedroom',alt:'Dim, cozy bedroom with a queen bed in dark green bedding, a tall black dresser, framed prints, and a desk with two computer monitors and a gaming chair by a window facing an apartment building'},
+  'bedroom2-bed':{label:'Bedroom',big:1024,alt:'Bright bedroom with a queen bed in white bedding and a stuffed bunny on the pillows, beach prints on the wall, a tall mirror with hanging vines, and a window looking out at towers and the water'},
+  'bedroom7-bed':{label:'Bedroom',big:1024,alt:'Dim bedroom with a queen bed in dark green bedding and a folded blanket, a tall black dresser, a small lamp on the nightstand, and a window facing an apartment building'},
+  'bedroom8-bed':{label:'Bedroom',big:1024,alt:'Warm bedroom with a queen bed in white bedding and a knit throw, a lamp on a wooden nightstand, a painting of a Mediterranean-style house, an arched window onto trees, and a cane chair at a desk'},
+  'study-bedroom1-desk':{label:'Bedroom',big:1024,alt:'Bedroom with a full bed in gray bedding, a large bean bag chair, a window with blinds, and a desk with a lamp, computer monitor and black office chair'},
+  'study-bedroom1':{label:'Bedroom',alt:'Cozy bedroom with a full bed in gray bedding, a tall bookshelf, a bean bag chair, and a desk with a computer monitor and office chair by a window with blinds'},
+  'studio1':{label:'Studio',alt:'Studio apartment with a queen bed by a window with a city view, a gray sofa, a round coffee table, and a kitchen with stainless appliances and a counter with two stools'},
+  'studio3':{label:'Studio',alt:'High-rise studio with a fold-away wall bed, built-in shelves, a sofa, a round coffee table, and a small table with two chairs by floor-to-ceiling windows facing downtown towers'},
+  'unfurnished-bedroom1':{label:'Empty bedroom',alt:'Empty unfurnished bedroom with wood-look floors, a large window with palm trees and towers outside, and a sliding-door closet'},
+  'unfurnished-bedroom1-window':{label:'Empty bedroom',alt:'Empty unfurnished bedroom with a large window looking out at palm trees and towers, sunlight on the wood-look floor, and a closed sliding closet door'},
+  'unfurnished-bedroom1-closet':{label:'Empty bedroom',alt:'Empty unfurnished bedroom with an open sliding-door closet and hanging rod, a window with palm trees outside, and the bedroom door'},
+  'unfurnished-bedroom1-light':{label:'Empty bedroom',big:960,alt:'Empty unfurnished bedroom with wide wood-look floors in bright sunlight, white walls, and a window looking out at palm trees and towers'},
+  'unfurnished-bedroom1-door':{label:'Empty bedroom',big:896,alt:'Empty unfurnished bedroom corner with a sliding closet door half open, an empty closet with a hanging rod, a light switch, and the bedroom door'},
+  'livingroom1':{label:'Living room',alt:'Living room with a large sectional sofa, a round coffee table, a wall TV over a low cabinet, and glass doors to a balcony with palm trees and towers beyond'},
+  'livingroom2':{label:'Living room',alt:'Living room with a white sectional sofa, a round wooden coffee table, an armchair, a jute rug and glass doors to a balcony with a city view'},
+  'kitchen1':{label:'Kitchen',alt:'Bright kitchen with white cabinets, a stainless fridge, microwave and dishwasher, a breakfast bar with two stools, and a small round table with two chairs by a window'},
+  'bathroom1':{label:'Bathroom',big:1024,alt:'Bathroom with a glass walk-in shower with white tile, a toilet, a wood vanity with a white sink and a round mirror, white towels and a woven bath mat'},
+  'balcony1':{label:'Balcony',alt:'Balcony with two cushioned outdoor chairs, a small round table and potted plants, looking out over palm trees and buildings to the water'},
+  'laundry1':{label:'Laundry',alt:'Laundry closet with a stacked washer and dryer, open shelves with baskets and towels, and a woven hamper'},
+  'pool1':{label:'Pool',alt:'Building pool with lounge chairs and umbrellas, surrounded by palm trees and apartment buildings'}
+};
+// <img> for a photo key. Decorative thumbnails pass alt:false (the listing title is right next to them).
+function photoImg(key, {sizes='(max-width:480px) 100vw, 480px', alt=true, lazy=true}={}){
+  const p = PHOTOS[key] || PHOTOS['bedroom1'], k = PHOTOS[key] ? key : 'bedroom1', big = p.big || 1280;  // big: width of the large file
+  return `<img src="${IMG_DIR}${k}-640.jpg" srcset="${IMG_DIR}${k}-640.jpg 640w, ${IMG_DIR}${k}-${big}.jpg ${big}w" sizes="${sizes}"
+    alt="${alt ? esc('Sample photo: ' + p.alt) : ''}"${lazy ? ' loading="lazy"' : ''} decoding="async">`;
+}
+const SAMPLE_TAG = '<span class="sample-tag" aria-hidden="true">Sample photo</span>';
+const photoBox = (key, cls='') => `<div class="photo ${cls}">${photoImg(key)}${SAMPLE_TAG}</div>`;
+const thumbImg = l => photoImg(l.photos[0], {sizes:'120px', alt:false});
+// Inside of the detail-page gallery: photo i of the listing, its sample tag and a "Photo 2 of 3 · Kitchen" counter
+const galleryInner = (l, i) => `${photoImg(l.photos[i], {lazy:i>0})}${SAMPLE_TAG}
+  <span class="ph-label" aria-hidden="true">Photo ${i+1} of ${l.photos.length} · ${esc((PHOTOS[l.photos[i]]||{}).label||'Photo')}</span>`;
+// "Add a photo" in the post form fills in these sample photos, in order
+const SAMPLE_UPLOADS = ['study-bedroom1','livingroom2','kitchen1','bathroom1','laundry1','balcony1'];
+// Photos for a listing being posted: the sample photos "added" so far (at least one). Unfurnished rooms show the empty room first.
+function draftPhotos(d){
+  const keys = SAMPLE_UPLOADS.slice(0, Math.max(1, d.photos||0));
+  if (!d.furnished) keys[0] = 'unfurnished-bedroom1';
+  return keys;
+}
+const SWAP_PHOTOS = ['bedroom1','bedroom7','grove-bedroom1','bedroom8'];
+
 function saveBtn(l, cls='save-btn'){
   return `<button class="${cls}" data-action="toggleSave" data-id="${l.id}" aria-pressed="${state.saved.has(l.id)}" aria-label="Save ${esc(l.title)}">${ic('heart',26)}</button>`;
 }
 function cardHTML(l){
   return `<li class="card">
-    <div class="photo ph-${l.tone}" role="img" aria-label="Photo placeholder: ${esc(l.photos[0])}">${ic('bed',48)}</div>
+    ${photoBox(l.photos[0])}
     <span class="pill" aria-hidden="true">${ic('verified',16)}Verified student</span>
     <div class="card-body">
       ${l.boosted?`<p class="boost-tag">${ic('bolt',16)} Boosted</p>`:''}
@@ -1224,7 +1362,7 @@ const screens = {
     const methods=['Debit card ending 4242','Bank account ending 6789','Apple Pay'];
     return `${topbar('Reserve and pay',true,'Back to listing')}
       <form id="payForm" class="pad form" novalidate data-id="${l.id}">
-        <div class="pay-listing"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',26)}</span>
+        <div class="pay-listing"><span class="thumb" aria-hidden="true">${thumbImg(l)}</span>
           <div><strong>${esc(l.title)}</strong><span>${esc(l.area)} · Host: ${esc(l.host.name)}</span></div></div>
         <dl class="summary">
           <div><dt>Move-in</dt><dd>${fmtLong(l.moveIn)}</dd></div>
@@ -1286,7 +1424,7 @@ const screens = {
               ${st==='current'&&next?`<button class="btn btn-primary" data-action="${next[0]}" data-id="${l.id}">${next[1]}</button>
                 ${n===3?'<p class="help">Prototype: you can try this step now.</p>':''}`:''}</div></li>`; }).join('')}
         </ol>
-        <button class="pay-listing as-btn" data-action="open" data-id="${l.id}"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',26)}</span>
+        <button class="pay-listing as-btn" data-action="open" data-id="${l.id}"><span class="thumb" aria-hidden="true">${thumbImg(l)}</span>
           <span class="grow"><strong>${esc(l.title)}</strong><span>${fmtShort(l.moveIn)} – ${fmt(l.moveOut)} · View listing</span></span>${ic('next')}</button>
         <button class="btn btn-ghost" data-action="messageHost" data-id="${l.id}">${ic('chat')} Message ${first}</button>
         <button class="btn btn-ghost" data-action="tab" data-tab="home">Back to search</button>
@@ -1306,6 +1444,7 @@ const screens = {
           <span class="grow"><strong>Term Swap</strong><span>Leaving Miami? Trade rooms with a student coming here from where you’re going.</span></span>${ic('next')}</button>
         ${mine.length ? mine.map(hostCard).join('')
           : `<div class="empty" style="padding:30px 8px 10px"><div class="big-ic">${ic('home',44)}</div><h2>No listing yet</h2><p>Post your room and you’ll see views, saves, messages and booking requests here.</p></div>`}
+        ${studentsLooking(mine)}
         <div class="protect" style="margin-top:22px">${ic('camera',28)}<div><strong>Tip: add 4 or more photos</strong>Listings with more photos get about twice as many booking requests.</div></div>
         <div class="endspace"></div>
       </div>`;
@@ -1352,8 +1491,7 @@ const screens = {
   detail({id, photo=0}){
     const l = L(id), mine = !!l.mine;
     return `<div class="gallery">
-        <div class="photo ph-${l.tone}" id="galPhoto" role="img" aria-label="Photo ${photo+1} of ${l.photos.length}: ${esc(l.photos[photo])} (placeholder)">${ic('bed',64)}
-          <span class="ph-label" aria-hidden="true">Photo ${photo+1} of ${l.photos.length} · ${esc(l.photos[photo])}</span></div>
+        <div class="photo" id="galPhoto">${galleryInner(l, photo)}</div>
         <button class="icon-btn float l" data-action="back" aria-label="Back">${ic('back')}</button>
         ${saveBtn(l,'icon-btn float r')}
         <div class="gal-nav">
@@ -1433,7 +1571,7 @@ const screens = {
         <span class="avatar ${t.support?'y':''}">${esc(t.initials)}</span>
         <div><h1>${esc(t.name)}</h1><span class="verified">${ic('verified',14)} ${t.support?'Official account':'Verified student'}</span></div>
       </header>
-      ${l?`<button class="chat-listing" data-action="open" data-id="${l.id}"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',24)}</span>
+      ${l?`<button class="chat-listing" data-action="open" data-id="${l.id}"><span class="thumb" aria-hidden="true">${thumbImg(l)}</span>
         <span class="grow"><strong>${esc(l.title)}</strong><span>${money(l.price)}/mo · ${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}</span></span>${ic('next')}<span class="sr-only">View listing</span></button>`:''}
       <ol class="log" id="log" role="log" aria-label="Conversation with ${esc(t.name)}">
         ${t.msgs.map(m=>msgHTML(m,t)).join('')}
@@ -1492,7 +1630,7 @@ const screens = {
         <p style="color:var(--ink-2);line-height:1.45;margin-bottom:16px">This is how students will see it. Check the details, then publish.</p>
         <h2 class="section-h" style="margin-top:0">Preview</h2>
         <div class="card preview">
-          <div class="photo ph-${state.listings.length%4}" role="img" aria-label="Photo placeholder">${ic('bed',48)}</div>
+          ${photoBox(draftPhotos(d)[0])}
           <span class="pill" aria-hidden="true">${ic('verified',16)}Verified student</span>
           <div class="card-body">
             ${d.boost?`<p class="boost-tag">${ic('bolt',16)} Boosted · top of search</p>`:''}
@@ -1599,13 +1737,55 @@ const screens = {
       <div class="endspace"></div></div>`;
   }
 };
+/* ---------- students looking (on the subleaser's home) ----------
+   Shows students whose dates overlap your listing, most overlap first. If nobody overlaps,
+   it shows the students looking soonest so the list is never empty. */
+const overlapDays = (a1,b1,a2,b2) => Math.max(0, dayDiff(a1>a2?a1:a2, b1<b2?b1:b2));
+function studentMatch(s, l){
+  if (!l || !l.habits) return null;
+  const rows = PREFS.filter(q => s.habits[q.key]!==undefined && l.habits[q.key]!==undefined)
+    .map(q => compare(q, s.habits[q.key], l.habits[q.key])[1]);
+  return rows.length >= MIN_SHARED ? Math.round(rows.reduce((a,b)=>a+b,0)/rows.length*100) : null;
+}
+function studentCard(s, l){
+  const days = l ? overlapDays(s.from,s.to,l.moveIn,l.moveOut) : 0, need = Math.max(1, dayDiff(s.from,s.to));
+  const cov = Math.min(100, Math.round(days/need*100)), pct = studentMatch(s,l), fits = l && s.budget >= l.price;
+  const habits = ['sleep','clean','noise','study'].map(k => PREFS.find(q=>q.key===k)).map(q => q.opts[s.habits[q.key]]);
+  return `<li class="sl-card">
+    <div class="req-top"><span class="avatar y" aria-hidden="true">${esc(s.name[0])}</span>
+      <div class="grow"><strong>${esc(s.name)}</strong><p>${esc(s.year)} · ${esc(s.major)}</p>
+        <span class="sl-tags"><span class="verified sm">${ic('verified',14)} Verified student</span>
+        ${pct===null ? '' : `<span class="match static ${tier(pct)[0]}">${ic('people',14)}<strong>${pct}%</strong><span class="sr-only"> roommate</span> match</span>`}</span></div></div>
+    <dl class="sl-facts">
+      <div><dt>Needs</dt><dd>${fmtShort(s.from)} – ${fmt(s.to)}</dd></div>
+      <div><dt>Budget</dt><dd>Up to ${money(s.budget)}/mo</dd></div>
+      <div><dt>Prefers</dt><dd>${esc(s.area)}</dd></div>
+    </dl>
+    ${l ? `<p class="cov ${cov===100?'full':'part'}">${ic(cov===100?'check':'calendar',18)}<span>${days ? `Your room covers ${cov}% of their dates` : 'Their dates don’t overlap yours'}${fits?'':` · over their budget by ${money(l.price - s.budget)}`}</span></p>` : ''}
+    <ul class="sl-habits" aria-label="${esc(s.name)}’s habits">${habits.map(h=>`<li>${esc(h)}</li>`).join('')}</ul>
+    <button class="btn btn-ghost" data-action="inviteStudent" data-name="${esc(s.name)}">${ic('send')} Send ${esc(s.name)} your listing</button>
+  </li>`;
+}
+function studentsLooking(mine){
+  const l = mine.find(x => x.moveIn && x.moveOut);
+  let list = l ? STUDENTS.filter(s => overlapDays(s.from,s.to,l.moveIn,l.moveOut) > 0)
+      .sort((a,b) => overlapDays(b.from,b.to,l.moveIn,l.moveOut) - overlapDays(a.from,a.to,l.moveIn,l.moveOut)) : [];
+  const fallback = !list.length;
+  if (fallback) list = [...STUDENTS].sort((a,b) => a.from < b.from ? -1 : 1).slice(0,3);
+  return `<section class="looking" aria-labelledby="lookH">
+    <h2 class="section-h" id="lookH">Students looking for your dates</h2>
+    <p class="help" style="margin:-4px 0 12px">${l ? `${list.length} verified student${list.length===1?'':'s'} ${fallback?'looking soon':'need a place during'} ${fallback?'':`${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}`}` : 'Post your room to see who needs your dates.'}</p>
+    ${fallback && l ? `<p class="pref-nudge info" style="margin:0 0 12px">${ic('calendar',22)}<span>No one needs your exact dates yet. Here are students looking soon.</span></p>` : ''}
+    <ul class="sl-list">${list.map(s => studentCard(s, l)).join('')}</ul>
+  </section>`;
+}
 /* ---------- subleaser dashboard ---------- */
 function hostCard(l){
   const s=l.stats, max=Math.max(1,...s.week), days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const booked=s.requests.some(r=>r.status==='accepted');
   const live=s.requests.filter(r=>r.status!=='declined').length;
   return `<section class="host-card" aria-labelledby="hl-${l.id}">
-    <div class="hc-top"><span class="thumb ph-${l.tone}" aria-hidden="true">${ic('bed',28)}</span>
+    <div class="hc-top"><span class="thumb" aria-hidden="true">${thumbImg(l)}</span>
       <div class="grow"><span class="status ${booked?'booked':''}">${booked?'Booked':'Live'}</span>${l.boosted?` <span class="boost-tag inline">${ic('bolt',14)} Boosted</span>`:''}
         <h2 id="hl-${l.id}">${esc(l.title)}</h2>
         <p class="meta">${fmtShort(l.moveIn)} – ${fmt(l.moveOut)} · ${money(l.price)}/mo</p></div></div>
@@ -1681,8 +1861,9 @@ function seedHostListing(){
   if(state.seeded) return; state.seeded=true;
   const u=state.user, l={id:100,mine:true,title:'Your room on Mariposa Ct',area:'Coral Gables',dist:0.7,price:1100,moveIn:'2027-01-10',moveOut:'2027-05-12',
     type:'Private room',roommates:2,furnished:true,utilities:true,tone:1,
+    habits:{sleep:0,clean:0,guests:1,noise:0,pets:1,smoking:1,study:0},   // your household, used to match students looking
     desc:'Sample listing for this prototype. Furnished bedroom in a 3-bedroom apartment, 10 minutes’ walk to campus.',
-    host:{name:u.name,initials:u.name.slice(0,1).toUpperCase(),about:'You · '+u.email},photos:['Bedroom','Living room','Kitchen','Building'],
+    host:{name:u.name,initials:u.name.slice(0,1).toUpperCase(),about:'You · '+u.email},photos:['bedroom1','livingroom2','kitchen1','laundry1'],
     landlord:{status:'approved',name:'Coral Gables Property Mgmt',email:'leasing@cgpm.example',on:'2026-11-02'},
     stats:{views:128,saves:14,messages:5,week:[9,14,11,22,18,27,27],
       requests:[{name:'Chris P.',initials:'CP',about:'UM grad student · Spring internship',threadId:'t4',status:'pending'}]}};
@@ -1851,7 +2032,7 @@ function renderResults(){
 function renderPhotos(){
   const g=document.getElementById('photoGrid'); if(!g) return;
   g.innerHTML = state.photosToAdd
-    ? Array.from({length:state.photosToAdd},(_,i)=>`<span class="thumb ph-${i%4}" role="img" aria-label="Photo ${i+1} placeholder">${ic('camera',24)}</span>`).join('') + `<span class="sr-only">${state.photosToAdd} photo${state.photosToAdd>1?'s':''} added</span>`
+    ? SAMPLE_UPLOADS.slice(0,state.photosToAdd).map(k=>`<span class="thumb">${photoImg(k,{sizes:'140px'})}</span>`).join('') + `<span class="sr-only">${state.photosToAdd} photo${state.photosToAdd>1?'s':''} added</span>`
     : `<p class="help" style="margin:0">No photos yet. Listings with photos get more requests.</p>`;
 }
 
@@ -1926,8 +2107,9 @@ function filterSheet(section){
     <form id="filterForm">
       <h3 class="section-h" id="fs-dates">Your dates</h3>
       <p class="help" style="margin:-4px 0 12px">Set both dates to see how much of your stay each room covers. Rooms that cover all of it show first.</p>
-      <div class="field"><label for="fFrom">I need to move in by</label><input id="fFrom" type="date" value="${f.from}"></div>
-      <div class="field"><label for="fTo">I need to stay until</label><input id="fTo" type="date" value="${f.to}"></div>
+      <div class="field"><label for="fFrom">I need to move in by</label><input id="fFrom" type="date" min="${DATE_MIN}" max="${DATE_MAX}" value="${f.from}" aria-describedby="fDatesHelp"></div>
+      <div class="field"><label for="fTo">I need to stay until</label><input id="fTo" type="date" min="${DATE_MIN}" max="${DATE_MAX}" value="${f.to}" aria-describedby="fDatesHelp"></div>
+      <p class="help" id="fDatesHelp" style="margin:-8px 0 12px">Rooms are listed from ${fmt(DATE_MIN)} to ${fmt(DATE_MAX)}.</p>
       <h3 class="section-h" id="fs-price">Max monthly rent</h3>
       <p class="range-val" id="priceOut" aria-hidden="true">${f.maxPrice>=2000?'Any price':'Up to '+money(f.maxPrice)}</p>
       <label for="fPrice" class="sr-only">Maximum monthly rent</label>
@@ -1976,6 +2158,7 @@ const INFO = {
 
 /* ================= actions ================= */
 const actions = {
+  inviteStudent:el=>toast(`Your listing was sent to ${el.dataset.name}`),
   tab:el=>{ if(sheetRoot.hidden===false) closeSheet(); go(el.dataset.tab,{}, {reset:true}); },
   go:el=>go(el.dataset.to, el.dataset.id?{id:+el.dataset.id}:{}),
   back:()=>back(),
@@ -1994,11 +2177,9 @@ const actions = {
   photo:el=>{
     const l=L(state.params.id), n=l.photos.length;
     state.params.photo=(state.params.photo+ +el.dataset.dir+n)%n;
-    const i=state.params.photo, ph=document.getElementById('galPhoto');
-    ph.setAttribute('aria-label',`Photo ${i+1} of ${n}: ${l.photos[i]} (placeholder)`);
-    ph.className=`photo ph-${(l.tone+i)%4}`;
-    ph.querySelector('.ph-label').textContent=`Photo ${i+1} of ${n} · ${l.photos[i]}`;
-    toast(`Photo ${i+1} of ${n}: ${l.photos[i]}`);
+    const i=state.params.photo;
+    document.getElementById('galPhoto').innerHTML=galleryInner(l,i);
+    toast(`Photo ${i+1} of ${n}: ${(PHOTOS[l.photos[i]]||{}).label||'Photo'}`);
   },
   reserve:el=>go('pay',{id:+el.dataset.id}),
   setView:el=>{
@@ -2015,7 +2196,7 @@ const actions = {
   swapDetails:el=>{
     const m=findSwap(el.dataset.id), first=esc(m.name.split(' ')[0]), sent=state.swapSent.has(m.id);
     openSheet(esc(m.place),`
-      <div class="photo ph-${m.tone} sheet-photo" role="img" aria-label="Photo placeholder: ${esc(m.place)}">${ic('bed',48)}</div>
+      ${photoBox(SWAP_PHOTOS[(m.tone||0)%4],'sheet-photo')}
       <p class="sheet-sub" style="margin-top:12px">${esc(state.swap.city)} · ${esc(m.near)}</p>
       <ul class="facts">
         <li>${ic('bed',20)}${esc(m.type)}</li>
@@ -2160,7 +2341,7 @@ const actions = {
   support:()=>{ closeSheet(); go('chat',{id:'t3'}); },
   quick:el=>sendMessage(el.textContent),
   addPhoto:()=>{
-    if(state.photosToAdd>=6) return toast('You can add up to 6 photos');
+    if(state.photosToAdd>=SAMPLE_UPLOADS.length) return toast(`You can add up to ${SAMPLE_UPLOADS.length} photos`);
     state.photosToAdd++; renderPhotos(); toast(`Photo ${state.photosToAdd} added`);
   },
   share:()=>toast('Listing link copied'),
@@ -2348,11 +2529,10 @@ function submitPost(f){
 }
 const LISTING_FEE=15, BOOST_FEE=5;
 function draftToListing(d){
-  const names=['Bedroom','Living room','Kitchen','Bathroom','Building','View'];
   return {id:Date.now(),mine:true,title:d.title,area:d.area,dist:+(+d.dist).toFixed(1),price:+d.price,moveIn:d.moveIn,moveOut:d.moveOut,type:d.type,
     roommates:d.type==='Entire place'?0:1,furnished:!!d.furnished,utilities:!!d.utilities,tone:state.listings.length%4,boosted:!!d.boost,boostMethod:d.method,
     desc:d.desc||'No description yet.',host:{name:state.user.name,initials:state.user.name.slice(0,1).toUpperCase(),about:'You · '+state.user.email},
-    photos:names.slice(0,Math.max(1,d.photos)), landlord:{...(d.landlord||{status:'none',name:'',email:''})}};
+    photos:draftPhotos(d), landlord:{...(d.landlord||{status:'none',name:'',email:''})}};
 }
 function publishDraft(){
   const l=draftToListing(state.draft);
