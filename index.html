@@ -1,0 +1,1561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TermNest · Student subleases at the University of Miami</title>
+<meta name="description" content="TermNest is a student sublease app for University of Miami students. Post your room when you leave for a semester or summer, or find a short-term place from a verified student.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+/* Same palette and rules as the app (app/index.html):
+   white on green ≈ 9.6:1, green on white ≈ 10:1, near black on orange ≈ 6:1.
+   Orange is only a fill with near-black text. Never white text on orange, never orange text on white. */
+:root{
+  --green:#005030; --green-dark:#003A22; --green-50:#E6F0EA;
+  --orange:#F47321; --orange-50:#FEF0E6; --bg:#FAFAF7;
+  --ink:#1A1A1A; --ink-2:#474C49; --soft:#D6DDD8;
+  --shadow:4px 4px 0 var(--ink); --shadow-sm:3px 3px 0 var(--ink);
+  --head:'Bricolage Grotesque','Atkinson Hyperlegible',system-ui,sans-serif;
+  --wrap:1120px;
+}
+*{box-sizing:border-box}
+html{font-size:18px;scroll-behavior:smooth;scroll-padding-top:96px}
+@media (min-width:900px){html{font-size:19px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;font-family:'Atkinson Hyperlegible',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+h1,h2,h3,p{margin:0}
+h1,h2,h3,.logo{font-family:var(--head);letter-spacing:-.015em}
+h1{font-weight:800}
+h2,h3{font-weight:700}
+a{color:var(--green);font-weight:700;text-decoration-thickness:2px;text-underline-offset:4px}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.on-green :focus-visible,.site-footer :focus-visible{outline-color:#fff}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 16px}
+@media (min-width:700px){.wrap{padding:0 28px}}
+.skip{position:absolute;left:12px;top:-80px;z-index:100;background:var(--ink);color:#fff;padding:12px 18px;border-radius:10px}
+.skip:focus{top:12px}
+
+/* ---------- header ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:2px solid var(--ink)}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:1.5rem;color:var(--ink);text-decoration:none;min-height:48px}
+.logo svg{flex:none}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0}
+.nav-links a{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;border-radius:10px;color:var(--ink);text-decoration:none;font-size:1rem}
+.nav-links a:hover{background:var(--green-50);text-decoration:underline}
+.nav-links a[aria-current="page"]{background:var(--green);color:#fff}
+.site-header .wrap{max-width:1400px}
+.nav-links{gap:2px}
+.nav-links a{padding:0 9px;font-size:.95rem}
+.menu-btn{display:none;align-items:center;gap:8px;min-height:52px;padding:0 16px;border:2px solid var(--ink);border-radius:12px;background:#fff;font:inherit;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;color:var(--ink)}
+.nav-links a{white-space:nowrap}
+@media (max-width:1359px){
+  .menu-btn{display:inline-flex}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:2px solid var(--ink);padding:8px 16px 16px}
+  .nav-links.open{display:flex}
+  .nav-links a{display:flex;min-height:56px;font-size:1.1rem;border-bottom:2px dashed var(--soft);border-radius:0}
+  .nav-links li:last-child a{border-bottom:0}
+}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:60px;padding:0 24px;border-radius:12px;font-size:1.05rem;font-weight:700;
+  border:2px solid var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s;font-family:inherit;cursor:pointer}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-dark)}
+.btn-accent{background:var(--orange);color:var(--ink)}
+.btn-accent:hover{background:#F68A45}
+.btn-ghost{background:#fff;color:var(--ink)}
+.btn-ghost:hover{background:var(--green-50)}
+.btn-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:28px}
+@media (max-width:520px){.btn-row .btn{width:100%}}
+
+/* ---------- sections ---------- */
+section{padding:72px 0;border-bottom:2px solid var(--ink)}
+@media (max-width:699px){section{padding:52px 0}}
+.eyebrow{display:inline-block;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:10px}
+.sec-h{font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.1;margin-bottom:14px}
+.lead{font-size:1.15rem;max-width:44rem;color:var(--ink-2)}
+
+/* ---------- hero ---------- */
+.hero{background:var(--green);color:#fff;border-bottom:8px solid var(--orange);padding:64px 0 72px}
+.hero-grid{display:grid;gap:48px;align-items:center}
+@media (min-width:900px){.hero-grid{grid-template-columns:1.15fr .85fr}}
+.hero h1{font-size:clamp(2.3rem,6vw,3.9rem);line-height:1.04;margin:0 0 18px}
+.hero .lead{color:#fff;font-size:1.25rem}
+.hero .btn-ghost{background:#fff}
+.tag-uni{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:6px 12px;font-weight:700;font-size:.9rem;margin-bottom:22px;transform:rotate(-2deg)}
+.props{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.props li{display:flex;gap:14px;align-items:center;font-weight:700;font-size:1.05rem;line-height:1.35;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.props li:nth-child(2){transform:rotate(-1deg)}
+.props svg{flex:none;color:var(--green)}
+
+.big-ic{width:64px;height:64px;border-radius:14px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--orange);color:var(--ink);transform:rotate(-4deg);box-shadow:var(--shadow-sm)}
+.big-ic.g{background:var(--green);color:#fff}
+
+/* ---------- try on your phone (QR) ---------- */
+#try{background:var(--green);color:#fff;border-bottom:8px solid var(--orange);padding:80px 0}
+@media (max-width:699px){#try{padding:56px 0}}
+.try-grid{display:grid;gap:40px;align-items:center}
+@media (min-width:760px){.try-grid{grid-template-columns:1fr auto;gap:56px}}
+.try-eyebrow{display:inline-block;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:4px 12px;margin-bottom:16px;transform:rotate(-2deg)}
+.try-h{font-size:clamp(2.1rem,5.5vw,3.4rem);line-height:1.05;margin-bottom:14px}
+.try-lead{font-size:1.2rem;max-width:34rem}
+#try .try-steps{font-weight:700}
+.try-btn{margin-top:24px;background:#fff}
+@media (max-width:520px){.try-btn{width:100%}}
+.qr-card{margin:0;justify-self:center;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:18px;padding:18px;box-shadow:6px 6px 0 var(--ink);text-align:center}
+@media (min-width:760px){.qr-card{transform:rotate(2deg)}}
+.qr-box{width:min(260px,70vw);aspect-ratio:1;display:grid;place-items:center}
+.qr-box svg{width:100%;height:100%;display:block}
+.qr-cap{display:inline-block;margin-top:10px;font-weight:700;background:var(--orange);border:2px solid var(--ink);border-radius:8px;padding:4px 12px}
+.try-steps{margin:18px 0 0;padding-left:24px;font-size:1.1rem}
+.try-steps li{margin-bottom:6px}
+.try-url{margin-top:18px;font-size:1rem;word-break:break-all}
+
+/* ---------- audience choices ---------- */
+.choices{display:grid;gap:24px;margin-top:36px}
+@media (min-width:760px){.choices{grid-template-columns:1fr 1fr}}
+.choice{display:flex;flex-direction:column;gap:12px;min-height:100%;background:#fff;color:var(--ink);text-decoration:none;font-weight:400;
+  border:3px solid var(--ink);border-radius:18px;padding:28px;box-shadow:6px 6px 0 var(--ink);transition:transform .08s,box-shadow .08s,background .15s}
+.choice:hover{background:var(--green-50)}
+.choice:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.choice:focus-visible{outline:4px solid var(--green);outline-offset:4px}
+.choice .big-ic{width:72px;height:72px}
+.choice-title{font-family:var(--head);font-weight:800;font-size:clamp(1.7rem,4vw,2.2rem);line-height:1.1;margin-top:8px}
+.choice-text{color:var(--ink-2);font-size:1.05rem}
+.choice-go{margin-top:auto;display:inline-flex;align-items:center;gap:10px;align-self:flex-start;min-height:56px;padding:0 20px;border:2px solid var(--ink);border-radius:12px;font-weight:700;font-size:1.05rem;box-shadow:var(--shadow-sm)}
+.choice.need .choice-go{background:var(--orange);color:var(--ink)}
+.choice.lease .choice-go{background:var(--green);color:#fff}
+
+/* ---------- audience sections ---------- */
+.aud-head{display:flex;gap:18px;align-items:center;margin-bottom:14px}
+.aud-head .big-ic{flex:none}
+.aud-head .sec-h{margin:0}
+.aud-grid{display:grid;gap:28px;margin-top:32px;align-items:start}
+@media (min-width:860px){.aud-grid{grid-template-columns:1.3fr 1fr}}
+.aud-steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.aud-steps li{counter-increment:s;display:grid;grid-template-columns:52px 1fr;gap:4px 16px;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:16px}
+.aud-steps li::before{content:counter(s);grid-row:span 2;width:52px;height:52px;border-radius:12px;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.3rem;background:var(--green-50)}
+.aud-steps strong{font-family:var(--head);font-size:1.15rem;align-self:end}
+.aud-steps span{color:var(--ink-2)}
+.aud-side{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.aud-side h3{font-size:1.3rem;margin-bottom:12px}
+.checks{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:10px}
+.checks li{display:flex;gap:10px;align-items:flex-start}
+.checks svg{flex:none;color:var(--green);margin-top:3px}
+.cost{display:block;background:var(--orange-50);border:2px dashed var(--ink);border-radius:10px;padding:12px 14px;margin-bottom:20px}
+.aud-side .btn{width:100%}
+.aud-side .btn+.btn{margin-top:14px}
+.back-link{display:inline-flex;align-items:center;min-height:48px;margin-top:24px}
+#need{background:#fff}
+
+/* ---------- savings calculator ---------- */
+#calc{background:var(--orange-50)}
+.calc{display:grid;gap:28px;margin-top:36px;align-items:stretch}
+@media (min-width:860px){.calc{grid-template-columns:1fr 1fr}}
+.calc-form{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:26px;box-shadow:var(--shadow)}
+.field{margin-bottom:22px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-weight:700;font-size:1.1rem;margin-bottom:8px}
+.input-wrap{display:flex;align-items:center;border:2px solid var(--ink);border-radius:10px;background:#fff;min-height:60px}
+.input-wrap:focus-within{outline:3px solid var(--green);outline-offset:2px;box-shadow:var(--shadow-sm)}
+.input-wrap .unit{padding:0 14px;font-weight:700;font-size:1.2rem;color:var(--ink-2)}
+.input-wrap input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:1.3rem;font-weight:700;color:var(--ink);min-height:56px;padding:0 14px}
+.input-wrap .unit+input{padding-left:0}
+.input-wrap input:focus-visible{outline:none}
+.input-wrap.bad{border-color:#B3261E;background:#FFF5F4}
+.help{font-size:.95rem;color:var(--ink-2);margin-top:6px}
+.err{font-size:.95rem;color:#B3261E;font-weight:700;margin-top:6px}
+.err:empty{display:none}
+.err::before{content:"⚠ "}
+.steppers{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.steppers button{min-height:48px;min-width:56px;padding:0 14px;border:2px solid var(--ink);border-radius:8px;background:#fff;font:inherit;font-weight:700;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.steppers button[aria-pressed="true"]{background:var(--green);color:#fff}
+.calc-result{background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:16px;padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+.calc-result .lbl{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.9rem}
+.save-amt{font-family:var(--head);font-weight:800;font-size:clamp(2.8rem,8vw,4.2rem);line-height:1;display:inline-block;background:#fff;color:var(--green);border:2px solid var(--ink);border-radius:12px;padding:10px 18px;align-self:flex-start;transform:rotate(-2deg);box-shadow:var(--shadow-sm)}
+.breakdown{margin:4px 0 0;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:12px;overflow:hidden}
+.breakdown div{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:2px dashed var(--soft)}
+.breakdown div:last-child{border-bottom:0;border-top:2px solid var(--ink);background:var(--orange-50);font-weight:700}
+.breakdown dt{color:var(--ink-2)}
+.breakdown div:last-child dt{color:var(--ink)}
+.breakdown dd{margin:0;font-weight:700;text-align:right}
+.calc-result .small{font-size:.95rem}
+.calc-result .btn{align-self:flex-start;background:#fff;color:var(--ink)}
+
+/* ---------- browse sublets (card + detail styles match app/index.html) ---------- */
+#browse{background:var(--bg)}
+.filters{margin-top:28px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:20px;box-shadow:var(--shadow);display:grid;gap:18px}
+@media (min-width:900px){.filters{grid-template-columns:2fr 1fr 1fr;align-items:end}}
+.filters fieldset{border:0;margin:0;padding:0;min-width:0}
+.f-label,.filters legend{display:block;font-weight:700;font-size:1rem;margin-bottom:8px;padding:0}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill-opt{position:relative;cursor:pointer}
+.pill-opt input{position:absolute;opacity:0;width:1px;height:1px}
+.pill-opt span{display:inline-flex;align-items:center;min-height:48px;padding:0 16px;border:2px solid var(--ink);border-radius:999px;background:#fff;font-weight:700;font-size:.95rem}
+.pill-opt input:checked+span{background:var(--green);color:#fff;box-shadow:2px 2px 0 var(--ink)}
+.pill-opt input:checked+span::before{content:"✓";margin-right:6px}
+.pill-opt input:focus-visible+span{outline:3px solid var(--green);outline-offset:3px}
+.pill-opt input:disabled+span{border-style:dashed;color:var(--ink-2);background:var(--bg);cursor:not-allowed;text-decoration:line-through}
+.check:has(input:disabled){border-style:dashed;color:var(--ink-2);cursor:not-allowed}
+.f-hint{grid-column:1/-1;margin:-6px 0 0;font-size:.95rem;color:var(--ink-2)}
+.sel{width:100%;min-height:52px;border:2px solid var(--ink);border-radius:10px;padding:0 12px;font:inherit;font-weight:700;background:#fff;color:var(--ink)}
+.f-row{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;grid-column:1/-1}
+.check{display:inline-flex;align-items:center;gap:12px;min-height:52px;border:2px solid var(--ink);border-radius:10px;padding:0 16px;font-weight:700;cursor:pointer;background:#fff}
+.check input{width:24px;height:24px;accent-color:var(--green);margin:0}
+.check:has(input:checked){background:var(--green-50);box-shadow:var(--shadow-sm)}
+.check:has(input:focus-visible){outline:3px solid var(--green);outline-offset:2px}
+.link-btn{background:none;border:0;color:var(--green);font:inherit;font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;min-height:48px;padding:0 6px;cursor:pointer}
+.result-count{font-weight:700;margin:24px 0 16px;color:var(--ink-2);font-size:1.05rem}
+.cards{list-style:none;margin:0;padding:0;display:grid;gap:26px}
+@media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+@media (min-width:1000px){.cards{grid-template-columns:1fr 1fr 1fr}}
+.card{position:relative;border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s}
+.card:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.card:has(.card-link:active){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.photo{position:relative;height:190px;overflow:hidden;background:var(--green-50);border-bottom:2px solid var(--ink)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.sample-tag{position:absolute;left:12px;bottom:12px;z-index:1;background:rgba(255,255,255,.94);color:var(--ink);font-size:.8rem;font-weight:700;line-height:1;padding:6px 9px;border:1.5px solid var(--ink);border-radius:6px;pointer-events:none}
+.pill{position:absolute;top:14px;left:-6px;z-index:1;background:var(--ink);color:#fff;font-weight:700;font-size:.85rem;padding:6px 12px 6px 16px;display:inline-flex;gap:6px;align-items:center;transform:rotate(-4deg);border-radius:2px}
+.term-tag{position:absolute;top:14px;right:12px;z-index:1;background:#fff;color:var(--ink);font-weight:700;font-size:.85rem;padding:4px 10px;border:2px solid var(--ink);border-radius:6px}
+.card-body{padding:16px 18px 18px}
+.boost-tag{display:inline-flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:2px 8px;margin-bottom:8px;transform:rotate(-2deg)}
+.card h2{font-size:1.25rem;line-height:1.2;margin-bottom:6px}
+.card-link{color:var(--ink);text-decoration:none;font-weight:700}
+.card-link::after{content:"";position:absolute;inset:0;border-radius:12px}
+.card-link:focus-visible{outline:none}
+.card-link:focus-visible::after{outline:4px solid var(--green);outline-offset:-6px}
+.meta{display:flex;align-items:center;gap:6px;color:var(--ink-2);font-size:1rem}
+.meta svg{flex:none}
+.mini-dates{display:grid;grid-template-columns:1fr 1fr;margin:14px 0;border:2px solid var(--ink);border-radius:8px;overflow:hidden}
+.mini-dates div{padding:8px 10px;background:var(--bg)}
+.mini-dates div+div{border-left:2px dashed var(--ink)}
+.mini-dates dt{font-size:.78rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em}
+.mini-dates dd{margin:2px 0 0;font-weight:700}
+.price{font-size:1.05rem}
+.price strong{font-family:var(--head);font-size:1.5rem;font-weight:800}
+.empty{text-align:center;padding:40px 20px;background:#fff;border:2px dashed var(--ink);border-radius:16px}
+.empty h2{font-size:1.4rem;margin-bottom:8px}
+.empty p{color:var(--ink-2);margin-bottom:18px}
+/* detail */
+.back-btn{display:inline-flex;align-items:center;gap:8px;min-height:52px;margin:0 0 18px;padding:0 16px;border:2px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink);text-decoration:none;box-shadow:var(--shadow-sm)}
+.detail{display:grid;gap:32px}
+@media (min-width:960px){.detail{grid-template-columns:1.2fr 1fr;align-items:start}}
+@media (max-width:959px){.detail>div:last-child{order:-1}}   /* phones: title, price and buttons first */
+.gallery{position:relative;border:2px solid var(--ink);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.gallery .photo{height:clamp(240px,40vw,400px);border-bottom:0}
+.gallery .sample-tag{top:14px;bottom:auto;left:14px}
+.ph-label{position:absolute;bottom:14px;left:50%;transform:translateX(-50%) rotate(-2deg);background:#fff;color:var(--ink);font-weight:700;font-size:.95rem;padding:6px 12px;border-radius:6px;border:2px solid var(--ink);white-space:nowrap}
+.gal-nav{position:absolute;inset:auto 14px 50% 14px;display:flex;justify-content:space-between;transform:translateY(50%);pointer-events:none}
+.gal-nav button{pointer-events:auto;width:52px;height:52px;border-radius:12px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;box-shadow:var(--shadow-sm);cursor:pointer;color:var(--ink)}
+.verified{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--green);font-weight:700;font-size:.95rem;padding:5px 12px;border-radius:6px;border:2px dashed var(--green)}
+.d-title{font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.1;margin:14px 0 8px}
+.price-lg{margin:12px 0 18px;font-size:1.05rem}
+.price-lg strong{font-family:var(--head);font-size:2.1rem;font-weight:800}
+.date-box{border:2px solid var(--ink);border-radius:12px;margin-bottom:18px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.date-box .cols{display:grid;grid-template-columns:1fr 1fr}
+.date-box .cols>div{padding:12px 14px}
+.date-box .cols>div+div{border-left:2px dashed var(--ink)}
+.date-box .lbl{font-size:.8rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em}
+.date-box .val{font-family:var(--head);font-weight:700;font-size:1.15rem;margin-top:2px}
+.date-box .wd{font-size:.9rem;color:var(--ink-2)}
+.date-box .dur{padding:10px 14px;border-top:2px solid var(--ink);background:var(--green-50);font-weight:700}
+.section-h{font-size:1.35rem;margin:28px 0 10px}
+.commute-tiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.commute-tiles li{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 6px;border:2px solid var(--ink);border-radius:12px;background:#fff;text-align:center}
+.commute-tiles svg{color:var(--green)}
+.commute-tiles strong{font-family:var(--head);font-size:1.2rem;line-height:1.15}
+.commute-tiles span{font-size:.88rem;color:var(--ink-2);font-weight:700}
+.protect{display:flex;gap:12px;background:var(--orange-50);border:2px solid var(--ink);border-left:10px solid var(--green);border-radius:12px;padding:16px;margin-top:22px}
+.protect svg{flex:none;color:var(--green)}
+.protect strong{display:block;font-family:var(--head);font-size:1.1rem}
+.facts{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.facts li{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px 12px;font-weight:700;font-size:.95rem}
+.facts svg{color:var(--green);flex:none}
+.host{display:flex;gap:14px;align-items:center;border:2px solid var(--ink);border-radius:12px;padding:14px;background:#fff}
+.avatar{width:56px;height:56px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-family:var(--head);font-weight:800;font-size:1.2rem;flex:none;border:2px solid var(--ink)}
+.host strong{display:block;font-family:var(--head);font-size:1.1rem}
+.host span{color:var(--ink-2)}
+.habits{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.habits li{display:flex;gap:12px;align-items:center;border:2px solid var(--ink);border-radius:10px;padding:10px 12px;background:#fff}
+.habits .h-ic{width:42px;height:42px;flex:none;border-radius:8px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--green-50);color:var(--green)}
+.habits .h-lbl{display:block;font-size:.88rem;color:var(--ink-2);font-weight:700}
+.habits .h-val{display:block;font-family:var(--head);font-weight:700;font-size:1.08rem}
+.rules .h-ic{background:var(--orange-50);color:var(--ink)}
+.no-habits{border:2px dashed var(--ink);border-radius:10px;padding:14px;background:#fff;color:var(--ink-2)}
+.action-card{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-top:28px}
+@media (min-width:960px){.action-card{position:sticky;top:96px}}
+.action-card .price-lg{margin-top:0}
+.action-card .btn{width:100%}
+.action-card .btn+.btn{margin-top:14px}
+.action-note{display:flex;gap:8px;align-items:flex-start;margin-top:16px;font-size:.95rem;color:var(--ink-2)}
+.action-note svg{flex:none;color:var(--green);margin-top:2px}
+/* app-only dialog */
+.app-dlg{width:min(520px,calc(100% - 32px));border:3px solid var(--ink);border-radius:18px;padding:0;background:var(--bg);color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.app-dlg::backdrop{background:rgba(26,26,26,.6)}
+.dlg-in{padding:26px;position:relative}
+.dlg-ic{width:64px;height:64px;border-radius:14px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--orange);transform:rotate(-4deg);box-shadow:var(--shadow-sm);margin-bottom:16px}
+.app-dlg h2{font-size:1.6rem;line-height:1.15;margin-bottom:10px;padding-right:48px}
+.app-dlg p{color:var(--ink-2)}
+.app-dlg ul{list-style:none;margin:16px 0 22px;padding:0;display:grid;gap:10px}
+.app-dlg li{display:flex;gap:10px;align-items:flex-start;font-weight:700}
+.app-dlg li svg{flex:none;color:var(--green);margin-top:2px}
+.app-dlg .btn{width:100%}
+.app-dlg .btn+.btn{margin-top:14px}
+.dlg-x{position:absolute;top:16px;right:16px;width:48px;height:48px;border-radius:12px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+
+/* ---------- students looking (subleasing page) ---------- */
+.sl-list{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:22px}
+@media (min-width:760px){.sl-list{grid-template-columns:1fr 1fr}}
+.sl-card{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+.sl-top{display:flex;gap:14px;align-items:flex-start}
+.sl-top .avatar{background:var(--orange);color:var(--ink)}
+.sl-top strong{display:block;font-family:var(--head);font-size:1.25rem}
+.sl-top .sub{display:block;color:var(--ink-2);margin-bottom:6px}
+.sl-tags{display:flex;flex-wrap:wrap;gap:8px}
+.sl-tags .verified{white-space:nowrap}
+.sl-term{font-weight:700;font-size:.85rem;padding:3px 10px;border:2px solid var(--ink);border-radius:6px;background:var(--green-50);white-space:nowrap}
+.sl-facts{margin:0;border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.sl-facts div{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--bg)}
+.sl-facts div+div{border-top:2px dashed var(--soft)}
+.sl-facts dt{font-weight:700;color:var(--green)}
+.sl-facts dd{margin:0;font-weight:700;text-align:right}
+.sl-habits{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.sl-habits li{font-size:.92rem;font-weight:700;padding:4px 12px;border:2px solid var(--ink);border-radius:999px;background:var(--green-50)}
+
+/* ---------- one page at a time ---------- */
+[hidden]{display:none!important}
+.sec-h{font-weight:800}
+.steps-h{font-size:1.5rem;margin-top:36px}
+.steps-h+.aud-grid{margin-top:18px}
+.aud-steps li:last-child::before{background:var(--orange);transform:rotate(-4deg);box-shadow:var(--shadow-sm)}
+
+/* ---------- features ---------- */
+#features{background:var(--green-50)}
+.feat-grid{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:22px}
+@media (min-width:640px){.feat-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1000px){.feat-grid{grid-template-columns:1fr 1fr 1fr}}
+.feat{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.feat-ic{width:56px;height:56px;border-radius:12px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--green);color:#fff;transform:rotate(-4deg)}
+.feat:nth-child(3n+2) .feat-ic{background:var(--orange);color:var(--ink)}
+.feat:nth-child(3n) .feat-ic{background:#fff;color:var(--green)}
+.feat h3{font-size:1.25rem;line-height:1.2;margin-top:6px}
+.feat p{color:var(--ink-2)}
+.opt-tag{display:inline-block;align-self:flex-start;font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:6px;border:2px solid var(--ink);background:var(--orange);color:var(--ink)}
+
+/* ---------- safety ---------- */
+.s-block{margin-top:48px}
+.s-block:first-of-type{margin-top:36px}
+.s-head{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+.s-head h3{font-size:clamp(1.5rem,3.4vw,1.9rem);line-height:1.15}
+.s-head .feat-ic{flex:none;width:60px;height:60px}
+.s-text{max-width:46rem;color:var(--ink-2);font-size:1.08rem}
+.hold-track{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:14px;counter-reset:h}
+@media (min-width:860px){.hold-track{grid-template-columns:repeat(4,1fr)}}
+.hold-track li{counter-increment:h;position:relative;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:18px;box-shadow:var(--shadow-sm)}
+.hold-track li::before{content:counter(h);display:grid;place-items:center;width:44px;height:44px;border-radius:10px;border:2px solid var(--ink);background:var(--green-50);font-family:var(--head);font-weight:800;font-size:1.2rem;margin-bottom:10px}
+.hold-track li.held-step{background:var(--green);color:#fff}
+.hold-track li.held-step::before{background:#fff;color:var(--green)}
+.hold-track li:last-child::before{background:var(--orange);color:var(--ink)}
+.hold-track strong{display:block;font-family:var(--head);font-size:1.15rem;margin-bottom:4px}
+.hold-track span{color:var(--ink-2)}
+.hold-track .held-step span{color:#fff}
+.two-col{display:grid;gap:22px;margin-top:22px}
+@media (min-width:860px){.two-col{grid-template-columns:1fr 1fr}}
+.s-card{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:22px}
+.s-card h4{font-family:var(--head);font-size:1.2rem;margin:0 0 10px}
+.s-card ul{margin:0;padding-left:22px}
+.s-card li{margin-bottom:8px}
+.badge-demo{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--green);font-weight:700;font-size:.95rem;padding:5px 12px;border-radius:6px;border:2px dashed var(--green)}
+.signs{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:14px}
+@media (min-width:760px){.signs{grid-template-columns:1fr 1fr}}
+.signs li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:2px solid var(--ink);border-left:10px solid var(--orange);border-radius:12px;padding:16px}
+.signs .warn{flex:none;width:40px;height:40px;border-radius:8px;border:2px solid var(--ink);background:var(--orange);color:var(--ink);display:grid;place-items:center;transform:rotate(-4deg)}
+.signs strong{display:block;font-family:var(--head);font-size:1.1rem;margin-bottom:2px}
+.signs span{color:var(--ink-2)}
+.if-see{margin-top:28px;background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:16px;padding:26px;box-shadow:var(--shadow)}
+.if-see h3{font-size:1.5rem;margin-bottom:12px}
+.if-see ol{margin:0 0 20px;padding-left:24px;font-size:1.08rem}
+.if-see li{margin-bottom:8px}
+.if-see .btn{background:#fff;color:var(--ink)}
+
+/* ---------- pricing ---------- */
+.price-grid{display:grid;gap:22px;margin-top:36px}
+@media (min-width:860px){.price-grid{grid-template-columns:repeat(3,1fr)}}
+.price-card{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+.price-card.featured{border-width:3px;box-shadow:6px 6px 0 var(--ink)}
+.price-card .who{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;color:var(--green)}
+.price-card h3{font-size:1.4rem}
+.amount{font-family:var(--head);font-weight:800;font-size:3rem;line-height:1}
+.amount small{font-family:'Atkinson Hyperlegible',sans-serif;font-size:1rem;font-weight:700;color:var(--ink-2)}
+.when{display:inline-block;align-self:flex-start;font-weight:700;font-size:.9rem;padding:4px 12px;border-radius:8px;border:2px solid var(--ink);background:var(--green-50)}
+.featured .when{background:var(--orange)}
+.price-card ul{margin:4px 0 0;padding-left:22px;color:var(--ink-2)}
+.price-card li{margin-bottom:6px}
+.note{margin-top:28px;display:flex;gap:14px;align-items:flex-start;background:var(--orange-50);border:2px solid var(--ink);border-left:10px solid var(--green);border-radius:12px;padding:18px;max-width:52rem}
+.note svg{flex:none;color:var(--green)}
+
+/* ---------- FAQ ---------- */
+.faq{margin-top:48px;max-width:52rem}
+.faq h3.sub{font-size:1.7rem;margin-bottom:16px}
+details{background:#fff;border:2px solid var(--ink);border-radius:12px;margin-bottom:14px}
+details[open]{box-shadow:var(--shadow-sm)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:64px;padding:12px 18px;font-family:var(--head);font-weight:700;font-size:1.15rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:none;width:36px;height:36px;border-radius:8px;border:2px solid var(--ink);display:grid;place-items:center;font-size:1.4rem;background:var(--green-50)}
+details[open] summary::after{content:"–";background:var(--green);color:#fff}
+details p{padding:0 18px 18px;color:var(--ink-2)}
+
+/* ---------- app prompt ---------- */
+.cta{background:var(--green);color:#fff;padding:56px 0;border-bottom:8px solid var(--orange)}
+.cta-inner{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+.cta h2{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;max-width:34rem}
+.cta .btn-ghost{background:#fff}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;gap:22px;margin-top:36px}
+@media (min-width:860px){.contact-grid{grid-template-columns:1fr 1fr}}
+.c-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.c-list li{display:flex;gap:14px;align-items:center;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px 16px;min-height:76px}
+.c-ic{width:48px;height:48px;flex:none;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--green-50);color:var(--green)}
+.c-list .lbl{display:block;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green)}
+.c-list a,.c-list .val{font-size:1.1rem;word-break:break-word}
+.c-list .val{font-weight:700}
+.safety{background:var(--orange-50);border:2px solid var(--ink);border-left:10px solid var(--orange);border-radius:12px;padding:22px}
+.safety h3{font-size:1.3rem;margin-bottom:10px}
+.safety ul{margin:0;padding-left:22px}
+.safety li{margin-bottom:8px}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--ink);color:#fff;padding:52px 0 32px}
+.foot-grid{display:grid;gap:32px}
+@media (min-width:760px){.foot-grid{grid-template-columns:1.3fr 1fr 1fr}}
+.site-footer .logo{color:#fff}
+.site-footer h2{font-size:1.1rem;margin-bottom:12px}
+.site-footer ul{list-style:none;margin:0;padding:0}
+.site-footer li a{display:inline-flex;align-items:center;min-height:44px}
+.site-footer a{color:#fff}
+.site-footer p{color:#E3E6E4}
+.fine{border-top:2px solid #474C49;margin-top:36px;padding-top:20px;font-size:.9rem;color:#C9CECB}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap nav-row">
+    <a class="logo" href="#home" aria-label="TermNest home">
+      <svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44">
+        <rect x="3" y="12" width="36" height="28" rx="4" fill="#F47321" stroke="#1A1A1A" stroke-width="2.5"/>
+        <path d="M3 21h36" stroke="#1A1A1A" stroke-width="2"/>
+        <rect x="16" y="12" width="10" height="13" fill="#005030" stroke="#1A1A1A" stroke-width="2"/>
+        <path d="M11 11 21 3l10 8" fill="none" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 32h12" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>TermNest</span>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="navLinks">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      Menu
+    </button>
+    <nav aria-label="Main">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#browse">Browse sublets</a></li>
+        <li><a href="#need">I need a place</a></li>
+        <li><a href="#subleasing">I’m subleasing my place</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#pricing">Pricing and FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<section id="home" data-page="home" class="hero on-green" aria-labelledby="homeH">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="tag-uni">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005030" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+        For University of Miami students
+      </span>
+      <h1 id="homeH" tabindex="-1">Sublet your room. Find your next one.</h1>
+      <p class="lead">Leaving for a semester or the summer? Post your room. Need a short-term place near campus? Find one from a verified UM student.</p>
+      <div class="btn-row">
+        <a class="btn btn-accent" href="app/index.html">
+          Open the app prototype
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#need">See how it works</a>
+      </div>
+    </div>
+    <ul class="props" aria-label="Why students trust TermNest">
+      <li><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Every student is verified with a school email</span></li>
+      <li><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Exact move-in and move-out dates</span></li>
+      <li><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span>Rent is held in the app until move-in day</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="choices-sec" data-page="home" aria-labelledby="whoH">
+  <div class="wrap">
+    <span class="eyebrow">Two ways to use TermNest</span>
+    <h2 class="sec-h" id="whoH">Which one are you?</h2>
+    <p class="lead">Every term, some UM students leave Miami and others arrive. Pick the one that fits you to see how TermNest works for you.</p>
+    <div class="choices" id="choices">
+      <a class="choice need" href="#need">
+        <span class="big-ic"><svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span>
+        <span class="choice-title">I need a place</span>
+        <span class="choice-text">You need a room near campus for a semester or the summer.</span>
+        <span class="choice-go">Show me how
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="choice lease" href="#subleasing">
+        <span class="big-ic g"><svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span>
+        <span class="choice-title">I’m subleasing my place</span>
+        <span class="choice-text">You’re leaving Miami for a while and don’t want to pay rent on an empty room.</span>
+        <span class="choice-go">Show me how
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="need" data-page="need" aria-labelledby="needH">
+  <div class="wrap">
+    <span class="eyebrow">For students who need a place</span>
+    <div class="aud-head">
+      <span class="big-ic"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span>
+      <h1 class="sec-h" id="needH" tabindex="-1">I need a place</h1>
+    </div>
+    <p class="lead">Find a short-term room near campus from a verified UM student, for your exact dates. Looking is always free.</p>
+    <h2 class="steps-h">How it works for you</h2>
+    <div class="aud-grid">
+      <ol class="aud-steps">
+        <li><strong>Verify your school email</strong><span>Sign up with your miami.edu email and confirm the code. Every student you talk to is verified too.</span></li>
+        <li><strong>Search by your dates</strong><span>Each room shows how many of your days it covers, the commute to campus, and a fair price tag. You can <a href="#browse">browse sublets</a> right now, no account needed.</span></li>
+        <li><strong>Message and match</strong><span>Chat in the app. Add roommate preferences if you want a match score.</span></li>
+        <li><strong>Reserve and sign</strong><span>Pay in the app and sign the sublease. Your rent is held, not sent to the host yet.</span></li>
+        <li><strong>Move in and check</strong><span>Take move-in photos and confirm the room is as listed. Then the rent is released to the host.</span></li>
+      </ol>
+      <div class="aud-side">
+        <h3>What you get</h3>
+        <ul class="checks">
+          <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Exact move-in and move-out dates</span></li>
+          <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Rent held until move-in day</span></li>
+          <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Full refund if the room isn’t as listed</span></li>
+        </ul>
+        <p class="cost"><strong>Cost to you: $0.</strong> Searching, messaging and booking are free.</p>
+        <a class="btn btn-primary" href="#browse">Browse sublets now</a>
+        <a class="btn btn-accent" href="app/index.html">Find a place in the app</a>
+        <a class="btn btn-ghost" href="#subleasing">I’m subleasing instead</a>
+      </div>
+    </div>
+    <a class="back-link" href="#choices">← Back to home</a>
+  </div>
+</section>
+
+<section id="subleasing" data-page="subleasing" aria-labelledby="leaseH">
+  <div class="wrap">
+    <span class="eyebrow">For students subleasing their place</span>
+    <div class="aud-head">
+      <span class="big-ic g"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></span>
+      <h1 class="sec-h" id="leaseH" tabindex="-1">I’m subleasing my place</h1>
+    </div>
+    <p class="lead">Studying abroad, interning, or going home for the summer? Sublet your room to a verified UM student so you’re not paying rent on an empty room.</p>
+    <h2 class="steps-h">How it works for you</h2>
+    <div class="aud-grid">
+      <ol class="aud-steps">
+        <li><strong>Verify your school email</strong><span>Sign up with your miami.edu email and confirm the code.</span></li>
+        <li><strong>Post your room for free</strong><span>Add photos, rent, and your exact move-in and move-out dates.</span></li>
+        <li><strong>Get landlord approval</strong><span>Send the request from the app. Your landlord approves in a few taps.</span></li>
+        <li><strong>Pick your subletter</strong><span>Chat with verified students. Or use Term Swap to trade rooms with a student coming to Miami.</span></li>
+        <li><strong>Sign the sublease agreement</strong><span>You and your subletter sign inside the app. The $15 listing fee is charged only now.</span></li>
+        <li><strong>Get paid at move-in</strong><span>The first month’s rent is released to you after your subletter confirms move-in.</span></li>
+      </ol>
+      <div class="aud-side">
+        <h3>What you get</h3>
+        <ul class="checks">
+          <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Only verified students can book</span></li>
+          <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Landlord approval and sublease agreement in the app</span></li>
+          <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Move-in photos saved with the booking</span></li>
+        </ul>
+        <p class="cost"><strong>Cost to you: $15,</strong> only after a subletter signs. Optional $5 Boost to show higher in search.</p>
+        <a class="btn btn-primary" href="#calc">See how much you could save</a>
+        <a class="btn btn-ghost" href="app/index.html">Post your room in the app</a>
+      </div>
+    </div>
+
+    <h2 class="steps-h" id="lookingH">Students looking right now</h2>
+    <p class="lead" style="margin-top:8px">Verified UM students who need a short-term place. In the app, you’ll see everyone whose dates match your room, plus a roommate match.</p>
+    <ul class="sl-list" id="slList" aria-labelledby="lookingH"></ul>
+    <a class="btn btn-primary" style="margin-top:24px" href="app/index.html">See who matches your dates in the app</a>
+    <a class="back-link" href="#choices">← Back to home</a>
+  </div>
+</section>
+
+<section id="calc" data-page="home" aria-labelledby="calcH">
+  <div class="wrap">
+    <span class="eyebrow">Savings calculator</span>
+    <h2 class="sec-h" id="calcH">How much could you save?</h2>
+    <p class="lead">Leaving Miami for a while? Enter your rent and how long you’ll be away. See what you’d keep by subletting instead of paying for an empty room.</p>
+    <div class="calc">
+      <form class="calc-form" id="calcForm" novalidate>
+        <div class="field">
+          <label for="rent">Your monthly rent</label>
+          <div class="input-wrap" id="rentWrap">
+            <span class="unit" aria-hidden="true">$</span>
+            <input id="rent" name="rent" type="number" inputmode="decimal" min="1" max="20000" step="1" value="1100" aria-describedby="rentHelp rentErr">
+          </div>
+          <p class="help" id="rentHelp">What you pay each month, in US dollars.</p>
+          <p class="err" id="rentErr" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="months">Months you’ll be away</label>
+          <div class="input-wrap" id="monthsWrap">
+            <input id="months" name="months" type="number" inputmode="numeric" min="1" max="12" step="1" value="4" aria-describedby="monthsHelp monthsErr">
+            <span class="unit" aria-hidden="true">months</span>
+          </div>
+          <p class="help" id="monthsHelp">From 1 to 12. Or pick a common one:</p>
+          <div class="steppers" role="group" aria-label="Common lengths">
+            <button type="button" data-m="3" aria-pressed="false">Summer · 3</button>
+            <button type="button" data-m="4" aria-pressed="true">Semester · 4</button>
+            <button type="button" data-m="5" aria-pressed="false">5</button>
+            <button type="button" data-m="8" aria-pressed="false">Full year · 8</button>
+          </div>
+          <p class="err" id="monthsErr" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div class="calc-result" aria-labelledby="resLbl">
+        <span class="lbl" id="resLbl">You could save</span>
+        <output class="save-amt" id="saveAmt" for="rent months" aria-live="polite">$4,385</output>
+        <dl class="breakdown">
+          <div><dt>Rent while you’re away</dt><dd id="bRent">$4,400</dd></div>
+          <div><dt>TermNest listing fee</dt><dd>− $15</dd></div>
+          <div><dt>You keep</dt><dd id="bKeep">$4,385</dd></div>
+        </dl>
+        <p class="small">The $15 fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.</p>
+        <a class="btn" href="app/index.html">Post your room in the app</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BROWSE SUBLETS ================= -->
+<section id="browse" data-page="browse" aria-labelledby="browseH">
+  <div class="wrap">
+    <div id="browseList">
+      <span class="eyebrow">Browse sublets</span>
+      <h1 class="sec-h" id="browseH" tabindex="-1">Sublets near UM</h1>
+      <p class="lead">Look around, no account needed. Every lister is a verified UM student. When you find one you like, message and book in the TermNest app.</p>
+
+      <form class="filters" id="filters" aria-label="Filter sublets">
+        <fieldset>
+          <legend>Move-in timing</legend>
+          <div class="pills">
+            <label class="pill-opt"><input type="radio" name="term" value="" checked><span>Any time</span></label>
+            <label class="pill-opt"><input type="radio" name="term" value="Summer"><span>Summer</span></label>
+            <label class="pill-opt"><input type="radio" name="term" value="Fall"><span>Fall</span></label>
+            <label class="pill-opt"><input type="radio" name="term" value="Spring"><span>Spring</span></label>
+            <label class="pill-opt"><input type="radio" name="term" value="Full year"><span>Full year</span></label>
+          </div>
+        </fieldset>
+        <div>
+          <label class="f-label" for="fPrice">Max price</label>
+          <select class="sel" id="fPrice" name="price">
+            <option value="">Any price</option>
+            <option value="1000">Up to $1,000 / month</option>
+            <option value="1200">Up to $1,200 / month</option>
+            <option value="1400">Up to $1,400 / month</option>
+            <option value="1600">Up to $1,600 / month</option>
+          </select>
+        </div>
+        <div>
+          <label class="f-label" for="fArea">Neighborhood</label>
+          <select class="sel" id="fArea" name="area">
+            <option value="">All neighborhoods</option>
+          </select>
+        </div>
+        <div class="f-row">
+          <label class="check"><input type="checkbox" name="furnished" id="fFurn"> <span id="fFurnLbl">Furnished only</span></label>
+          <button type="reset" class="link-btn" id="fClear">Clear filters</button>
+        </div>
+        <p class="f-hint">Numbers show how many sublets each choice would find. Choices with none are crossed out.</p>
+      </form>
+
+      <p class="result-count" id="resultCount" aria-live="polite"></p>
+      <ul class="cards" id="cards"></ul>
+      <div class="empty" id="emptyState" hidden>
+        <h2>No sublets match those filters</h2>
+        <p id="emptyMsg">Try a different move-in time, a higher price, or another neighborhood.</p>
+        <button type="button" class="btn btn-ghost" id="emptyClear">Clear filters</button>
+      </div>
+    </div>
+
+    <div id="listingDetail" hidden></div>
+  </div>
+</section>
+
+<dialog class="app-dlg" id="appDlg" aria-labelledby="dlgH" aria-describedby="dlgP">
+  <div class="dlg-in">
+    <button type="button" class="dlg-x" id="dlgX" aria-label="Close">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="dlg-ic" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+    <h2 id="dlgH">Message in the TermNest app</h2>
+    <p id="dlgP">For your safety, messaging and booking happen in the TermNest app.</p>
+    <ul>
+      <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Everyone you talk to is a verified student</li>
+      <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Your rent is held until move-in</li>
+      <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>You both sign the sublease agreement in the app</li>
+    </ul>
+    <a class="btn btn-primary" href="app/index.html">Open the TermNest app
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <button type="button" class="btn btn-ghost" id="dlgKeep">Keep browsing</button>
+  </div>
+</dialog>
+
+<!-- ================= FEATURES ================= -->
+<section id="features" data-page="features" aria-labelledby="featH">
+  <div class="wrap">
+    <span class="eyebrow">Features</span>
+    <h1 class="sec-h" id="featH" tabindex="-1">Built for short stays and student safety</h1>
+    <p class="lead">Everything you need to sublet with confidence, in one place.</p>
+    <ul class="feat-grid">
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>
+        <h3>Verified students only</h3>
+        <p>Everyone signs up with a school email and confirms a code. No strangers, no fake profiles.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+        <h3>Exact move-in and move-out dates</h3>
+        <p>Every listing shows the real first and last day, so you never guess what “spring semester” means.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+        <h3>Rent held until move-in</h3>
+        <p>The first month’s rent stays held in the app. It goes to the host only after you move in and confirm.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span>
+        <span class="opt-tag">Optional</span>
+        <h3>Roommate preferences and match</h3>
+        <p>Share your sleep schedule, cleanliness, guests and pets. Each room shows a match score with its roommates.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
+        <h3>Term Swap</h3>
+        <p>Leaving Miami? Trade rooms with a student coming here from the city you’re going to.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 14h8M8 18h5"/></svg></span>
+        <h3>Landlord approval and sublease agreement</h3>
+        <p>Request your landlord’s OK in the app, then both students sign a clear sublease agreement right there.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg></span>
+        <h3>Date coverage</h3>
+        <p>Enter your dates and each room shows if it covers all of them, or exactly how many days you’d still need.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M10 21l2-6 3 2v4M7 12l3-3.5 4 1 2 3.5 3 1M12 15l-1.5-6"/></svg></span>
+        <h3>Commute to campus</h3>
+        <p>See walking, biking and driving times to the Coral Gables campus on every listing, and rooms on a map.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span>
+        <h3>Fair price tags</h3>
+        <p>Each listing is compared with similar rooms nearby, so you can tell at a glance if the rent is fair.</p>
+      </li>
+      <li class="feat">
+        <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+        <h3>Move-in photo check</h3>
+        <p>On move-in day, take photos of the room. They’re saved with your booking in case anything isn’t as listed.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= SAFETY ================= -->
+<section id="safety" data-page="safety" aria-labelledby="safetyH">
+  <div class="wrap">
+    <span class="eyebrow">Safety</span>
+    <h1 class="sec-h" id="safetyH" tabindex="-1">How TermNest keeps you safe</h1>
+    <p class="lead">Subletting means trusting someone you just met. TermNest is built so you don’t have to take anyone’s word for it.</p>
+
+    <div class="s-block" aria-labelledby="sHeld">
+      <div class="s-head">
+        <span class="feat-ic"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+        <h3 id="sHeld">Rent is held until move-in</h3>
+      </div>
+      <p class="s-text">You never send rent straight to a stranger. Your first month’s rent waits with TermNest until you’re in the room and happy with it.</p>
+      <ol class="hold-track">
+        <li><strong>You pay in the app</strong><span>When you reserve, you pay the first month inside TermNest.</span></li>
+        <li class="held-step"><strong>TermNest holds it</strong><span>The host can see it’s paid, but can’t take it out yet.</span></li>
+        <li><strong>You move in and check</strong><span>You see the room in person and take your move-in photos.</span></li>
+        <li><strong>Rent is released</strong><span>After you confirm move-in, the host gets paid.</span></li>
+      </ol>
+      <p class="note" style="margin-top:22px">
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        <span><strong>Room isn’t as listed?</strong> Don’t confirm move-in. Report it in the app instead. Your rent stays held while support looks into it, and if the room isn’t as listed, you get a full refund.</span>
+      </p>
+    </div>
+
+    <div class="s-block" aria-labelledby="sVer">
+      <div class="s-head">
+        <span class="feat-ic" style="background:var(--orange);color:var(--ink)"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>
+        <h3 id="sVer">Every student is verified</h3>
+      </div>
+      <p class="s-text">You can’t post, message or book on TermNest until you prove you’re a student.</p>
+      <div class="two-col">
+        <div class="s-card">
+          <h4>How verification works</h4>
+          <ul>
+            <li>You sign up with your school email (ending in .edu).</li>
+            <li>We send a 6-digit code to that inbox.</li>
+            <li>You enter the code to finish signing up. Only someone who can open that school inbox can do this.</li>
+          </ul>
+        </div>
+        <div class="s-card">
+          <h4>What you’ll see in the app</h4>
+          <p style="margin-bottom:12px"><span class="badge-demo"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg> Verified student</span></p>
+          <p style="color:var(--ink-2)">This badge is on every host and every chat. TermNest’s own support team shows an <strong>Official account</strong> badge, so you always know when it’s really us.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="s-block" aria-labelledby="sPhoto">
+      <div class="s-head">
+        <span class="feat-ic" style="background:#fff;color:var(--green)"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+        <h3 id="sPhoto">Move-in photo check</h3>
+      </div>
+      <p class="s-text">On move-in day, the app asks you to photograph the room before you confirm. It protects both students.</p>
+      <div class="two-col">
+        <div class="s-card">
+          <h4>What to photograph</h4>
+          <ul>
+            <li>Each room you’ll use, from the doorway</li>
+            <li>Furniture, appliances and anything already damaged</li>
+            <li>Walls, floors, windows and the bathroom</li>
+          </ul>
+        </div>
+        <div class="s-card">
+          <h4>Why it matters</h4>
+          <ul>
+            <li>Photos are saved with your booking and dated.</li>
+            <li>If the room doesn’t match the listing, they back up your report.</li>
+            <li>Hosts can see the room’s condition when you arrived.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="s-block" aria-labelledby="sScam">
+      <div class="s-head">
+        <span class="feat-ic" style="background:var(--orange);color:var(--ink)"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg></span>
+        <h3 id="sScam">Sublet scam warning signs</h3>
+      </div>
+      <p class="s-text">Scammers target students looking for short-term housing, especially before a new semester. Watch for these signs, on TermNest or anywhere else.</p>
+      <ul class="signs">
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>They want payment outside the app</strong><span>Zelle, Venmo, Cash App, cash, a wire transfer or gift cards. Money sent this way usually can’t be gotten back.</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>The price is too good to be true</strong><span>Rent far below what similar rooms cost. Check the fair price tag on the listing.</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>You can’t see the room</strong><span>They won’t do a video tour or let a friend visit, often because they say they’re “out of the country.”</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>They rush you</strong><span>“Lots of people want it, pay today to hold it.” Real hosts give you time to decide.</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>They want to leave the app</strong><span>They ask to move to text, WhatsApp or personal email before you’ve booked.</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>They skip the paperwork</strong><span>No landlord approval, no sublease agreement, or “we don’t need to sign anything.”</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>They ask for private information</strong><span>Your Social Security number, bank login or school password. TermNest will never ask for these.</span></span></li>
+        <li><span class="warn" aria-hidden="true">!</span><span><strong>The details don’t match</strong><span>Photos that look like a hotel or ad, an address that changes, or dates that keep shifting.</span></span></li>
+      </ul>
+      <div class="if-see">
+        <h3>If something feels off</h3>
+        <ol>
+          <li>Stop. Don’t send any money.</li>
+          <li>Report the listing or chat in the app.</li>
+          <li>Contact TermNest support. A team member replies within 1 hour in the app.</li>
+        </ol>
+        <a class="btn" href="#contact">Contact TermNest</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING + FAQ ================= -->
+<section id="pricing" data-page="pricing" aria-labelledby="priceH">
+  <div class="wrap">
+    <span class="eyebrow">Pricing and FAQ</span>
+    <h1 class="sec-h" id="priceH" tabindex="-1">Simple pricing. No surprises.</h1>
+    <p class="lead">Looking is always free. Hosts pay only when the sublease actually happens.</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <span class="who">For students looking</span>
+        <h3>Find a place</h3>
+        <p class="amount">$0</p>
+        <span class="when">Always free</span>
+        <ul>
+          <li>Search, save and message</li>
+          <li>Roommate match and date coverage</li>
+          <li>Rent held until move-in</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <span class="who">For students posting</span>
+        <h3>Listing fee</h3>
+        <p class="amount">$15 <small>one time</small></p>
+        <span class="when">Only after a subletter signs</span>
+        <ul>
+          <li>Posting your room is free</li>
+          <li>No subletter, no fee</li>
+          <li>Landlord approval and sublease agreement included</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <span class="who">Optional for hosts</span>
+        <h3>Boost</h3>
+        <p class="amount">$5 <small>one time</small></p>
+        <span class="when">Charged upfront</span>
+        <ul>
+          <li>Your listing shows higher in search</li>
+          <li>Marked with a Boost tag</li>
+          <li>Completely optional</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">
+      <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+      <span><strong>Only pay inside TermNest.</strong> Never pay a sublease with Zelle, Venmo, cash or a wire transfer. Payments outside the app are not protected.</span>
+    </p>
+
+    <div class="faq">
+      <h3 class="sub">Frequently asked questions</h3>
+      <details>
+        <summary>Who can use TermNest?</summary>
+        <p>University of Miami students with a school email. You confirm a code sent to that email before you can post or message.</p>
+      </details>
+      <details>
+        <summary>How does “rent held until move-in” work?</summary>
+        <p>When you reserve, you pay the first month in the app. TermNest holds it. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.</p>
+      </details>
+      <details>
+        <summary>When do I pay the $15 listing fee?</summary>
+        <p>Only after a subletter signs the sublease agreement for your room. Posting is free, and if nobody signs, you pay nothing.</p>
+      </details>
+      <details>
+        <summary>What does the $5 Boost do?</summary>
+        <p>Boost moves your listing higher in search results and adds a Boost tag. It’s optional and charged when you turn it on.</p>
+      </details>
+      <details>
+        <summary>Do I need my landlord’s permission?</summary>
+        <p>Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement.</p>
+      </details>
+      <details>
+        <summary>What is Term Swap?</summary>
+        <p>If you’re leaving Miami for a semester, Term Swap finds a student coming to Miami from the place you’re going, so you can trade rooms.</p>
+      </details>
+      <details>
+        <summary>Do I have to fill out roommate preferences?</summary>
+        <p>No. Preferences are optional. If you add them, you’ll see a match score on rooms that have roommates.</p>
+      </details>
+      <details>
+        <summary>What if something is wrong on move-in day?</summary>
+        <p>Take move-in photos in the app and contact support. Your rent stays held while the team sorts it out.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="cta on-green" data-page="pricing" aria-labelledby="ctaH">
+  <div class="wrap cta-inner">
+    <h2 id="ctaH">Try TermNest now. Tap through the app prototype.</h2>
+    <a class="btn btn-ghost" href="app/index.html">
+      Open the app prototype
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" data-page="contact" aria-labelledby="contactH">
+  <div class="wrap">
+    <span class="eyebrow">Contact</span>
+    <h1 class="sec-h" id="contactH" tabindex="-1">Questions? We’re here to help.</h1>
+    <p class="lead">Reach the TermNest team by email or phone. We reply within one business day.</p>
+    <div class="contact-grid">
+      <ul class="c-list">
+        <li><span class="c-ic"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+          <span><span class="lbl">Email</span><a href="mailto:hello@termnest.app">hello@termnest.app</a></span></li>
+        <li><span class="c-ic"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span>
+          <span><span class="lbl">Phone</span><a href="tel:+13055550123">(305) 555-0123</a></span></li>
+        <li><span class="c-ic"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <span><span class="lbl">Where we are</span><span class="val">Coral Gables, FL 33146</span></span></li>
+        <li><span class="c-ic"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <span><span class="lbl">Hours</span><span class="val">Mon–Fri, 9 AM – 6 PM ET</span></span></li>
+      </ul>
+      <div class="safety">
+        <h3>Already using the app?</h3>
+        <p style="margin-bottom:12px">The fastest way to reach us is <strong>Profile → Help &amp; safety → Chat with support</strong>. A team member replies within 1 hour.</p>
+        <ul>
+          <li>Report a listing that looks wrong</li>
+          <li>Get help on move-in day</li>
+          <li>Ask about held rent or refunds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="try" data-page="home" class="on-green" aria-labelledby="tryH">
+  <div class="wrap try-grid">
+    <div>
+      <span class="try-eyebrow">Ready when you are</span>
+      <h2 class="try-h" id="tryH">Try TermNest on your phone</h2>
+      <p class="try-lead">Scan the code to open the app prototype and see TermNest the way students will use it.</p>
+      <ol class="try-steps">
+        <li>Open your phone’s camera.</li>
+        <li>Point it at the QR code.</li>
+        <li>Tap the link that pops up.</li>
+      </ol>
+      <a class="btn btn-ghost try-btn" href="https://lelalane.github.io/termnest/app/">
+        Already on your phone? Open the app
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <figure class="qr-card">
+      <div class="qr-box" id="qrBox" role="img" aria-label="QR code that opens the TermNest app prototype at lelalane.github.io/termnest/app">
+        <span class="help">Loading QR code…</span>
+      </div>
+      <figcaption class="qr-cap">Scan me</figcaption>
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#home" aria-label="TermNest home">
+          <svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44">
+            <rect x="3" y="12" width="36" height="28" rx="4" fill="#F47321" stroke="#1A1A1A" stroke-width="2.5"/>
+            <path d="M3 21h36" stroke="#1A1A1A" stroke-width="2"/>
+            <rect x="16" y="12" width="10" height="13" fill="#005030" stroke="#1A1A1A" stroke-width="2"/>
+            <path d="M11 11 21 3l10 8" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 32h12" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span>TermNest</span>
+        </a>
+        <p style="margin-top:12px">Student subleases for University of Miami students, from students.</p>
+      </div>
+      <div>
+        <h2>Pages</h2>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#browse">Browse sublets</a></li>
+          <li><a href="#need">I need a place</a></li>
+          <li><a href="#subleasing">I’m subleasing my place</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#safety">Safety</a></li>
+          <li><a href="#pricing">Pricing and FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="app/index.html">App prototype</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:hello@termnest.app">hello@termnest.app</a></li>
+          <li><a href="tel:+13055550123">(305) 555-0123</a></li>
+        </ul>
+        <p style="margin-top:8px">Coral Gables, FL 33146<br>Mon–Fri, 9 AM – 6 PM ET</p>
+      </div>
+    </div>
+    <p class="fine">© 2026 TermNest. TermNest is an independent student project and is not affiliated with or endorsed by the University of Miami.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+// QR code for the hosted app prototype, drawn as crisp SVG squares.
+(() => {
+  const URL_APP = 'https://lelalane.github.io/termnest/app/';
+  const box = document.getElementById('qrBox');
+  if (typeof qrcode !== 'function') { box.innerHTML = '<span class="help">QR code couldn’t load. Use the link instead.</span>'; return; }
+  const qr = qrcode(0, 'M'); qr.addData(URL_APP); qr.make();
+  const n = qr.getModuleCount(), q = 4, size = n + q * 2;   // 4-module quiet zone, as scanners expect
+  let d = '';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c + q} ${r + q}h1v1h-1z`;
+  box.innerHTML = `<svg viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" aria-hidden="true"><rect width="${size}" height="${size}" fill="#fff"/><path d="${d}" fill="#1A1A1A"/></svg>`;
+})();
+
+// Mobile menu toggle
+const btn = document.querySelector('.menu-btn'), links = document.getElementById('navLinks');
+btn.addEventListener('click', () => {
+  const open = btn.getAttribute('aria-expanded') !== 'true';
+  btn.setAttribute('aria-expanded', open); links.classList.toggle('open', open);
+});
+links.addEventListener('click', e => {
+  if (e.target.closest('a')) { btn.setAttribute('aria-expanded','false'); links.classList.remove('open'); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && links.classList.contains('open')) { btn.setAttribute('aria-expanded','false'); links.classList.remove('open'); btn.focus(); }
+});
+// Savings calculator: rent × months away − $15 listing fee
+(() => {
+  const FEE = 15;
+  const rent = document.getElementById('rent'), months = document.getElementById('months');
+  const amt = document.getElementById('saveAmt'), bRent = document.getElementById('bRent'), bKeep = document.getElementById('bKeep');
+  const steps = [...document.querySelectorAll('.steppers button')];
+  const usd = n => '$' + Math.round(n).toLocaleString('en-US');
+  function check(input, wrap, err, lo, hi, msg) {
+    const v = Number(input.value), ok = input.value.trim() !== '' && Number.isFinite(v) && v >= lo && v <= hi && (input === rent || Number.isInteger(v));
+    document.getElementById(err).textContent = ok ? '' : msg;
+    document.getElementById(wrap).classList.toggle('bad', !ok);
+    input.setAttribute('aria-invalid', String(!ok));
+    return ok ? v : null;
+  }
+  function update() {
+    const r = check(rent, 'rentWrap', 'rentErr', 1, 20000, 'Enter your rent as a number between $1 and $20,000.');
+    const m = check(months, 'monthsWrap', 'monthsErr', 1, 12, 'Enter a whole number of months from 1 to 12.');
+    steps.forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.m) === m)));
+    if (r === null || m === null) { amt.textContent = '—'; bRent.textContent = '—'; bKeep.textContent = '—'; return; }
+    const total = r * m, keep = Math.max(0, total - FEE);
+    amt.textContent = usd(keep); bRent.textContent = usd(total); bKeep.textContent = usd(keep);
+  }
+  rent.addEventListener('input', update); months.addEventListener('input', update);
+  steps.forEach(b => b.addEventListener('click', () => { months.value = b.dataset.m; update(); }));
+  document.getElementById('calcForm').addEventListener('submit', e => e.preventDefault());
+  update();
+})();
+
+// Browse sublets. LISTINGS and HOUSE are copied from app/index.html so the site matches the app.
+window.TNBrowse = (() => {
+  const LISTINGS = [
+    {id:1,title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
+     desc:'Bright corner bedroom in a 3-bedroom apartment, a short walk to campus and the Metrorail. Comes with a desk, full bed and closet. My two roommates are UM juniors and quiet during the week.',
+     host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['bedroom1','livingroom2','kitchen1','bathroom1']},
+    {id:2,title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
+     desc:'Whole studio to yourself with a kitchenette and in-building laundry. Two minutes to University station. Great for grad students who want quiet.',
+     host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['studio1','bathroom1','laundry1']},
+    {id:3,title:'Summer room in the Grove',area:'Coconut Grove',dist:3.1,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+     desc:'Leafy, walkable neighborhood with cafes and the bay nearby. Room has a window AC, queen bed and a big desk. One roommate who is a UM senior staying for summer research.',
+     host:{name:'Priya K.',initials:'PK',about:'UM sophomore · Home for the summer'},photos:['bedroom8','kitchen1','bathroom1']},
+    {id:4,boosted:true,title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
+     desc:'Room in a house shared with three UM students. Shared backyard, parking spot included, and bikeable to campus in under 10 minutes.',
+     host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['study-bedroom1','kitchen1','laundry1']},
+    {id:5,title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+     desc:'Room with a city view, building pool and gym. Ideal for a summer internship downtown. About 20 minutes to campus on the Metrorail.',
+     host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['brickell-bedroom1','balcony1','pool1','kitchen1']},
+    {id:6,title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
+     desc:'Shared room in a calm household of graduate students. Lots of natural light and a study nook. Bring your own bed or ask about borrowing one.',
+     host:{name:'Jordan L.',initials:'JL',about:'UM PhD student · Fieldwork in Peru'},photos:['unfurnished-bedroom1','livingroom2','kitchen1']},
+    {id:7,title:'Fall room off Sunset Drive',area:'South Miami',dist:1.4,price:1100,moveIn:'2027-08-16',moveOut:'2027-12-18',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+     desc:'Furnished room in a 2-bedroom condo with a small balcony and covered parking. Close to shops on Sunset Drive and a quick bike ride to campus. My roommate is a UM senior who studies late.',
+     host:{name:'Lena V.',initials:'LV',about:'UM junior · Fall semester in London'},photos:['bedroom7','balcony1','livingroom1','kitchen1']},
+    {id:8,title:'Full-year room by Miracle Mile',area:'Coral Gables',dist:1.6,price:1250,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Private room',roommates:2,furnished:true,utilities:false,tone:3,
+     desc:'Room for the whole school year in a quiet 3-bedroom apartment near Miracle Mile. Big closet, desk and blackout curtains. Two roommates who are UM grad students and keep a tidy home.',
+     host:{name:'Omar H.',initials:'OH',about:'UM junior · Year abroad in Tokyo'},photos:['bedroom8-bed','livingroom2','kitchen1','laundry1']},
+    {id:9,title:'Shared room steps from campus',area:'Coral Gables',dist:0.3,price:800,moveIn:'2027-01-03',moveOut:'2027-05-15',type:'Shared room',roommates:1,furnished:true,utilities:true,tone:1,
+     desc:'Share a big double room in an apartment right across from campus. Two beds, two desks and a walk-in closet. My roommate is a UM junior who is up late and out a lot.',
+     host:{name:'Nia W.',initials:'NW',about:'UM sophomore · Spring internship in D.C.'},photos:['study-bedroom1-desk','kitchen1','bathroom1']},
+    {id:10,title:'Budget summer room near Red Road',area:'Red Road',dist:0.8,price:785,moveIn:'2027-05-15',moveOut:'2027-08-15',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:0,
+     desc:'Shared room in a lively house with two UM students who stay for summer classes. Bring your own bed. Big kitchen, backyard and a short bike ride to campus.',
+     host:{name:'Carlos D.',initials:'CD',about:'UM junior · Summer research in Boston'},photos:['unfurnished-bedroom1-window','kitchen1','laundry1']},
+    {id:11,title:'Fall shared room by the Metrorail',area:'South Miami',dist:0.7,price:795,moveIn:'2027-08-14',moveOut:'2027-12-20',type:'Shared room',roommates:1,furnished:true,utilities:false,tone:2,
+     desc:'Shared room in a quiet, tidy apartment a few minutes from South Miami station. Furnished with a twin bed and desk. My roommate is an early riser who studies at home.',
+     host:{name:'Hannah S.',initials:'HS',about:'UM junior · Fall abroad in Florence'},photos:['bedroom2-bed','livingroom2','kitchen1']},
+    {id:12,title:'Full-year shared room near Red Road',area:'Red Road',dist:0.9,price:800,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Shared room',roommates:2,furnished:true,utilities:true,tone:3,
+     desc:'Shared room for the whole school year in a friendly house off Red Road. Utilities and Wi-Fi are included. The household has a cat and likes a movie night now and then.',
+     host:{name:'Kofi A.',initials:'KA',about:'UM senior · Year-long co-op in Seattle'},photos:['bedroom7-bed','livingroom1','kitchen1']},
+    {id:13,title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:2.8,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
+     desc:'Private room with a peek of the bay, a queen bed and a ceiling fan. Walk to cafes and the marina. My roommate is a grad student with a friendly dog.',
+     host:{name:'Grace L.',initials:'GL',about:'UM senior · Summer internship in Chicago'},photos:['grove-bedroom1','balcony1','kitchen1']},
+    {id:14,title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
+     desc:'Whole studio on a high floor with a pool, gym and front desk. Steps from Brickell City Centre and the Metromover. About 25 minutes to campus on the Metrorail.',
+     host:{name:'Mateo G.',initials:'MG',about:'UM grad student · Summer fellowship in D.C.'},photos:['studio3','pool1','balcony1','laundry1']},
+    {id:15,title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.4,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
+     desc:'Unfurnished private room in a two-story townhouse with a patio. The two roommates are social, have friends over often and keep things relaxed. Smoking is OK on the patio.',
+     host:{name:'Zoe M.',initials:'ZM',about:'UM junior · Fall semester in Sydney'},photos:['unfurnished-bedroom1-closet','kitchen1','livingroom1']},
+    {id:16,title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+     desc:'Furnished room with a city view and its own bathroom. The building has a pool and a study lounge. My roommate is a very tidy night owl who works downtown.',
+     host:{name:'Ethan B.',initials:'EB',about:'UM senior · Fall co-op in New York'},photos:['bedroom2','bathroom1','pool1','livingroom1']},
+    {id:17,title:'Garden room on Red Road',area:'Red Road',dist:1.0,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
+     desc:'Private room that opens onto a garden in a house with three UM students. Unfurnished, so bring your own things. Early risers who often have friends over for dinner.',
+     host:{name:'Ava P.',initials:'AP',about:'UM sophomore · Spring abroad in Barcelona'},photos:['unfurnished-bedroom1-light','kitchen1','laundry1']},
+    {id:18,title:'Year-long room in South Miami',area:'South Miami',dist:1.3,price:1150,moveIn:'2027-08-12',moveOut:'2028-05-15',type:'Private room',roommates:1,furnished:false,utilities:true,tone:1,
+     desc:'Unfurnished private room for the full school year in a calm two-bedroom near Sunset Place. My roommate is a quiet law student who studies at home.',
+     host:{name:'Rahul N.',initials:'RN',about:'UM junior · Year abroad in Singapore'},photos:['unfurnished-bedroom1-door','livingroom2','kitchen1','bathroom1']}
+  ];
+  // Household answers, same as the app. The studio is an entire place, so only building rules apply.
+  const HOUSE = {
+    1:{sleep:0,clean:0,guests:1,noise:1,pets:1,smoking:1,study:0},
+    2:{noise:0,pets:1,smoking:1},
+    3:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:1,study:1},
+    4:{sleep:1,clean:1,guests:2,noise:2,pets:0,smoking:0,study:1},
+    5:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:1},
+    6:{sleep:0,clean:1,guests:0,noise:0,pets:1,smoking:1,study:0},
+    7:{sleep:1,clean:1,guests:1,noise:1,pets:1,smoking:1,study:1},
+    8:{sleep:0,clean:0,guests:1,noise:0,pets:1,smoking:1,study:0},
+    9:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:1,study:1},
+    10:{sleep:1,clean:2,guests:1,noise:2,pets:0,smoking:0,study:1},
+    11:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:0},
+    12:{sleep:1,clean:1,guests:1,noise:1,pets:0,smoking:1,study:1},
+    13:{sleep:0,clean:1,guests:1,noise:1,pets:0,smoking:1,study:0},
+    14:{noise:1,pets:0,smoking:1},
+    15:{sleep:1,clean:2,guests:2,noise:2,pets:0,smoking:0,study:1},
+    16:{sleep:1,clean:0,guests:1,noise:1,pets:1,smoking:1,study:1},
+    17:{sleep:0,clean:1,guests:2,noise:1,pets:0,smoking:1,study:0},
+    18:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:0}
+  };
+  const HABITS = [  // roommate habits
+    {key:'sleep', label:'Sleep schedule', icon:'moon',    opts:['Early birds','Night owls']},
+    {key:'clean', label:'Cleanliness',    icon:'sparkle', opts:['Very tidy','Average','Relaxed']},
+    {key:'study', label:'Study style',    icon:'book',    opts:['Study at home','Mostly study out']}
+  ];
+  const RULES = [   // house rules
+    {key:'guests', label:'Guests over', icon:'people',  opts:['Rarely','Sometimes','Often']},
+    {key:'noise',  label:'Noise level', icon:'volume',  opts:['Quiet','Some noise','Lively']},
+    {key:'pets',   label:'Pets',        icon:'paw',     opts:['Has or allows pets','No pets']},
+    {key:'smoking',label:'Smoking',     icon:'nosmoke', opts:['Smoking allowed','No smoking']}
+  ];
+  const P = {
+    bed:'<path d="M3 18V7M3 13h18v5M21 18v-3a3 3 0 0 0-3-3h-8v1"/><circle cx="7" cy="10.5" r="1.6"/>',
+    pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+    verified:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+    shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+    walk:'<circle cx="13" cy="4" r="2"/><path d="M10 21l2-6 3 2v4M7 12l3-3.5 4 1 2 3.5 3 1M12 15l-1.5-6"/>',
+    bike:'<circle cx="5.5" cy="17" r="3.5"/><circle cx="18.5" cy="17" r="3.5"/><path d="M5.5 17 9 9h6l3.5 8M9 9l3 8h-6.5M15 9l-1-3h-2"/>',
+    car:'<path d="M4 17V12l2-5h12l2 5v5z"/><path d="M4 12h16"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/>',
+    people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/>',
+    sofa:'<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M3 11h18v6H3zM5 17v2M19 17v2"/>',
+    bolt:'<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
+    moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+    sparkle:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+    volume:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
+    paw:'<circle cx="5.5" cy="10.5" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18.5" cy="10.5" r="2"/><path d="M12 12c-3 0-5.5 3.5-5.5 6a2.5 2.5 0 0 0 3.5 2.3 5 5 0 0 1 4 0 2.5 2.5 0 0 0 3.5-2.3c0-2.5-2.5-6-5.5-6z"/>',
+    nosmoke:'<rect x="2" y="14" width="14" height="4" rx="1"/><path d="M19 14v4M22 14v4M18 10c0-2 2-2 2-4M3 3l18 18"/>',
+    book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M19 19v2H6"/>',
+    back:'<path d="M15 5l-7 7 7 7"/>', next:'<path d="M9 5l7 7-7 7"/>',
+    chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
+  };
+  const ic = (n, s=24) => `<svg aria-hidden="true" focusable="false" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n]}</svg>`;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const toDate = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
+  const fmt = iso => toDate(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const weekday = iso => toDate(iso).toLocaleDateString('en-US',{weekday:'long'});
+  const money = n => '$' + Number(n).toLocaleString('en-US');
+  const weeks = (a,b) => Math.round((toDate(b) - toDate(a)) / 864e5 / 7);
+  const termName = a => { const m = toDate(a).getMonth(); return m <= 1 || m === 11 ? 'Spring semester' : m >= 4 && m <= 6 ? 'Summer' : 'Fall semester'; };
+  // Move-in timing: a stay of 9+ months counts as a full year; otherwise the term you move in.
+  const timing = l => weeks(l.moveIn, l.moveOut) >= 39 ? 'Full year' : termName(l.moveIn).replace(' semester', '');
+  const COMMUTE = [['walk','Walking',20,0],['bike','Biking',6,2],['car','Driving',2.6,4]];   // same estimate as the app
+  const fmtMin = m => m < 60 ? `${m} min` : `${Math.floor(m/60)} hr${m%60 ? ` ${m%60} min` : ''}`;
+  const commute = d => COMMUTE.map(([icon,label,per,base]) => ({icon,label,min:Math.max(1, Math.round(base + d*per))}));
+
+  const form = document.getElementById('filters'), cards = document.getElementById('cards');
+  const count = document.getElementById('resultCount'), empty = document.getElementById('emptyState'), emptyMsg = document.getElementById('emptyMsg');
+  const list = document.getElementById('browseList'), detail = document.getElementById('listingDetail');
+  const areaSel = document.getElementById('fArea');
+  [...new Set(LISTINGS.map(l => l.area))].sort().forEach(a => areaSel.add(new Option(a, a)));
+
+  // ---- listing photos ----
+  // AI-generated sample photos in images/ (each in a 640px and 1280px version).
+  // Same photo keys and alt text as the app (app/index.html), so each listing shows the same photos in both.
+  const IMG_DIR = 'images/';
+  const PHOTOS = {
+    'bedroom1':{label:'Bedroom',alt:'Bright bedroom with a full bed in white linens, a wooden desk and chair by a large window with palm trees outside, a bookshelf, and photos on the wall'},
+    'bedroom2':{label:'Bedroom',alt:'Sunny bedroom with a queen bed in white bedding, a wooden desk and chair under a big window looking out at high-rise towers and the water, a tall mirror and hanging plants'},
+    'bedroom8':{label:'Bedroom',alt:'Warm bedroom with a queen bed, a wooden dresser with a mirror, an arched window onto trees, a ceiling fan, a woven rug and a small desk with a chair'},
+    'brickell-bedroom1':{label:'Bedroom',alt:'High-rise bedroom with a queen bed in gray bedding, two nightstands with lamps, an armchair, and floor-to-ceiling windows showing the city skyline and bay at dusk'},
+    'grove-bedroom1':{label:'Bedroom',alt:'Light bedroom with a rattan headboard, a matching nightstand and lamp, a ceiling fan, a bookshelf, lots of plants and a window onto tropical trees'},
+    'bedroom7':{label:'Bedroom',alt:'Dim, cozy bedroom with a queen bed in dark green bedding, a tall black dresser, framed prints, and a desk with two computer monitors and a gaming chair by a window facing an apartment building'},
+    'bedroom2-bed':{label:'Bedroom',big:1024,alt:'Bright bedroom with a queen bed in white bedding and a stuffed bunny on the pillows, beach prints on the wall, a tall mirror with hanging vines, and a window looking out at towers and the water'},
+    'bedroom7-bed':{label:'Bedroom',big:1024,alt:'Dim bedroom with a queen bed in dark green bedding and a folded blanket, a tall black dresser, a small lamp on the nightstand, and a window facing an apartment building'},
+    'bedroom8-bed':{label:'Bedroom',big:1024,alt:'Warm bedroom with a queen bed in white bedding and a knit throw, a lamp on a wooden nightstand, a painting of a Mediterranean-style house, an arched window onto trees, and a cane chair at a desk'},
+    'study-bedroom1-desk':{label:'Bedroom',big:1024,alt:'Bedroom with a full bed in gray bedding, a large bean bag chair, a window with blinds, and a desk with a lamp, computer monitor and black office chair'},
+    'study-bedroom1':{label:'Bedroom',alt:'Cozy bedroom with a full bed in gray bedding, a tall bookshelf, a bean bag chair, and a desk with a computer monitor and office chair by a window with blinds'},
+    'studio1':{label:'Studio',alt:'Studio apartment with a queen bed by a window with a city view, a gray sofa, a round coffee table, and a kitchen with stainless appliances and a counter with two stools'},
+    'studio3':{label:'Studio',alt:'High-rise studio with a fold-away wall bed, built-in shelves, a sofa, a round coffee table, and a small table with two chairs by floor-to-ceiling windows facing downtown towers'},
+    'unfurnished-bedroom1':{label:'Empty bedroom',alt:'Empty unfurnished bedroom with wood-look floors, a large window with palm trees and towers outside, and a sliding-door closet'},
+    'unfurnished-bedroom1-window':{label:'Empty bedroom',alt:'Empty unfurnished bedroom with a large window looking out at palm trees and towers, sunlight on the wood-look floor, and a closed sliding closet door'},
+    'unfurnished-bedroom1-closet':{label:'Empty bedroom',alt:'Empty unfurnished bedroom with an open sliding-door closet and hanging rod, a window with palm trees outside, and the bedroom door'},
+    'unfurnished-bedroom1-light':{label:'Empty bedroom',big:960,alt:'Empty unfurnished bedroom with wide wood-look floors in bright sunlight, white walls, and a window looking out at palm trees and towers'},
+    'unfurnished-bedroom1-door':{label:'Empty bedroom',big:896,alt:'Empty unfurnished bedroom corner with a sliding closet door half open, an empty closet with a hanging rod, a light switch, and the bedroom door'},
+    'livingroom1':{label:'Living room',alt:'Living room with a large sectional sofa, a round coffee table, a wall TV over a low cabinet, and glass doors to a balcony with palm trees and towers beyond'},
+    'livingroom2':{label:'Living room',alt:'Living room with a white sectional sofa, a round wooden coffee table, an armchair, a jute rug and glass doors to a balcony with a city view'},
+    'kitchen1':{label:'Kitchen',alt:'Bright kitchen with white cabinets, a stainless fridge, microwave and dishwasher, a breakfast bar with two stools, and a small round table with two chairs by a window'},
+    'bathroom1':{label:'Bathroom',big:1024,alt:'Bathroom with a glass walk-in shower with white tile, a toilet, a wood vanity with a white sink and a round mirror, white towels and a woven bath mat'},
+    'balcony1':{label:'Balcony',alt:'Balcony with two cushioned outdoor chairs, a small round table and potted plants, looking out over palm trees and buildings to the water'},
+    'laundry1':{label:'Laundry',alt:'Laundry closet with a stacked washer and dryer, open shelves with baskets and towels, and a woven hamper'},
+    'pool1':{label:'Pool',alt:'Building pool with lounge chairs and umbrellas, surrounded by palm trees and apartment buildings'}
+  };
+  const SAMPLE_TAG = '<span class="sample-tag" aria-hidden="true">Sample photo</span>';
+  function photoImg(key, sizes, lazy = true) {
+    const k = PHOTOS[key] ? key : 'bedroom1', big = PHOTOS[k].big || 1280;   // big: width of the large file
+    return `<img src="${IMG_DIR}${k}-640.jpg" srcset="${IMG_DIR}${k}-640.jpg 640w, ${IMG_DIR}${k}-${big}.jpg ${big}w" sizes="${sizes}"
+      alt="${esc('Sample photo: ' + PHOTOS[k].alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async">`;
+  }
+  const galleryInner = (l, i) => `${photoImg(l.photos[i], '(min-width:960px) 55vw, 100vw', i > 0)}${SAMPLE_TAG}
+    <span class="ph-label" aria-hidden="true">Photo ${i+1} of ${l.photos.length} · ${esc(PHOTOS[l.photos[i]].label)}</span>`;
+
+  function cardHTML(l) {
+    return `<li class="card">
+      <div class="photo">${photoImg(l.photos[0], '(min-width:1000px) 400px, (min-width:640px) 50vw, 100vw')}${SAMPLE_TAG}</div>
+      <span class="pill">${ic('verified',16)}Verified student</span>
+      <span class="term-tag">${timing(l)} move-in</span>
+      <div class="card-body">
+        ${l.boosted ? `<p class="boost-tag">${ic('bolt',16)} Boosted</p>` : ''}
+        <h2><a class="card-link" href="#listing-${l.id}">${esc(l.title)}</a></h2>
+        <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
+        <dl class="mini-dates"><div><dt>Move-in</dt><dd>${fmt(l.moveIn)}</dd></div><div><dt>Move-out</dt><dd>${fmt(l.moveOut)}</dd></div></dl>
+        <p class="price"><strong>${money(l.price)}</strong> / month</p>
+      </div></li>`;
+  }
+  // Filters show how many sublets each choice would find, and choices that would find none are turned off,
+  // so a combination of filters can never come back empty.
+  const pass = (l, c) => (!c.term || timing(l) === c.term) && l.price <= (c.max || Infinity) && (!c.area || l.area === c.area) && (!c.furn || l.furnished);
+  form.querySelectorAll('.pill-opt span, #fPrice option, #fArea option').forEach(el => { el.dataset.label = el.textContent; });
+  const furnLabel = document.getElementById('fFurnLbl');
+  function facets(c) {
+    const n = over => LISTINGS.filter(l => pass(l, {...c, ...over})).length;
+    form.querySelectorAll('input[name="term"]').forEach(i => {
+      const k = n({term: i.value}), span = i.nextElementSibling;
+      i.disabled = k === 0 && !i.checked;
+      span.textContent = `${span.dataset.label} · ${k}`;
+    });
+    [['#fPrice', v => ({max: Number(v) || 0})], ['#fArea', v => ({area: v})]].forEach(([sel, over]) => {
+      document.querySelectorAll(sel + ' option').forEach(o => {
+        const k = n(over(o.value));
+        o.disabled = k === 0 && !o.selected;
+        o.textContent = `${o.dataset.label} (${k})`;
+      });
+    });
+    const kf = n({furn: true}), fc = document.getElementById('fFurn');
+    fc.disabled = kf === 0 && !fc.checked;
+    furnLabel.textContent = `Furnished only (${kf})`;
+  }
+  function render() {
+    const f = new FormData(form);
+    const c = {term: f.get('term'), max: Number(f.get('price')) || 0, area: f.get('area'), furn: f.get('furnished') === 'on'};
+    const term = c.term;
+    facets(c);
+    const res = LISTINGS.filter(l => pass(l, c));
+    cards.innerHTML = res.map(cardHTML).join('');
+    count.textContent = res.length === LISTINGS.length ? `Showing all ${res.length} sublets` : `${res.length} of ${LISTINGS.length} sublets match`;
+    empty.hidden = res.length > 0;
+    if (!res.length) emptyMsg.textContent = term && !LISTINGS.some(l => timing(l) === term)
+      ? `No ${term === 'Full year' ? 'full-year' : term.toLowerCase()} sublets are listed right now. Try another move-in time, or check back soon.`
+      : 'Try a different move-in time, a higher price, or another neighborhood.';
+  }
+  form.addEventListener('change', render);
+  form.addEventListener('reset', () => setTimeout(render));
+  document.getElementById('emptyClear').addEventListener('click', () => { form.reset(); form.querySelector('input[name="term"]').focus(); });
+  render();
+
+  // ---- detail view ----
+  function row(q, v) { return `<li><span class="h-ic">${ic(q.icon,22)}</span><span><span class="h-lbl">${q.label}</span><span class="h-val">${esc(q.opts[v])}</span></span></li>`; }
+  function detailHTML(l, photo) {
+    const h = HOUSE[l.id] || {}, first = l.host.name.split(' ')[0];
+    const habits = HABITS.filter(q => h[q.key] !== undefined), rules = RULES.filter(q => h[q.key] !== undefined);
+    return `<a class="back-btn" href="#browse">${ic('back',22)} Back to all sublets</a>
+      <div class="detail">
+        <div>
+          <div class="gallery">
+            <div class="photo" id="galPhoto" aria-live="polite">${galleryInner(l, photo)}</div>
+            <div class="gal-nav">
+              <button type="button" data-photo="-1" aria-label="Previous photo">${ic('back')}</button>
+              <button type="button" data-photo="1" aria-label="Next photo">${ic('next')}</button>
+            </div>
+          </div>
+          <h2 class="section-h">About this place</h2>
+          <p>${esc(l.desc)}</p>
+          <ul class="facts">
+            <li>${ic('bed',20)}${esc(l.type)}</li>
+            <li>${ic('people',20)}${l.roommates ? l.roommates + ' roommate' + (l.roommates > 1 ? 's' : '') : 'No roommates'}</li>
+            <li>${ic('sofa',20)}${l.furnished ? 'Furnished' : 'Unfurnished'}</li>
+            <li>${ic('bolt',20)}${l.utilities ? 'Utilities included' : 'Utilities extra'}</li>
+          </ul>
+          <h2 class="section-h">Roommate habits</h2>
+          ${habits.length ? `<ul class="habits">${habits.map(q => row(q, h[q.key])).join('')}</ul>`
+            : `<p class="no-habits">This is an entire place, so you won’t have roommates. Building rules are below.</p>`}
+          <h2 class="section-h">${l.roommates ? 'House rules' : 'Building rules'}</h2>
+          <ul class="habits rules">${rules.map(q => row(q, h[q.key])).join('')}</ul>
+          <h2 class="section-h">Commute to UM Coral Gables campus</h2>
+          <ul class="commute-tiles">${commute(l.dist).map(x => `<li>${ic(x.icon,28)}<strong>${fmtMin(x.min)}</strong><span>${x.label}</span></li>`).join('')}</ul>
+          <p class="help" style="margin-top:8px">Estimates for ${l.dist} mi. Driving includes typical traffic, not parking.</p>
+          <h2 class="section-h">Listed by</h2>
+          <div class="host"><span class="avatar">${esc(l.host.initials)}</span><div><strong>${esc(l.host.name)}</strong><span>${esc(l.host.about)}</span></div></div>
+        </div>
+        <div>
+          <span class="verified">${ic('verified',18)} Verified student · .edu</span>
+          <h1 class="d-title" id="detailH" tabindex="-1">${esc(l.title)}</h1>
+          <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
+          <div class="action-card">
+            <p class="price-lg"><strong>${money(l.price)}</strong> / month</p>
+            <div class="date-box">
+              <div class="cols">
+                <div><p class="lbl">Move-in</p><p class="val">${fmt(l.moveIn)}</p><p class="wd">${weekday(l.moveIn)}</p></div>
+                <div><p class="lbl">Move-out</p><p class="val">${fmt(l.moveOut)}</p><p class="wd">${weekday(l.moveOut)}</p></div>
+              </div>
+              <p class="dur">${weeks(l.moveIn, l.moveOut)} weeks · ${termName(l.moveIn)}</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-app="message" data-name="${esc(first)}">${ic('chat')} Message lister</button>
+            <button type="button" class="btn btn-accent" data-app="reserve" data-name="${esc(first)}">${ic('calendar')} Reserve this place</button>
+            <p class="action-note">${ic('lock',20)}<span>Free to browse. Messaging and booking happen in the TermNest app.</span></p>
+          </div>
+          <div class="protect">${ic('shield',28)}<div><strong>Rent held until move-in</strong>When you book in the app, your payment stays with TermNest and is released to ${esc(first)} only after you move in.</div></div>
+        </div>
+      </div>`;
+  }
+  let current = null, photo = 0, opener = null;
+  function show(id) {
+    const m = /^listing-(\d+)$/.exec(id || ''), l = m && LISTINGS.find(x => x.id === Number(m[1]));
+    if (!l) { list.hidden = false; detail.hidden = true; current = null; return null; }
+    current = l; photo = 0;
+    detail.innerHTML = detailHTML(l, photo);
+    list.hidden = true; detail.hidden = false;
+    return l.title;
+  }
+  detail.addEventListener('click', e => {
+    const b = e.target.closest('[data-photo]');
+    if (b && current) {
+      photo = (photo + Number(b.dataset.photo) + current.photos.length) % current.photos.length;
+      document.getElementById('galPhoto').innerHTML = galleryInner(current, photo);
+      return;
+    }
+    const a = e.target.closest('[data-app]');
+    if (a) openDialog(a.dataset.app, a.dataset.name, a);
+  });
+
+  // ---- "use the app" dialog ----
+  const dlg = document.getElementById('appDlg'), dlgH = document.getElementById('dlgH'), dlgP = document.getElementById('dlgP');
+  function openDialog(kind, name, from) {
+    opener = from;
+    if (kind === 'message') {
+      dlgH.textContent = `Message ${name} in the TermNest app`;
+      dlgP.textContent = 'For your safety, messaging happens in the TermNest app, not by email or text. Open the app to send your first message.';
+    } else {
+      dlgH.textContent = 'Reserve this place in the TermNest app';
+      dlgP.textContent = 'For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in and how you both sign the sublease.';
+    }
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  const closeDlg = () => { if (dlg.open) dlg.close ? dlg.close() : dlg.removeAttribute('open'); };
+  document.getElementById('dlgX').addEventListener('click', closeDlg);
+  document.getElementById('dlgKeep').addEventListener('click', closeDlg);
+  dlg.addEventListener('click', e => { if (e.target === dlg) closeDlg(); });     // click on the dark backdrop
+  dlg.addEventListener('close', () => { if (opener) opener.focus(); });
+  return { show };
+})();
+
+// Students looking for a place. Same data as STUDENTS in app/index.html.
+(() => {
+  const STUDENTS = [
+    {id:'s1',name:'Jasmine',year:'Junior',major:'Nursing',from:'2027-01-06',to:'2027-05-12',budget:1200,area:'Coral Gables',habits:{sleep:0,clean:0,guests:1,noise:0,pets:1,smoking:1,study:0}},
+    {id:'s2',name:'Marcus',year:'Senior',major:'Finance',from:'2027-01-10',to:'2027-05-08',budget:1000,area:'Red Road',habits:{sleep:1,clean:1,guests:2,noise:1,pets:0,smoking:1,study:1}},
+    {id:'s3',name:'Sofia',year:'Grad student',major:'Marine Science',from:'2027-01-04',to:'2027-05-20',budget:1400,area:'Coconut Grove',habits:{sleep:0,clean:1,guests:0,noise:0,pets:0,smoking:1,study:0}},
+    {id:'s4',name:'Daniel',year:'Sophomore',major:'Computer Science',from:'2027-01-12',to:'2027-04-30',budget:900,area:'South Miami',habits:{sleep:1,clean:2,guests:1,noise:2,pets:0,smoking:1,study:1}},
+    {id:'s5',name:'Aisha',year:'Junior',major:'Public Health',from:'2027-02-01',to:'2027-05-15',budget:1100,area:'Coral Gables',habits:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:0}},
+    {id:'s6',name:'Tyler',year:'Senior',major:'Architecture',from:'2027-05-17',to:'2027-08-13',budget:1300,area:'Coconut Grove',habits:{sleep:1,clean:1,guests:1,noise:1,pets:0,smoking:1,study:1}},
+    {id:'s7',name:'Mei',year:'Grad student',major:'Biomedical Engineering',from:'2027-05-24',to:'2027-08-16',budget:1700,area:'Brickell',habits:{sleep:0,clean:0,guests:0,noise:1,pets:1,smoking:1,study:0}},
+    {id:'s8',name:'Luis',year:'Junior',major:'Music Business',from:'2027-08-15',to:'2027-12-18',budget:950,area:'South Miami',habits:{sleep:1,clean:1,guests:2,noise:2,pets:0,smoking:0,study:1}},
+    {id:'s9',name:'Emma',year:'Sophomore',major:'Psychology',from:'2027-08-16',to:'2027-12-17',budget:1200,area:'Coral Gables',habits:{sleep:0,clean:1,guests:1,noise:0,pets:1,smoking:1,study:0}},
+    {id:'s10',name:'Noah',year:'Grad student',major:'Law',from:'2027-08-12',to:'2028-05-15',budget:1500,area:'Brickell',habits:{sleep:0,clean:0,guests:0,noise:0,pets:1,smoking:1,study:1}}
+  ];
+  const SHOW = ['s1','s6','s8','s10'];   // one student per term: spring, summer, fall, full year
+  const OPTS = {sleep:['Early bird','Night owl'], clean:['Very tidy','Average','Relaxed'], noise:['Quiet','Some noise','Lively'], study:['Studies at home','Studies out']};
+  const toDate = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
+  const fmt = (iso, y) => toDate(iso).toLocaleDateString('en-US', y ? {month:'short',day:'numeric',year:'numeric'} : {month:'short',day:'numeric'});
+  const weeks = (a,b) => Math.round((toDate(b) - toDate(a)) / 864e5 / 7);
+  const term = s => { if (weeks(s.from, s.to) >= 39) return 'Full year'; const m = toDate(s.from).getMonth(); return m <= 1 || m === 11 ? 'Spring' : m >= 4 && m <= 6 ? 'Summer' : 'Fall'; };
+  const tick = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>';
+  document.getElementById('slList').innerHTML = SHOW.map(id => STUDENTS.find(s => s.id === id)).map(s => `
+    <li class="sl-card">
+      <div class="sl-top"><span class="avatar" aria-hidden="true">${s.name[0]}</span>
+        <div><strong>${s.name}</strong><span class="sub">${s.year} · ${s.major}</span>
+          <span class="sl-tags"><span class="verified">${tick} Verified student</span><span class="sl-term">${term(s)}</span></span></div></div>
+      <dl class="sl-facts">
+        <div><dt>Needs</dt><dd>${fmt(s.from)} – ${fmt(s.to, true)}</dd></div>
+        <div><dt>Budget</dt><dd>Up to $${s.budget.toLocaleString('en-US')}/mo</dd></div>
+        <div><dt>Prefers</dt><dd>${s.area}</dd></div>
+      </dl>
+      <ul class="sl-habits" aria-label="${s.name}’s roommate habits">${Object.keys(OPTS).map(k => `<li>${OPTS[k][s.habits[k]]}</li>`).join('')}</ul>
+    </li>`).join('');
+})();
+
+// Pages: show one page's sections at a time. Every in-page link (#id) goes through go(),
+// so links work even where the browser ignores #hash jumps. Without JS, every section shows.
+(() => {
+  const sections = [...document.querySelectorAll('main section[data-page]')];
+  const PAGES = { home:'TermNest · Student subleases at the University of Miami', browse:'Browse sublets · TermNest', need:'I need a place · TermNest', subleasing:'I’m subleasing my place · TermNest',
+    features:'Features · TermNest', safety:'Safety · TermNest', pricing:'Pricing and FAQ · TermNest', contact:'Contact · TermNest' };
+  const navLinks = [...document.querySelectorAll('.nav-links a, .site-footer a[href^="#"]')];
+  let current = null;
+  function setCurrentNav(page) {
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      if (a.getAttribute('href') === '#' + page) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+  }
+  function pageOf(id) {
+    if (PAGES[id]) return id;
+    if (/^listing-\d+$/.test(id)) return 'browse';
+    const el = document.getElementById(id);
+    const sec = el && el.closest('section[data-page]');
+    return sec ? sec.dataset.page : null;
+  }
+  function go(id, push) {
+    if (id === 'main') id = current || 'home';               // skip link: stay on this page
+    const page = pageOf(id) || 'home';
+    if (!pageOf(id)) id = 'home';
+    const changed = page !== current;
+    sections.forEach(s => { s.hidden = s.dataset.page !== page; });
+    current = page;
+    document.title = PAGES[page];
+    if (page === 'browse') {                                   // list, or one listing's detail view
+      const listingTitle = window.TNBrowse.show(id);
+      if (listingTitle) {
+        document.title = listingTitle + ' · TermNest';
+        window.scrollTo(0, 0);
+        if (push !== undefined) document.getElementById('detailH').focus({ preventScroll: true });
+        if (push) { try { history.pushState(null, '', '#' + id); } catch (e) {} }
+        setCurrentNav(page);
+        return;
+      }
+      if (/^listing-/.test(id)) id = 'browse';                  // unknown listing: show the list
+    }
+    setCurrentNav(page);
+    const el = document.getElementById(id);
+    if (PAGES[id]) {                                          // a whole page: start at the top, focus its heading
+      window.scrollTo(0, 0);
+      const h = document.querySelector(`section[data-page="${page}"] h1`);
+      if (h && changed && push !== undefined) h.focus({ preventScroll: true });
+    } else if (el) {                                          // a spot inside a page
+      el.scrollIntoView({ block: 'start' });
+      const f = el.matches('h1,h2,[tabindex]') ? el : el.querySelector('h1,h2');
+      if (f && push !== undefined) { if (!f.hasAttribute('tabindex')) f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); }
+    }
+    if (push) { try { history.pushState(null, '', '#' + id); } catch (e) {} }
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    e.preventDefault();
+    go(a.getAttribute('href').slice(1), true);
+  });
+  window.addEventListener('popstate', () => go(location.hash.slice(1) || 'home', false));
+  go(location.hash.slice(1) || 'home');
+})();
+</script>
+</body>
+</html>
