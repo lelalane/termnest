@@ -47,18 +47,31 @@ a{color:var(--green);font-weight:700;text-decoration-thickness:2px;text-underlin
 .nav-links a{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;border-radius:10px;color:var(--ink);text-decoration:none;font-size:1rem}
 .nav-links a:hover{background:var(--green-50);text-decoration:underline}
 .nav-links a[aria-current="page"]{background:var(--green);color:#fff}
-.site-header .wrap{max-width:1400px}
+.site-header .wrap{max-width:1640px}
 .nav-links{gap:2px}
 .nav-links a{padding:0 9px;font-size:.95rem}
 .menu-btn{display:none;align-items:center;gap:8px;min-height:52px;padding:0 16px;border:2px solid var(--ink);border-radius:12px;background:#fff;font:inherit;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;color:var(--ink)}
 .nav-links a{white-space:nowrap}
-@media (max-width:1359px){
-  .menu-btn{display:inline-flex}
-  .nav-links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:2px solid var(--ink);padding:8px 16px 16px}
-  .nav-links.open{display:flex}
-  .nav-links a{display:flex;min-height:56px;font-size:1.1rem;border-bottom:2px dashed var(--soft);border-radius:0}
-  .nav-links li:last-child a{border-bottom:0}
-}
+/* Language toggle (English / Español), the last item in the menu */
+.lang{display:inline-flex;border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:#fff;margin-left:6px}
+.lang button{min-height:44px;min-width:44px;padding:0 10px;border:0;background:#fff;color:var(--ink);font:inherit;font-size:.95rem;font-weight:700;cursor:pointer}
+.lang button+button{border-left:2px solid var(--ink)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.lang button:hover:not([aria-pressed="true"]){background:var(--green-50);text-decoration:underline}
+.lang .lg-full{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}   /* full row: show EN / ES */
+/* The full row of links folds into the Menu button whenever it doesn't fit comfortably beside the logo.
+   A script measures this (the Spanish labels are longer), and adds .compact to the header. Below 1,440px it always folds. */
+.site-header.compact .menu-btn{display:inline-flex}
+.site-header.compact .nav-links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:2px solid var(--ink);padding:8px 16px 16px;
+  max-height:calc(100vh - 78px);overflow-y:auto}
+.site-header.compact .nav-links.open{display:flex}
+.site-header.compact .nav-links a{display:flex;min-height:56px;font-size:1.1rem;border-bottom:2px dashed var(--soft);border-radius:0}
+.site-header.compact .nav-links li:nth-last-child(2) a{border-bottom:0}
+.site-header.compact .lang-li{padding-top:12px;border-top:2px solid var(--ink)}
+.site-header.compact .lang{margin:0;width:100%}
+.site-header.compact .lang button{flex:1;min-height:52px;font-size:1.05rem}
+.site-header.compact .lang .lg-full{position:static;width:auto;height:auto;overflow:visible;clip:auto}
+.site-header.compact .lang .lg-short{display:none}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:60px;padding:0 24px;border-radius:12px;font-size:1.05rem;font-weight:700;
@@ -118,7 +131,8 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 
 /* ---------- audience choices ---------- */
 .choices{display:grid;gap:24px;margin-top:36px}
-@media (min-width:760px){.choices{grid-template-columns:1fr 1fr}}
+@media (min-width:760px){.choices{grid-template-columns:1fr 1fr}.choice.swap{grid-column:1 / -1}}
+@media (min-width:1080px){.choices{grid-template-columns:1fr 1fr 1fr}.choice.swap{grid-column:auto}}
 .choice{display:flex;flex-direction:column;gap:12px;min-height:100%;background:#fff;color:var(--ink);text-decoration:none;font-weight:400;
   border:3px solid var(--ink);border-radius:18px;padding:28px;box-shadow:6px 6px 0 var(--ink);transition:transform .08s,box-shadow .08s,background .15s}
 .choice:hover{background:var(--green-50)}
@@ -130,6 +144,8 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .choice-go{margin-top:auto;display:inline-flex;align-items:center;gap:10px;align-self:flex-start;min-height:56px;padding:0 20px;border:2px solid var(--ink);border-radius:12px;font-weight:700;font-size:1.05rem;box-shadow:var(--shadow-sm)}
 .choice.need .choice-go{background:var(--orange);color:var(--ink)}
 .choice.lease .choice-go{background:var(--green);color:#fff}
+.choice.swap .choice-go{background:var(--ink);color:#fff}
+.big-ic.ink{background:#fff;color:var(--ink)}
 
 /* ---------- audience sections ---------- */
 .aud-head{display:flex;gap:18px;align-items:center;margin-bottom:14px}
@@ -309,6 +325,27 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .dlg-x{position:absolute;top:16px;right:16px;width:48px;height:48px;border-radius:12px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
 
 /* ---------- students looking (subleasing page) ---------- */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* ---------- Term Swap page (same students as the app's Term Swap) ---------- */
+.swap-how{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px}
+@media (min-width:860px){.swap-how{grid-template-columns:repeat(3,1fr)}}
+.swap-how li{display:flex;gap:14px;align-items:center;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:14px 16px;font-size:1.05rem;line-height:1.4}
+.swap-how strong{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--orange);border:2px solid var(--ink);font-family:var(--head);font-size:1.15rem}
+@media (min-width:900px){.filters.swap-search{grid-template-columns:1fr 1.3fr}}
+#swCount{font-family:var(--head);color:var(--ink);font-size:clamp(1.3rem,3vw,1.6rem);line-height:1.2;margin:32px 0 18px}
+.swap-cards{list-style:none;margin:0;padding:0;display:grid;gap:26px}
+@media (min-width:700px){.swap-cards{grid-template-columns:1fr 1fr}}
+@media (min-width:1200px){.swap-cards{grid-template-columns:1fr 1fr 1fr}}
+.sw-card{display:flex;flex-direction:column;background:#fff;border:2px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.sw-card .photo{height:190px}
+.sw-body{display:flex;flex-direction:column;gap:12px;padding:16px 18px 18px;flex:1}
+.sw-who{display:flex;gap:12px;align-items:center}
+.sw-who .avatar{background:var(--orange);color:var(--ink)}
+.sw-who strong{display:block;font-family:var(--head);font-size:1.3rem;line-height:1.15}
+.sw-who .sub{display:block;color:var(--ink-2)}
+.sw-card .verified{align-self:flex-start;font-size:.88rem}
+.sw-card .sl-facts dd{max-width:60%}
+.sw-card .btn{margin-top:auto;width:100%;min-height:56px;padding:0 14px;gap:8px;font-size:1rem;white-space:nowrap}
 .sl-list{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:22px}
 @media (min-width:760px){.sl-list{grid-template-columns:1fr 1fr}}
 .sl-card{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
@@ -333,6 +370,55 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .steps-h{font-size:1.5rem;margin-top:36px}
 .steps-h+.aud-grid{margin-top:18px}
 .aud-steps li:last-child::before{background:var(--orange);transform:rotate(-4deg);box-shadow:var(--shadow-sm)}
+
+/* ---------- "Can you sublet?" quiz (I'm subleasing page) ---------- */
+.quiz{margin-top:18px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:24px;box-shadow:var(--shadow);max-width:52rem}
+@media (min-width:640px){.quiz{padding:32px}}
+.quiz-prog{font-weight:700;color:var(--ink-2);margin:0 0 8px}
+.quiz-bar{height:10px;border:2px solid var(--ink);border-radius:999px;background:var(--bg);overflow:hidden;margin-bottom:22px}
+.quiz-bar span{display:block;height:100%;background:var(--green)}
+.quiz fieldset{border:0;margin:0;padding:0;min-width:0}
+.quiz legend{font-family:var(--head);font-weight:800;font-size:1.45rem;line-height:1.25;padding:0;margin-bottom:6px}
+.quiz legend:focus{outline:none}
+.quiz-hint{color:var(--ink-2);margin:0 0 16px}
+.quiz-opts{display:grid;gap:12px}
+.quiz-opt{position:relative;display:block;cursor:pointer}
+.quiz-opt input{position:absolute;opacity:0;width:1px;height:1px}
+.quiz-opt>span{display:flex;gap:14px;align-items:flex-start;min-height:60px;padding:14px 16px;border:2px solid var(--ink);border-radius:12px;background:#fff}
+.quiz-opt>span::before{content:"";flex:none;width:24px;height:24px;margin-top:1px;border:2px solid var(--ink);border-radius:50%;background:#fff}
+.quiz-opt strong{display:block;font-size:1.05rem}
+.quiz-opt small{display:block;color:var(--ink-2);font-size:.95rem;margin-top:2px}
+.quiz-opt:hover>span{background:var(--green-50)}
+.quiz-opt input:checked+span{background:var(--green-50);box-shadow:var(--shadow-sm);border-color:var(--green)}
+.quiz-opt input:checked+span::before{background:var(--green);box-shadow:inset 0 0 0 4px #fff;border-color:var(--green)}
+.quiz-opt input:focus-visible+span{outline:3px solid var(--green);outline-offset:3px}
+.quiz .err{color:#B3261E;font-weight:700;margin:12px 0 0;min-height:1.5em}
+.quiz-nav{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.quiz-nav .btn{min-height:54px}
+.quiz-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:2px solid var(--ink);border-radius:999px;font-weight:800}
+.quiz-r.ready .quiz-badge{background:var(--green);color:#fff}
+.quiz-r.ask .quiz-badge{background:var(--orange);color:var(--ink)}
+.quiz-r.stop .quiz-badge{background:#B3261E;color:#fff}
+.quiz-r h3{font-size:1.6rem;margin:14px 0 8px}
+.quiz-r h3:focus{outline:none}
+.quiz-r h4{font-family:var(--head);font-size:1.2rem;margin:22px 0 8px}
+.quiz-r ol{padding-left:24px;margin:0}
+.quiz-r li{margin-bottom:8px}
+.quiz-lease{background:var(--orange-50);border:2px solid var(--ink);border-left:8px solid var(--orange);border-radius:10px;padding:12px 14px;margin:14px 0 0}
+.quiz-r .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.letter{margin-top:26px;padding-top:22px;border-top:2px dashed var(--soft)}
+.letter-fields{display:grid;gap:14px;margin:14px 0 18px}
+@media (min-width:640px){.letter-fields{grid-template-columns:1fr 1fr}}
+.letter-fields .wide{grid-column:1/-1}
+.letter-fields label,.letter .f-label{display:block;font-weight:700;margin-bottom:6px}
+.quiz .letter-lang legend{font-family:inherit;font-size:1rem;font-weight:700;margin-bottom:8px}
+.letter-fields input{width:100%;min-height:52px;border:2px solid var(--ink);border-radius:10px;padding:0 12px;font:inherit;background:#fff;color:var(--ink)}
+.letter-fields input:focus-visible,.letter textarea:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.letter textarea{width:100%;min-height:420px;border:2px solid var(--ink);border-radius:10px;padding:14px;font:inherit;font-size:1rem;line-height:1.5;background:var(--bg);color:var(--ink);resize:vertical}
+.quiz .letter-lang{border:0;margin:0 0 18px;padding:0}
+.letter-copy{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:12px}
+.copy-msg{font-weight:700;color:var(--green)}
+.quiz-again{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
 
 /* ---------- features ---------- */
 #features{background:var(--green-50)}
@@ -446,7 +532,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 
-<header class="site-header">
+<header class="site-header compact">
   <div class="wrap nav-row">
     <a class="logo" href="#home" aria-label="TermNest home">
       <svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44">
@@ -468,10 +554,17 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <li><a href="#browse">Browse sublets</a></li>
         <li><a href="#need">I need a place</a></li>
         <li><a href="#subleasing">I’m subleasing my place</a></li>
+        <li><a href="#swap">Term Swap</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#safety">Safety</a></li>
         <li><a href="#pricing">Pricing and FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li class="lang-li" data-i18n-skip>
+          <div class="lang" role="group" aria-label="Language / Idioma">
+            <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="lg-full">English</span><span class="lg-short" aria-hidden="true">EN</span></button>
+            <button type="button" data-lang="es" lang="es" aria-pressed="false"><span class="lg-full">Español</span><span class="lg-short" aria-hidden="true">ES</span></button>
+          </div>
+        </li>
       </ul>
     </nav>
   </div>
@@ -507,7 +600,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 
 <section id="choices-sec" data-page="home" aria-labelledby="whoH">
   <div class="wrap">
-    <span class="eyebrow">Two ways to use TermNest</span>
+    <span class="eyebrow">Three ways to use TermNest</span>
     <h2 class="sec-h" id="whoH">Which one are you?</h2>
     <p class="lead">Every term, some UM students leave Miami and others arrive. Pick the one that fits you to see how TermNest works for you.</p>
     <div class="choices" id="choices">
@@ -523,6 +616,13 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <span class="choice-title">I’m subleasing my place</span>
         <span class="choice-text">You’re leaving Miami for a while and don’t want to pay rent on an empty room.</span>
         <span class="choice-go">Show me how
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="choice swap" href="#swap">
+        <span class="big-ic ink"><svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
+        <span class="choice-title">Leaving Miami? Swap your place</span>
+        <span class="choice-text">You’re going to another city for a term. Trade rooms with a student from there who’s coming to Miami.</span>
+        <span class="choice-go">Find a swap
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
     </div>
@@ -577,7 +677,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <li><strong>Verify your school email</strong><span>Sign up with your miami.edu email and confirm the code.</span></li>
         <li><strong>Post your room for free</strong><span>Add photos, rent, and your exact move-in and move-out dates.</span></li>
         <li><strong>Get landlord approval</strong><span>Send the request from the app. Your landlord approves in a few taps.</span></li>
-        <li><strong>Pick your subletter</strong><span>Chat with verified students. Or use Term Swap to trade rooms with a student coming to Miami.</span></li>
+        <li><strong>Pick your subletter</strong><span>Chat with verified students. Or use <a href="#swap">Term Swap</a> to trade rooms with a student coming to Miami.</span></li>
         <li><strong>Sign the sublease agreement</strong><span>You and your subletter sign inside the app. The $15 listing fee is charged only now.</span></li>
         <li><strong>Get paid at move-in</strong><span>The first month’s rent is released to you after your subletter confirms move-in.</span></li>
       </ol>
@@ -594,10 +694,49 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </div>
     </div>
 
+    <h2 class="steps-h" id="quizH">Can you sublet your place?</h2>
+    <p class="lead" style="margin-top:8px">Answer 3 quick questions to find out what to do first. At the end, you’ll get a landlord approval request you can copy and send.</p>
+    <div class="quiz" id="quiz" aria-labelledby="quizH" role="region" data-i18n-skip>
+      <noscript><p>This check needs JavaScript. In short: if you rent from a landlord, get their approval in writing before you sublet.</p></noscript>
+    </div>
+
     <h2 class="steps-h" id="lookingH">Students looking right now</h2>
     <p class="lead" style="margin-top:8px">Verified UM students who need a short-term place. In the app, you’ll see everyone whose dates match your room, plus a roommate match.</p>
-    <ul class="sl-list" id="slList" aria-labelledby="lookingH"></ul>
+    <ul class="sl-list" id="slList" aria-labelledby="lookingH" data-i18n-skip></ul>
     <a class="btn btn-primary" style="margin-top:24px" href="app/index.html">See who matches your dates in the app</a>
+    <a class="back-link" href="#choices">← Back to home</a>
+  </div>
+</section>
+
+<!-- ================= TERM SWAP ================= -->
+<section id="swap" data-page="swap" aria-labelledby="swapH">
+  <div class="wrap">
+    <span class="eyebrow">Term Swap</span>
+    <div class="aud-head">
+      <span class="big-ic ink"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
+      <h1 class="sec-h" id="swapH" tabindex="-1">Leaving Miami? Swap your place</h1>
+    </div>
+    <p class="lead">Going to another city for a semester or the summer? Some students from that city are coming to Miami at the same time. Swap places: you stay in their room, they stay in yours.</p>
+    <ul class="swap-how">
+      <li><strong>1</strong><span>Pick the city you’re going to and your term.</span></li>
+      <li><strong>2</strong><span>See verified students from there who need a place in Miami.</span></li>
+      <li><strong>3</strong><span>Propose a swap in the app. You each keep paying your own rent, so no money changes hands.</span></li>
+    </ul>
+
+    <form class="filters swap-search" id="swapForm" aria-label="Find a Term Swap">
+      <div>
+        <label class="f-label" for="swCity">Where are you going?</label>
+        <select class="sel" id="swCity" name="city" data-i18n-skip></select>
+      </div>
+      <fieldset>
+        <legend>Which term?</legend>
+        <div class="pills" id="swTerms" data-i18n-skip></div>
+      </fieldset>
+      <p class="f-hint">Every city has students for every term. The number shows how many.</p>
+    </form>
+
+    <h2 class="result-count" id="swCount" aria-live="polite" data-i18n-skip></h2>
+    <ul class="swap-cards" id="swList" data-i18n-skip></ul>
     <a class="back-link" href="#choices">← Back to home</a>
   </div>
 </section>
@@ -616,7 +755,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
             <input id="rent" name="rent" type="number" inputmode="decimal" min="1" max="20000" step="1" value="1100" aria-describedby="rentHelp rentErr">
           </div>
           <p class="help" id="rentHelp">What you pay each month, in US dollars.</p>
-          <p class="err" id="rentErr" aria-live="polite"></p>
+          <p class="err" id="rentErr" aria-live="polite" data-i18n-skip></p>
         </div>
         <div class="field">
           <label for="months">Months you’ll be away</label>
@@ -631,7 +770,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
             <button type="button" data-m="5" aria-pressed="false">5</button>
             <button type="button" data-m="8" aria-pressed="false">Full year · 8</button>
           </div>
-          <p class="err" id="monthsErr" aria-live="polite"></p>
+          <p class="err" id="monthsErr" aria-live="polite" data-i18n-skip></p>
         </div>
       </form>
 
@@ -661,7 +800,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       <form class="filters" id="filters" aria-label="Filter sublets">
         <fieldset>
           <legend>Move-in timing</legend>
-          <div class="pills">
+          <div class="pills" data-i18n-skip>
             <label class="pill-opt"><input type="radio" name="term" value="" checked><span>Any time</span></label>
             <label class="pill-opt"><input type="radio" name="term" value="Summer"><span>Summer</span></label>
             <label class="pill-opt"><input type="radio" name="term" value="Fall"><span>Fall</span></label>
@@ -671,7 +810,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         </fieldset>
         <div>
           <label class="f-label" for="fPrice">Max price</label>
-          <select class="sel" id="fPrice" name="price">
+          <select class="sel" id="fPrice" name="price" data-i18n-skip>
             <option value="">Any price</option>
             <option value="1000">Up to $1,000 / month</option>
             <option value="1200">Up to $1,200 / month</option>
@@ -681,27 +820,27 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         </div>
         <div>
           <label class="f-label" for="fArea">Neighborhood</label>
-          <select class="sel" id="fArea" name="area">
+          <select class="sel" id="fArea" name="area" data-i18n-skip>
             <option value="">All neighborhoods</option>
           </select>
         </div>
         <div class="f-row">
-          <label class="check"><input type="checkbox" name="furnished" id="fFurn"> <span id="fFurnLbl">Furnished only</span></label>
+          <label class="check"><input type="checkbox" name="furnished" id="fFurn"> <span id="fFurnLbl" data-i18n-skip>Furnished only</span></label>
           <button type="reset" class="link-btn" id="fClear">Clear filters</button>
         </div>
         <p class="f-hint">Numbers show how many sublets each choice would find. Choices with none are crossed out.</p>
       </form>
 
-      <p class="result-count" id="resultCount" aria-live="polite"></p>
-      <ul class="cards" id="cards"></ul>
+      <p class="result-count" id="resultCount" aria-live="polite" data-i18n-skip></p>
+      <ul class="cards" id="cards" data-i18n-skip></ul>
       <div class="empty" id="emptyState" hidden>
         <h2>No sublets match those filters</h2>
-        <p id="emptyMsg">Try a different move-in time, a higher price, or another neighborhood.</p>
+        <p id="emptyMsg" data-i18n-skip>Try a different move-in time, a higher price, or another neighborhood.</p>
         <button type="button" class="btn btn-ghost" id="emptyClear">Clear filters</button>
       </div>
     </div>
 
-    <div id="listingDetail" hidden></div>
+    <div id="listingDetail" hidden data-i18n-skip></div>
   </div>
 </section>
 
@@ -711,8 +850,8 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
     <div class="dlg-ic" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
-    <h2 id="dlgH">Message in the TermNest app</h2>
-    <p id="dlgP">For your safety, messaging and booking happen in the TermNest app.</p>
+    <h2 id="dlgH" data-i18n-skip>Message in the TermNest app</h2>
+    <p id="dlgP" data-i18n-skip>For your safety, messaging and booking happen in the TermNest app.</p>
     <ul>
       <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Everyone you talk to is a verified student</li>
       <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>Your rent is held until move-in</li>
@@ -755,7 +894,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       <li class="feat">
         <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
         <h3>Term Swap</h3>
-        <p>Leaving Miami? Trade rooms with a student coming here from the city you’re going to.</p>
+        <p>Leaving Miami? Trade rooms with a student coming here from the city you’re going to. <a href="#swap">See who’s swapping</a></p>
       </li>
       <li class="feat">
         <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 14h8M8 18h5"/></svg></span>
@@ -959,7 +1098,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </details>
       <details>
         <summary>What is Term Swap?</summary>
-        <p>If you’re leaving Miami for a semester, Term Swap finds a student coming to Miami from the place you’re going, so you can trade rooms.</p>
+        <p>If you’re leaving Miami for a semester, Term Swap finds a student coming to Miami from the place you’re going, so you can trade rooms. You each keep paying your own rent, so no money changes hands. <a href="#swap">Try a Term Swap search</a>.</p>
       </details>
       <details>
         <summary>Do I have to fill out roommate preferences?</summary>
@@ -1063,6 +1202,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <li><a href="#browse">Browse sublets</a></li>
           <li><a href="#need">I need a place</a></li>
           <li><a href="#subleasing">I’m subleasing my place</a></li>
+          <li><a href="#swap">Term Swap</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#safety">Safety</a></li>
           <li><a href="#pricing">Pricing and FAQ</a></li>
@@ -1085,6 +1225,435 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
+// ---------- Language: English / Español ----------
+// Static page text is translated by looking up each text node (and aria-label, alt and title) in ES below.
+// Parts drawn by scripts (listings, Term Swap, students, filters) carry data-i18n-skip and translate themselves with I18N.t
+// and I18N.es(), then redraw on the 'tn:lang' event. The choice is remembered in this browser, and ?lang=es also works.
+window.I18N = (() => {
+  const ES = {
+    "Skip to main content": "Saltar al contenido principal",
+    "Menu": "Menú",
+    "Home": "Inicio",
+    "Browse sublets": "Ver subarriendos",
+    "I need a place": "Necesito un lugar",
+    "I’m subleasing my place": "Subarriendo mi lugar",
+    "Term Swap": "Term Swap",
+    "Features": "Funciones",
+    "Safety": "Seguridad",
+    "Pricing and FAQ": "Precios y preguntas",
+    "Contact": "Contacto",
+    "TermNest home": "Inicio de TermNest",
+    "Main": "Principal",
+    "For University of Miami students": "Para estudiantes de la Universidad de Miami",
+    "Sublet your room. Find your next one.": "Subarrienda tu habitación. Encuentra la próxima.",
+    "Leaving for a semester or the summer? Post your room. Need a short-term place near campus? Find one from a verified UM student.": "¿Te vas por un semestre o por el verano? Publica tu habitación. ¿Necesitas un lugar por poco tiempo cerca del campus? Encuéntralo con un estudiante verificado de UM.",
+    "Open the app prototype": "Abrir el prototipo de la app",
+    "See how it works": "Mira cómo funciona",
+    "Why students trust TermNest": "Por qué los estudiantes confían en TermNest",
+    "Every student is verified with a school email": "Cada estudiante se verifica con su correo de la universidad",
+    "Exact move-in and move-out dates": "Fechas exactas de entrada y salida",
+    "Rent is held in the app until move-in day": "El alquiler queda retenido en la app hasta el día de la mudanza",
+    "Three ways to use TermNest": "Tres formas de usar TermNest",
+    "Which one are you?": "¿Cuál es tu caso?",
+    "Every term, some UM students leave Miami and others arrive. Pick the one that fits you to see how TermNest works for you.": "Cada semestre, algunos estudiantes de UM se van de Miami y otros llegan. Elige tu caso y mira cómo te ayuda TermNest.",
+    "You need a room near campus for a semester or the summer.": "Necesitas una habitación cerca del campus por un semestre o por el verano.",
+    "Show me how": "Ver cómo",
+    "You’re leaving Miami for a while and don’t want to pay rent on an empty room.": "Te vas de Miami por un tiempo y no quieres pagar alquiler por una habitación vacía.",
+    "Leaving Miami? Swap your place": "¿Te vas de Miami? Intercambia tu lugar",
+    "You’re going to another city for a term. Trade rooms with a student from there who’s coming to Miami.": "Te vas a otra ciudad por un semestre. Intercambia habitación con un estudiante de allá que viene a Miami.",
+    "Find a swap": "Buscar intercambio",
+    "For students who need a place": "Para estudiantes que necesitan un lugar",
+    "Find a short-term room near campus from a verified UM student, for your exact dates. Looking is always free.": "Encuentra una habitación temporal cerca del campus, de un estudiante verificado de UM y para tus fechas exactas. Buscar siempre es gratis.",
+    "How it works for you": "Cómo funciona para ti",
+    "Verify your school email": "Verifica tu correo universitario",
+    "Sign up with your miami.edu email and confirm the code. Every student you talk to is verified too.": "Regístrate con tu correo miami.edu y confirma el código. Todos los estudiantes con los que hables también están verificados.",
+    "Search by your dates": "Busca según tus fechas",
+    "Each room shows how many of your days it covers, the commute to campus, and a fair price tag. You can": "Cada habitación muestra cuántos de tus días cubre, cuánto se tarda al campus y si el precio es justo. Puedes",
+    "browse sublets": "ver los subarriendos",
+    "right now, no account needed.": "ahora mismo, sin crear una cuenta.",
+    "Message and match": "Chatea y mira tu compatibilidad",
+    "Chat in the app. Add roommate preferences if you want a match score.": "Chatea en la app. Agrega tus preferencias de convivencia si quieres ver qué tan compatibles son.",
+    "Reserve and sign": "Reserva y firma",
+    "Pay in the app and sign the sublease. Your rent is held, not sent to the host yet.": "Paga en la app y firma el subarriendo. Tu alquiler queda retenido; todavía no se le envía al anfitrión.",
+    "Move in and check": "Múdate y revisa",
+    "Take move-in photos and confirm the room is as listed. Then the rent is released to the host.": "Toma fotos al mudarte y confirma que la habitación es como en el anuncio. Entonces el alquiler se le libera al anfitrión.",
+    "What you get": "Lo que obtienes",
+    "Rent held until move-in day": "Alquiler retenido hasta el día de la mudanza",
+    "Full refund if the room isn’t as listed": "Reembolso total si la habitación no es como en el anuncio",
+    "Cost to you: $0.": "Tu costo: $0.",
+    "Searching, messaging and booking are free.": "Buscar, enviar mensajes y reservar es gratis.",
+    "Browse sublets now": "Ver subarriendos ahora",
+    "Find a place in the app": "Busca un lugar en la app",
+    "I’m subleasing instead": "En realidad, quiero subarrendar el mío",
+    "← Back to home": "← Volver al inicio",
+    "For students subleasing their place": "Para estudiantes que subarriendan su lugar",
+    "Studying abroad, interning, or going home for the summer? Sublet your room to a verified UM student so you’re not paying rent on an empty room.": "¿Te vas de intercambio, a hacer una pasantía o a casa por el verano? Subarrienda tu habitación a un estudiante verificado de UM y deja de pagar alquiler por una habitación vacía.",
+    "Sign up with your miami.edu email and confirm the code.": "Regístrate con tu correo miami.edu y confirma el código.",
+    "Post your room for free": "Publica tu habitación gratis",
+    "Add photos, rent, and your exact move-in and move-out dates.": "Agrega fotos, el alquiler y tus fechas exactas de entrada y salida.",
+    "Get landlord approval": "Obtén la aprobación del propietario",
+    "Send the request from the app. Your landlord approves in a few taps.": "Envía la solicitud desde la app. Tu propietario la aprueba con unos pocos toques.",
+    "Pick your subletter": "Elige a tu subarrendatario",
+    "Chat with verified students. Or use": "Chatea con estudiantes verificados. O usa",
+    "to trade rooms with a student coming to Miami.": "para intercambiar habitación con un estudiante que viene a Miami.",
+    "Sign the sublease agreement": "Firma el contrato de subarriendo",
+    "You and your subletter sign inside the app. The $15 listing fee is charged only now.": "Tú y tu subarrendatario firman dentro de la app. Recién en ese momento se cobra la tarifa de publicación de $15.",
+    "Get paid at move-in": "Cobra el día de la mudanza",
+    "The first month’s rent is released to you after your subletter confirms move-in.": "El alquiler del primer mes se te libera cuando tu subarrendatario confirma que se mudó.",
+    "Only verified students can book": "Solo estudiantes verificados pueden reservar",
+    "Landlord approval and sublease agreement in the app": "Aprobación del propietario y contrato de subarriendo en la app",
+    "Move-in photos saved with the booking": "Fotos de la mudanza guardadas con la reserva",
+    "Cost to you: $15,": "Tu costo: $15,",
+    "only after a subletter signs. Optional $5 Boost to show higher in search.": "solo cuando alguien firma el subarriendo. Boost opcional de $5 para aparecer más arriba en las búsquedas.",
+    "See how much you could save": "Calcula cuánto podrías ahorrar",
+    "Post your room in the app": "Publica tu habitación en la app",
+    "Students looking right now": "Estudiantes que buscan ahora mismo",
+    "Verified UM students who need a short-term place. In the app, you’ll see everyone whose dates match your room, plus a roommate match.": "Estudiantes verificados de UM que necesitan un lugar temporal. En la app verás a todos los que coinciden con las fechas de tu habitación, y qué tan compatibles son para convivir.",
+    "Can you sublet your place?": "¿Puedes subarrendar tu lugar?",
+    "Answer 3 quick questions to find out what to do first. At the end, you’ll get a landlord approval request you can copy and send.": "Responde 3 preguntas rápidas para saber qué hacer primero. Al final tendrás una solicitud de autorización para tu propietario, lista para copiar y enviar.",
+    "See who matches your dates in the app": "Mira en la app quién coincide con tus fechas",
+    "Going to another city for a semester or the summer? Some students from that city are coming to Miami at the same time. Swap places: you stay in their room, they stay in yours.": "¿Te vas a otra ciudad por un semestre o por el verano? Hay estudiantes de esa ciudad que vienen a Miami en las mismas fechas. Intercambien lugares: tú te quedas en su habitación y ellos en la tuya.",
+    "Pick the city you’re going to and your term.": "Elige la ciudad a la que vas y el período.",
+    "See verified students from there who need a place in Miami.": "Mira a los estudiantes verificados de allá que necesitan un lugar en Miami.",
+    "Propose a swap in the app. You each keep paying your own rent, so no money changes hands.": "Propón el intercambio en la app. Cada uno sigue pagando su propio alquiler, así que no hay dinero de por medio.",
+    "Find a Term Swap": "Buscar un Term Swap",
+    "Where are you going?": "¿A dónde vas?",
+    "Which term?": "¿En qué período?",
+    "Every city has students for every term. The number shows how many.": "Cada ciudad tiene estudiantes para cada período. El número indica cuántos.",
+    "United States": "Estados Unidos",
+    "Abroad": "En el extranjero",
+    "Needs Miami": "Viene a Miami",
+    "Their place": "Su lugar",
+    "Their rent": "Su alquiler",
+    "/mo": "/mes",
+    "Propose swap in the app": "Proponer intercambio en la app",
+    "Savings calculator": "Calculadora de ahorro",
+    "How much could you save?": "¿Cuánto podrías ahorrar?",
+    "Leaving Miami for a while? Enter your rent and how long you’ll be away. See what you’d keep by subletting instead of paying for an empty room.": "¿Te vas de Miami por un tiempo? Ingresa tu alquiler y cuánto tiempo estarás fuera. Mira cuánto te ahorras si subarriendas en vez de pagar por una habitación vacía.",
+    "Your monthly rent": "Tu alquiler mensual",
+    "What you pay each month, in US dollars.": "Lo que pagas cada mes, en dólares estadounidenses.",
+    "Months you’ll be away": "Meses que estarás fuera",
+    "months": "meses",
+    "From 1 to 12. Or pick a common one:": "De 1 a 12. O elige una duración común:",
+    "Common lengths": "Duraciones comunes",
+    "Summer · 3": "Verano · 3",
+    "Semester · 4": "Semestre · 4",
+    "Full year · 8": "Año completo · 8",
+    "You could save": "Podrías ahorrar",
+    "Rent while you’re away": "Alquiler mientras no estás",
+    "TermNest listing fee": "Tarifa de publicación de TermNest",
+    "You keep": "Te quedas con",
+    "The $15 fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.": "La tarifa de $15 se cobra solo cuando alguien firma el subarriendo. Si nadie firma, no pagas nada. Este cálculo supone que tu subarrendatario paga el alquiler completo de cada mes que estés fuera.",
+    "Enter your rent as a number between $1 and $20,000.": "Ingresa tu alquiler como un número entre $1 y $20,000.",
+    "Enter a whole number of months from 1 to 12.": "Ingresa un número entero de meses, de 1 a 12.",
+    "Sublets near UM": "Subarriendos cerca de UM",
+    "Look around, no account needed. Every lister is a verified UM student. When you find one you like, message and book in the TermNest app.": "Mira sin crear una cuenta. Todos los que publican son estudiantes verificados de UM. Cuando encuentres uno que te guste, escribe y reserva en la app de TermNest.",
+    "Filter sublets": "Filtrar subarriendos",
+    "Move-in timing": "Fecha de entrada",
+    "Any time": "Cualquiera",
+    "Summer": "Verano",
+    "Fall": "Otoño",
+    "Spring": "Primavera",
+    "Full year": "Año completo",
+    "Max price": "Precio máximo",
+    "Any price": "Cualquier precio",
+    "Up to $1,000 / month": "Hasta $1,000 / mes",
+    "Up to $1,200 / month": "Hasta $1,200 / mes",
+    "Up to $1,400 / month": "Hasta $1,400 / mes",
+    "Up to $1,600 / month": "Hasta $1,600 / mes",
+    "Neighborhood": "Barrio",
+    "All neighborhoods": "Todos los barrios",
+    "Furnished only": "Solo amueblados",
+    "Clear filters": "Borrar filtros",
+    "Numbers show how many sublets each choice would find. Choices with none are crossed out.": "Los números indican cuántos subarriendos encontrarías con cada opción. Las opciones sin resultados aparecen tachadas.",
+    "No sublets match those filters": "Ningún subarriendo coincide con esos filtros",
+    "Try a different move-in time, a higher price, or another neighborhood.": "Prueba otra fecha de entrada, un precio más alto u otro barrio.",
+    "Verified student": "Estudiante verificado",
+    "Move-in": "Entrada",
+    "Move-out": "Salida",
+    "/ month": "/ mes",
+    "Back to all sublets": "Volver a todos los subarriendos",
+    "Previous photo": "Foto anterior",
+    "Next photo": "Foto siguiente",
+    "About this place": "Sobre este lugar",
+    "Private room": "Habitación privada",
+    "Shared room": "Habitación compartida",
+    "Entire place": "Alojamiento entero",
+    "Furnished": "Amueblado",
+    "Unfurnished": "Sin amueblar",
+    "Utilities included": "Servicios incluidos",
+    "Utilities extra": "Servicios aparte",
+    "Roommate habits": "Hábitos de convivencia",
+    "This is an entire place, so you won’t have roommates. Building rules are below.": "Es un alojamiento entero, así que no tendrás compañeros de casa. Abajo están las reglas del edificio.",
+    "House rules": "Reglas de la casa",
+    "Building rules": "Reglas del edificio",
+    "Sleep schedule": "Horario de sueño",
+    "Early birds": "Se acuestan temprano",
+    "Night owls": "Se acuestan tarde",
+    "Cleanliness": "Orden y limpieza",
+    "Very tidy": "Muy ordenados",
+    "Average": "Normal",
+    "Relaxed": "Relajados",
+    "Study style": "Para estudiar",
+    "Study at home": "Estudian en casa",
+    "Mostly study out": "Suelen estudiar fuera",
+    "Guests over": "Visitas",
+    "Rarely": "Casi nunca",
+    "Sometimes": "A veces",
+    "Often": "A menudo",
+    "Noise level": "Nivel de ruido",
+    "Quiet": "Tranquilo",
+    "Some noise": "Algo de ruido",
+    "Lively": "Animado",
+    "Pets": "Mascotas",
+    "Has or allows pets": "Hay mascotas o se permiten",
+    "No pets": "Sin mascotas",
+    "Smoking": "Fumar",
+    "Smoking allowed": "Se permite fumar",
+    "No smoking": "No se fuma",
+    "Commute to UM Coral Gables campus": "Traslado al campus de UM en Coral Gables",
+    "Walking": "A pie",
+    "Biking": "En bici",
+    "Driving": "En auto",
+    "Listed by": "Publicado por",
+    "Spring semester": "Semestre de primavera",
+    "Fall semester": "Semestre de otoño",
+    "Message lister": "Escribir a quien publica",
+    "Reserve this place": "Reservar este lugar",
+    "Free to browse. Messaging and booking happen in the TermNest app.": "Mirar es gratis. Los mensajes y las reservas se hacen en la app de TermNest.",
+    "Close": "Cerrar",
+    "Message in the TermNest app": "Escribe en la app de TermNest",
+    "For your safety, messaging and booking happen in the TermNest app.": "Por tu seguridad, los mensajes y las reservas se hacen en la app de TermNest.",
+    "For your safety, messaging happens in the TermNest app, not by email or text. Open the app to send your first message.": "Por tu seguridad, los mensajes se envían en la app de TermNest, no por correo ni por mensaje de texto. Abre la app para enviar tu primer mensaje.",
+    "Reserve this place in the TermNest app": "Reserva este lugar en la app de TermNest",
+    "For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in and how you both sign the sublease.": "Por tu seguridad, las reservas se hacen en la app de TermNest. Así tu alquiler queda retenido hasta la mudanza y ambos firman el subarriendo.",
+    "Everyone you talk to is a verified student": "Todos con quienes hablas son estudiantes verificados",
+    "Your rent is held until move-in": "Tu alquiler queda retenido hasta la mudanza",
+    "You both sign the sublease agreement in the app": "Ambos firman el contrato de subarriendo en la app",
+    "Open the TermNest app": "Abrir la app de TermNest",
+    "Keep browsing": "Seguir mirando",
+    "Junior": "Tercer año",
+    "Senior": "Cuarto año",
+    "Sophomore": "Segundo año",
+    "Grad student": "Posgrado",
+    "Nursing": "Enfermería",
+    "Finance": "Finanzas",
+    "Marine Science": "Ciencias Marinas",
+    "Computer Science": "Informática",
+    "Public Health": "Salud Pública",
+    "Architecture": "Arquitectura",
+    "Biomedical Engineering": "Ingeniería Biomédica",
+    "Music Business": "Industria Musical",
+    "Psychology": "Psicología",
+    "Law": "Derecho",
+    "Needs": "Necesita",
+    "Budget": "Presupuesto",
+    "Prefers": "Prefiere",
+    "Early bird": "Se acuesta temprano",
+    "Night owl": "Se acuesta tarde",
+    "Studies at home": "Estudia en casa",
+    "Studies out": "Estudia fuera",
+    "Built for short stays and student safety": "Pensado para estadías cortas y la seguridad de los estudiantes",
+    "Everything you need to sublet with confidence, in one place.": "Todo lo que necesitas para subarrendar con confianza, en un solo lugar.",
+    "Verified students only": "Solo estudiantes verificados",
+    "Everyone signs up with a school email and confirms a code. No strangers, no fake profiles.": "Todos se registran con un correo universitario y confirman un código. Sin desconocidos ni perfiles falsos.",
+    "Every listing shows the real first and last day, so you never guess what “spring semester” means.": "Cada anuncio muestra el primer y el último día reales, así nunca tienes que adivinar qué significa “semestre de primavera”.",
+    "Rent held until move-in": "Alquiler retenido hasta la mudanza",
+    "The first month’s rent stays held in the app. It goes to the host only after you move in and confirm.": "El alquiler del primer mes queda retenido en la app. Le llega al anfitrión solo después de que te mudas y lo confirmas.",
+    "Optional": "Opcional",
+    "Roommate preferences and match": "Preferencias de convivencia y compatibilidad",
+    "Share your sleep schedule, cleanliness, guests and pets. Each room shows a match score with its roommates.": "Cuenta tu horario de sueño, cómo llevas el orden, las visitas y las mascotas. Cada habitación muestra qué tan compatible eres con sus compañeros de casa.",
+    "Leaving Miami? Trade rooms with a student coming here from the city you’re going to.": "¿Te vas de Miami? Intercambia habitación con un estudiante que viene aquí desde la ciudad a la que vas.",
+    "See who’s swapping": "Mira quién quiere intercambiar",
+    "Landlord approval and sublease agreement": "Aprobación del propietario y contrato de subarriendo",
+    "Request your landlord’s OK in the app, then both students sign a clear sublease agreement right there.": "Pide el visto bueno de tu propietario en la app y luego ambos estudiantes firman ahí mismo un contrato de subarriendo claro.",
+    "Date coverage": "Cobertura de fechas",
+    "Enter your dates and each room shows if it covers all of them, or exactly how many days you’d still need.": "Ingresa tus fechas y cada habitación te dice si las cubre todas o exactamente cuántos días te faltarían.",
+    "Commute to campus": "Traslado al campus",
+    "See walking, biking and driving times to the Coral Gables campus on every listing, and rooms on a map.": "Mira en cada anuncio cuánto se tarda a pie, en bici y en auto al campus de Coral Gables, y ubica las habitaciones en un mapa.",
+    "Fair price tags": "Etiquetas de precio justo",
+    "Each listing is compared with similar rooms nearby, so you can tell at a glance if the rent is fair.": "Cada anuncio se compara con habitaciones parecidas de la zona, así ves de un vistazo si el alquiler es justo.",
+    "Move-in photo check": "Fotos de control al mudarte",
+    "On move-in day, take photos of the room. They’re saved with your booking in case anything isn’t as listed.": "El día de la mudanza, toma fotos de la habitación. Se guardan con tu reserva por si algo no es como en el anuncio.",
+    "How TermNest keeps you safe": "Cómo te protege TermNest",
+    "Subletting means trusting someone you just met. TermNest is built so you don’t have to take anyone’s word for it.": "Subarrendar significa confiar en alguien que acabas de conocer. TermNest está hecho para que no tengas que creerle a nadie solo por su palabra.",
+    "Rent is held until move-in": "El alquiler queda retenido hasta la mudanza",
+    "You never send rent straight to a stranger. Your first month’s rent waits with TermNest until you’re in the room and happy with it.": "Nunca le mandas el alquiler directamente a un desconocido. El primer mes queda en manos de TermNest hasta que estés en la habitación y conforme con ella.",
+    "You pay in the app": "Pagas en la app",
+    "When you reserve, you pay the first month inside TermNest.": "Al reservar, pagas el primer mes dentro de TermNest.",
+    "TermNest holds it": "TermNest lo retiene",
+    "The host can see it’s paid, but can’t take it out yet.": "El anfitrión ve que está pagado, pero todavía no puede retirarlo.",
+    "You move in and check": "Te mudas y revisas",
+    "You see the room in person and take your move-in photos.": "Ves la habitación en persona y tomas tus fotos de la mudanza.",
+    "Rent is released": "Se libera el alquiler",
+    "After you confirm move-in, the host gets paid.": "Cuando confirmas la mudanza, el anfitrión recibe el pago.",
+    "Room isn’t as listed?": "¿La habitación no es como en el anuncio?",
+    "Don’t confirm move-in. Report it in the app instead. Your rent stays held while support looks into it, and if the room isn’t as listed, you get a full refund.": "No confirmes la mudanza; repórtalo en la app. Tu alquiler sigue retenido mientras soporte lo revisa y, si la habitación no es como en el anuncio, recibes un reembolso total.",
+    "Every student is verified": "Cada estudiante está verificado",
+    "You can’t post, message or book on TermNest until you prove you’re a student.": "No puedes publicar, enviar mensajes ni reservar en TermNest hasta demostrar que eres estudiante.",
+    "How verification works": "Cómo funciona la verificación",
+    "You sign up with your school email (ending in .edu).": "Te registras con tu correo universitario (el que termina en .edu).",
+    "We send a 6-digit code to that inbox.": "Te enviamos un código de 6 dígitos a ese correo.",
+    "You enter the code to finish signing up. Only someone who can open that school inbox can do this.": "Ingresas el código para terminar el registro. Solo quien tiene acceso a ese correo universitario puede hacerlo.",
+    "What you’ll see in the app": "Lo que verás en la app",
+    "This badge is on every host and every chat. TermNest’s own support team shows an": "Esta insignia aparece en cada anfitrión y en cada chat. El equipo de soporte de TermNest lleva la insignia",
+    "Official account": "Cuenta oficial",
+    "badge, so you always know when it’s really us.": "para que siempre sepas cuándo somos realmente nosotros.",
+    "On move-in day, the app asks you to photograph the room before you confirm. It protects both students.": "El día de la mudanza, la app te pide fotografiar la habitación antes de confirmar. Así se protegen ambos estudiantes.",
+    "What to photograph": "Qué fotografiar",
+    "Each room you’ll use, from the doorway": "Cada espacio que vas a usar, desde la puerta",
+    "Furniture, appliances and anything already damaged": "Los muebles, los electrodomésticos y todo lo que ya esté dañado",
+    "Walls, floors, windows and the bathroom": "Las paredes, los pisos, las ventanas y el baño",
+    "Why it matters": "Por qué importa",
+    "Photos are saved with your booking and dated.": "Las fotos se guardan con tu reserva y llevan fecha.",
+    "If the room doesn’t match the listing, they back up your report.": "Si la habitación no coincide con el anuncio, respaldan tu reporte.",
+    "Hosts can see the room’s condition when you arrived.": "El anfitrión puede ver en qué estado estaba la habitación cuando llegaste.",
+    "Sublet scam warning signs": "Señales de estafa en subarriendos",
+    "Scammers target students looking for short-term housing, especially before a new semester. Watch for these signs, on TermNest or anywhere else.": "Los estafadores buscan a estudiantes que necesitan vivienda temporal, sobre todo antes de un nuevo semestre. Presta atención a estas señales, en TermNest o en cualquier otro lugar.",
+    "They want payment outside the app": "Piden el pago fuera de la app",
+    "Zelle, Venmo, Cash App, cash, a wire transfer or gift cards. Money sent this way usually can’t be gotten back.": "Zelle, Venmo, Cash App, efectivo, transferencia bancaria o tarjetas de regalo. El dinero enviado así casi nunca se recupera.",
+    "The price is too good to be true": "El precio es demasiado bueno para ser verdad",
+    "Rent far below what similar rooms cost. Check the fair price tag on the listing.": "Un alquiler muy por debajo de lo que cuestan habitaciones parecidas. Revisa la etiqueta de precio justo del anuncio.",
+    "You can’t see the room": "No puedes ver la habitación",
+    "They won’t do a video tour or let a friend visit, often because they say they’re “out of the country.”": "No hacen un recorrido por video ni dejan que un amigo la visite, muchas veces porque dicen que están “fuera del país”.",
+    "They rush you": "Te apuran",
+    "“Lots of people want it, pay today to hold it.” Real hosts give you time to decide.": "“Mucha gente la quiere, paga hoy para apartarla”. Un anfitrión de verdad te da tiempo para decidir.",
+    "They want to leave the app": "Quieren salir de la app",
+    "They ask to move to text, WhatsApp or personal email before you’ve booked.": "Te piden pasar a mensajes de texto, WhatsApp o correo personal antes de reservar.",
+    "They skip the paperwork": "Se saltan el papeleo",
+    "No landlord approval, no sublease agreement, or “we don’t need to sign anything.”": "Sin aprobación del propietario, sin contrato de subarriendo o con un “no hace falta firmar nada”.",
+    "They ask for private information": "Te piden datos privados",
+    "Your Social Security number, bank login or school password. TermNest will never ask for these.": "Tu número de Seguro Social, el acceso a tu banco o la contraseña de la universidad. TermNest nunca te los pedirá.",
+    "The details don’t match": "Los detalles no cuadran",
+    "Photos that look like a hotel or ad, an address that changes, or dates that keep shifting.": "Fotos que parecen de hotel o de publicidad, una dirección que cambia o fechas que se mueven a cada rato.",
+    "If something feels off": "Si algo te parece raro",
+    "Stop. Don’t send any money.": "Detente. No envíes dinero.",
+    "Report the listing or chat in the app.": "Reporta el anuncio o el chat en la app.",
+    "Contact TermNest support. A team member replies within 1 hour in the app.": "Contacta al soporte de TermNest. Alguien del equipo te responde en menos de 1 hora en la app.",
+    "Contact TermNest": "Contactar a TermNest",
+    "Simple pricing. No surprises.": "Precios simples. Sin sorpresas.",
+    "Looking is always free. Hosts pay only when the sublease actually happens.": "Buscar siempre es gratis. Los anfitriones pagan solo cuando el subarriendo se concreta.",
+    "For students looking": "Para quien busca",
+    "Find a place": "Encontrar un lugar",
+    "Always free": "Siempre gratis",
+    "Search, save and message": "Busca, guarda y envía mensajes",
+    "Roommate match and date coverage": "Compatibilidad de convivencia y cobertura de fechas",
+    "For students posting": "Para quien publica",
+    "Listing fee": "Tarifa de publicación",
+    "one time": "pago único",
+    "Only after a subletter signs": "Solo cuando alguien firma el subarriendo",
+    "Posting your room is free": "Publicar tu habitación es gratis",
+    "No subletter, no fee": "Si nadie subarrienda, no hay tarifa",
+    "Landlord approval and sublease agreement included": "Incluye la aprobación del propietario y el contrato de subarriendo",
+    "Optional for hosts": "Opcional para anfitriones",
+    "Boost": "Boost",
+    "Charged upfront": "Se cobra por adelantado",
+    "Your listing shows higher in search": "Tu anuncio aparece más arriba en las búsquedas",
+    "Marked with a Boost tag": "Lleva la etiqueta Boost",
+    "Completely optional": "Totalmente opcional",
+    "Only pay inside TermNest.": "Paga solo dentro de TermNest.",
+    "Never pay a sublease with Zelle, Venmo, cash or a wire transfer. Payments outside the app are not protected.": "Nunca pagues un subarriendo con Zelle, Venmo, efectivo ni transferencia bancaria. Los pagos fuera de la app no están protegidos.",
+    "Frequently asked questions": "Preguntas frecuentes",
+    "Who can use TermNest?": "¿Quién puede usar TermNest?",
+    "University of Miami students with a school email. You confirm a code sent to that email before you can post or message.": "Los estudiantes de la Universidad de Miami con correo universitario. Antes de publicar o enviar mensajes, confirmas un código que llega a ese correo.",
+    "How does “rent held until move-in” work?": "¿Cómo funciona eso de “alquiler retenido hasta la mudanza”?",
+    "When you reserve, you pay the first month in the app. TermNest holds it. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.": "Al reservar, pagas el primer mes en la app y TermNest lo retiene. Cuando te mudas y confirmas que la habitación es como en el anuncio, el dinero le llega al anfitrión. Si no es como en el anuncio, recibes un reembolso total.",
+    "When do I pay the $15 listing fee?": "¿Cuándo pago la tarifa de publicación de $15?",
+    "Only after a subletter signs the sublease agreement for your room. Posting is free, and if nobody signs, you pay nothing.": "Solo cuando alguien firma el contrato de subarriendo de tu habitación. Publicar es gratis y, si nadie firma, no pagas nada.",
+    "What does the $5 Boost do?": "¿Para qué sirve el Boost de $5?",
+    "Boost moves your listing higher in search results and adds a Boost tag. It’s optional and charged when you turn it on.": "Boost sube tu anuncio en los resultados de búsqueda y le agrega la etiqueta Boost. Es opcional y se cobra al activarlo.",
+    "Do I need my landlord’s permission?": "¿Necesito el permiso de mi propietario?",
+    "Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement.": "La mayoría de los contratos de alquiler lo exigen. Con TermNest le envías la solicitud a tu propietario desde la app, y su aprobación queda en el contrato de subarriendo.",
+    "What is Term Swap?": "¿Qué es Term Swap?",
+    "If you’re leaving Miami for a semester, Term Swap finds a student coming to Miami from the place you’re going, so you can trade rooms. You each keep paying your own rent, so no money changes hands.": "Si te vas de Miami por un semestre, Term Swap te encuentra un estudiante que viene a Miami desde el lugar al que vas, para que intercambien habitaciones. Cada uno sigue pagando su propio alquiler, así que no hay dinero de por medio.",
+    "Try a Term Swap search": "Prueba una búsqueda en Term Swap",
+    "Do I have to fill out roommate preferences?": "¿Tengo que llenar las preferencias de convivencia?",
+    "No. Preferences are optional. If you add them, you’ll see a match score on rooms that have roommates.": "No, son opcionales. Si las agregas, verás qué tan compatible eres en las habitaciones que tienen compañeros de casa.",
+    "What if something is wrong on move-in day?": "¿Y si algo está mal el día de la mudanza?",
+    "Take move-in photos in the app and contact support. Your rent stays held while the team sorts it out.": "Toma las fotos de la mudanza en la app y contacta a soporte. Tu alquiler sigue retenido mientras el equipo lo resuelve.",
+    "Try TermNest now. Tap through the app prototype.": "Prueba TermNest ahora. Recorre el prototipo de la app.",
+    "Questions? We’re here to help.": "¿Preguntas? Estamos para ayudarte.",
+    "Reach the TermNest team by email or phone. We reply within one business day.": "Escríbele o llama al equipo de TermNest. Respondemos en un día hábil.",
+    "Email": "Correo",
+    "Phone": "Teléfono",
+    "Where we are": "Dónde estamos",
+    "Hours": "Horario",
+    "Mon–Fri, 9 AM – 6 PM ET": "Lun–vie, 9 a. m. – 6 p. m. (hora del Este)",
+    "Already using the app?": "¿Ya usas la app?",
+    "The fastest way to reach us is": "La forma más rápida de contactarnos es desde la app, en",
+    ". A team member replies within 1 hour.": ". Alguien del equipo te responde en menos de 1 hora.",
+    "Report a listing that looks wrong": "Reportar un anuncio que parece sospechoso",
+    "Get help on move-in day": "Pedir ayuda el día de la mudanza",
+    "Ask about held rent or refunds": "Preguntar por el alquiler retenido o los reembolsos",
+    "Ready when you are": "Cuando quieras",
+    "Try TermNest on your phone": "Prueba TermNest en tu celular",
+    "Scan the code to open the app prototype and see TermNest the way students will use it.": "Escanea el código para abrir el prototipo de la app y ver TermNest tal como lo usarán los estudiantes.",
+    "Open your phone’s camera.": "Abre la cámara de tu celular.",
+    "Point it at the QR code.": "Apunta al código QR.",
+    "Tap the link that pops up.": "Toca el enlace que aparece.",
+    "Already on your phone? Open the app": "¿Ya estás en tu celular? Abre la app",
+    "Scan me": "Escanéame",
+    "QR code that opens the TermNest app prototype at lelalane.github.io/termnest/app": "Código QR que abre el prototipo de la app de TermNest en lelalane.github.io/termnest/app",
+    "Loading QR code…": "Cargando el código QR…",
+    "QR code couldn’t load. Use the link instead.": "No se pudo cargar el código QR. Usa el enlace.",
+    "Student subleases for University of Miami students, from students.": "Subarriendos de estudiantes para estudiantes de la Universidad de Miami.",
+    "Pages": "Páginas",
+    "App prototype": "Prototipo de la app",
+    "© 2026 TermNest. TermNest is an independent student project and is not affiliated with or endorsed by the University of Miami.": "© 2026 TermNest. TermNest es un proyecto estudiantil independiente y no está afiliado a la Universidad de Miami ni cuenta con su respaldo.",
+    "TermNest · Student subleases at the University of Miami": "TermNest · Subarriendos de estudiantes en la Universidad de Miami",
+    "Browse sublets · TermNest": "Ver subarriendos · TermNest",
+    "I need a place · TermNest": "Necesito un lugar · TermNest",
+    "I’m subleasing my place · TermNest": "Subarriendo mi lugar · TermNest",
+    "Term Swap · TermNest": "Term Swap · TermNest",
+    "Features · TermNest": "Funciones · TermNest",
+    "Safety · TermNest": "Seguridad · TermNest",
+    "Pricing and FAQ · TermNest": "Precios y preguntas · TermNest",
+    "Contact · TermNest": "Contacto · TermNest"
+  };
+  let lang = 'en';
+  try {
+    const q = new URLSearchParams(location.search).get('lang');
+    lang = q === 'es' || q === 'en' ? q : (localStorage.getItem('tn-lang') === 'es' ? 'es' : 'en');
+  } catch (e) {}
+  const t = s => (lang === 'es' && ES[s] !== undefined ? ES[s] : s);
+  const origText = new WeakMap(), origAttr = new WeakMap();
+  const ATTRS = ['aria-label', 'alt', 'title', 'placeholder'];
+  const norm = s => s.replace(/\s+/g, ' ').trim();
+  function skip(el) { return !el || el.closest('script,style,svg,[data-i18n-skip]'); }
+  function apply(root = document.body) {
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+      if (skip(n.parentElement)) continue;
+      if (!origText.has(n)) origText.set(n, n.nodeValue);
+      const en = origText.get(n), key = norm(en);
+      if (!key) continue;
+      const pad = en.match(/^(\s*)[\s\S]*?(\s*)$/);           // keep the spaces around the text
+      n.nodeValue = lang === 'es' && ES[key] !== undefined ? pad[1] + ES[key] + pad[2] : en;
+    }
+    root.querySelectorAll(ATTRS.map(a => `[${a}]`).join(',')).forEach(el => {
+      if (skip(el)) return;
+      if (!origAttr.has(el)) origAttr.set(el, Object.fromEntries(ATTRS.filter(a => el.hasAttribute(a)).map(a => [a, el.getAttribute(a)])));
+      const o = origAttr.get(el);
+      for (const a in o) el.setAttribute(a, lang === 'es' && ES[norm(o[a])] !== undefined ? ES[norm(o[a])] : o[a]);
+    });
+  }
+  function set(l) {
+    lang = l === 'es' ? 'es' : 'en';
+    try { localStorage.setItem('tn-lang', lang); } catch (e) {}
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    apply();
+    document.dispatchEvent(new Event('tn:lang'));
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => { if (b.dataset.lang !== lang) set(b.dataset.lang); }));
+  return {
+    t, set, apply,
+    es: () => lang === 'es',
+    locale: () => (lang === 'es' ? 'es-US' : 'en-US'),
+    start: () => { if (lang === 'es') set('es'); }        // called once every script has drawn its part
+  };
+})();
+
 // QR code for the hosted app prototype, drawn as crisp SVG squares.
 (() => {
   const URL_APP = 'https://lelalane.github.io/termnest/app/';
@@ -1124,8 +1693,8 @@ document.addEventListener('keydown', e => {
     return ok ? v : null;
   }
   function update() {
-    const r = check(rent, 'rentWrap', 'rentErr', 1, 20000, 'Enter your rent as a number between $1 and $20,000.');
-    const m = check(months, 'monthsWrap', 'monthsErr', 1, 12, 'Enter a whole number of months from 1 to 12.');
+    const r = check(rent, 'rentWrap', 'rentErr', 1, 20000, I18N.t('Enter your rent as a number between $1 and $20,000.'));
+    const m = check(months, 'monthsWrap', 'monthsErr', 1, 12, I18N.t('Enter a whole number of months from 1 to 12.'));
     steps.forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.m) === m)));
     if (r === null || m === null) { amt.textContent = '—'; bRent.textContent = '—'; bKeep.textContent = '—'; return; }
     const total = r * m, keep = Math.max(0, total - FEE);
@@ -1134,6 +1703,7 @@ document.addEventListener('keydown', e => {
   rent.addEventListener('input', update); months.addEventListener('input', update);
   steps.forEach(b => b.addEventListener('click', () => { months.value = b.dataset.m; update(); }));
   document.getElementById('calcForm').addEventListener('submit', e => e.preventDefault());
+  document.addEventListener('tn:lang', update);
   update();
 })();
 
@@ -1251,16 +1821,59 @@ window.TNBrowse = (() => {
   };
   const ic = (n, s=24) => `<svg aria-hidden="true" focusable="false" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n]}</svg>`;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const { t, es } = window.I18N;
   const toDate = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
-  const fmt = iso => toDate(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  const weekday = iso => toDate(iso).toLocaleDateString('en-US',{weekday:'long'});
+  const fmt = iso => toDate(iso).toLocaleDateString(I18N.locale(),{month:'short',day:'numeric',year:'numeric'});
+  const weekday = iso => { const w = toDate(iso).toLocaleDateString(I18N.locale(),{weekday:'long'}); return w[0].toUpperCase() + w.slice(1); };
   const money = n => '$' + Number(n).toLocaleString('en-US');
   const weeks = (a,b) => Math.round((toDate(b) - toDate(a)) / 864e5 / 7);
   const termName = a => { const m = toDate(a).getMonth(); return m <= 1 || m === 11 ? 'Spring semester' : m >= 4 && m <= 6 ? 'Summer' : 'Fall semester'; };
   // Move-in timing: a stay of 9+ months counts as a full year; otherwise the term you move in.
   const timing = l => weeks(l.moveIn, l.moveOut) >= 39 ? 'Full year' : termName(l.moveIn).replace(' semester', '');
+  const TIMING_ES = {Spring:'Entrada en primavera', Summer:'Entrada en verano', Fall:'Entrada en otoño', 'Full year':'Año escolar completo'};
   const COMMUTE = [['walk','Walking',20,0],['bike','Biking',6,2],['car','Driving',2.6,4]];   // same estimate as the app
-  const fmtMin = m => m < 60 ? `${m} min` : `${Math.floor(m/60)} hr${m%60 ? ` ${m%60} min` : ''}`;
+  const fmtMin = m => m < 60 ? `${m} min` : `${Math.floor(m/60)} ${es() ? 'h' : 'hr'}${m%60 ? ` ${m%60} min` : ''}`;
+  // Spanish text for each listing (title, description, host line). Neighborhood names stay as they are.
+  const LISTING_ES = {
+    1:{title:'Habitación soleada cerca de Ponce', about:'Tercer año en UM · De intercambio en Madrid esta primavera',
+       desc:'Habitación luminosa de esquina en un apartamento de 3 habitaciones, a poca distancia a pie del campus y del Metrorail. Tiene escritorio, cama doble y clóset. Mis dos compañeros de casa están en tercer año en UM y son tranquilos entre semana.'},
+    2:{title:'Estudio junto al Metrorail', about:'Posgrado en UM · Pasantía de primavera en Nueva York',
+       desc:'Un estudio entero para ti, con cocineta y lavandería en el edificio. A dos minutos de la estación University. Ideal para estudiantes de posgrado que buscan tranquilidad.'},
+    3:{title:'Habitación de verano en el Grove', about:'Segundo año en UM · En casa por el verano',
+       desc:'Barrio arbolado y fácil de recorrer a pie, con cafés y la bahía cerca. La habitación tiene aire acondicionado de ventana, cama queen y un escritorio grande. Comparto el apartamento con una persona de cuarto año en UM que se queda en verano para investigar.'},
+    4:{title:'Habitación amueblada en Red Road', about:'Cuarto año en UM · Práctica profesional en Atlanta',
+       desc:'Habitación en una casa compartida con tres estudiantes de UM. Patio trasero compartido, estacionamiento incluido y a menos de 10 minutos del campus en bici.'},
+    5:{title:'Habitación en un rascacielos de Brickell', about:'Tercer año en UM · Verano en Seúl',
+       desc:'Habitación con vista a la ciudad, y piscina y gimnasio en el edificio. Ideal para una pasantía de verano en el centro. Unos 20 minutos al campus en Metrorail.'},
+    6:{title:'Habitación tranquila en una casa de posgrado', about:'Doctorado en UM · Trabajo de campo en Perú',
+       desc:'Habitación compartida en una casa tranquila de estudiantes de posgrado. Mucha luz natural y un rincón para estudiar. Trae tu propia cama o pregunta si te pueden prestar una.'},
+    7:{title:'Habitación de otoño cerca de Sunset Drive', about:'Tercer año en UM · Semestre de otoño en Londres',
+       desc:'Habitación amueblada en un condominio de 2 habitaciones con un balcón pequeño y estacionamiento techado. Cerca de las tiendas de Sunset Drive y a un paseo corto en bici del campus. Comparto el apartamento con una persona de cuarto año en UM que estudia hasta tarde.'},
+    8:{title:'Habitación para todo el año cerca de Miracle Mile', about:'Tercer año en UM · Año en Tokio',
+       desc:'Habitación para todo el año escolar en un apartamento tranquilo de 3 habitaciones cerca de Miracle Mile. Clóset grande, escritorio y cortinas opacas. Dos compañeros de casa que estudian posgrado en UM y mantienen todo ordenado.'},
+    9:{title:'Habitación compartida a pasos del campus', about:'Segundo año en UM · Pasantía de primavera en D.C.',
+       desc:'Comparte una habitación doble grande en un apartamento justo enfrente del campus. Dos camas, dos escritorios y un vestidor. La comparto con una persona de tercer año en UM que se acuesta tarde y pasa mucho tiempo fuera.'},
+    10:{title:'Habitación económica de verano cerca de Red Road', about:'Tercer año en UM · Investigación de verano en Boston',
+       desc:'Habitación compartida en una casa animada con dos estudiantes de UM que se quedan para las clases de verano. Trae tu propia cama. Cocina grande, patio trasero y a un paseo corto en bici del campus.'},
+    11:{title:'Habitación compartida de otoño junto al Metrorail', about:'Tercer año en UM · Otoño en Florencia',
+       desc:'Habitación compartida en un apartamento tranquilo y ordenado, a pocos minutos de la estación South Miami. Amueblada con cama individual y escritorio. La comparto con una persona madrugadora que estudia en casa.'},
+    12:{title:'Habitación compartida para todo el año cerca de Red Road', about:'Cuarto año en UM · Práctica profesional de un año en Seattle',
+       desc:'Habitación compartida para todo el año escolar en una casa muy amigable cerca de Red Road. Servicios y Wi-Fi incluidos. En la casa hay un gato y de vez en cuando hacemos noche de películas.'},
+    13:{title:'Habitación con vista a la bahía en Coconut Grove', about:'Cuarto año en UM · Pasantía de verano en Chicago',
+       desc:'Habitación privada con un poquito de vista a la bahía, cama queen y ventilador de techo. Puedes caminar a cafés y a la marina. Comparto el apartamento con una persona de posgrado que tiene un perro muy amigable.'},
+    14:{title:'Estudio en Brickell para el verano', about:'Posgrado en UM · Beca de verano en D.C.',
+       desc:'Un estudio entero en un piso alto con piscina, gimnasio y recepción. A pasos de Brickell City Centre y del Metromover. Unos 25 minutos al campus en Metrorail.'},
+    15:{title:'Habitación de otoño en un townhouse del Grove', about:'Tercer año en UM · Semestre de otoño en Sídney',
+       desc:'Habitación privada sin amueblar en un townhouse de dos pisos con patio. Los dos compañeros de casa son sociables, reciben amigos seguido y tienen un ambiente relajado. Se puede fumar en el patio.'},
+    16:{title:'Habitación de otoño en un rascacielos de Brickell', about:'Cuarto año en UM · Práctica profesional de otoño en Nueva York',
+       desc:'Habitación amueblada con vista a la ciudad y baño propio. El edificio tiene piscina y sala de estudio. Comparto el apartamento con una persona muy ordenada y nocturna que trabaja en el centro.'},
+    17:{title:'Habitación con jardín en Red Road', about:'Segundo año en UM · Primavera en Barcelona',
+       desc:'Habitación privada que da a un jardín, en una casa con tres estudiantes de UM. Sin amueblar, así que trae tus cosas. Somos madrugadores y solemos invitar amigos a cenar.'},
+    18:{title:'Habitación para todo el año en South Miami', about:'Tercer año en UM · Año en Singapur',
+       desc:'Habitación privada sin amueblar para todo el año escolar, en un apartamento tranquilo de dos habitaciones cerca de Sunset Place. Comparto el apartamento con una persona tranquila que estudia Derecho y casi siempre estudia en casa.'}
+  };
+  // The listing in the current language
+  const loc = l => es() ? {...l, title: LISTING_ES[l.id].title, desc: LISTING_ES[l.id].desc, host: {...l.host, about: LISTING_ES[l.id].about}} : l;
   const commute = d => COMMUTE.map(([icon,label,per,base]) => ({icon,label,min:Math.max(1, Math.round(base + d*per))}));
 
   const form = document.getElementById('filters'), cards = document.getElementById('cards');
@@ -1284,6 +1897,11 @@ window.TNBrowse = (() => {
     'bedroom7-bed':{label:'Bedroom',big:1024,alt:'Dim bedroom with a queen bed in dark green bedding and a folded blanket, a tall black dresser, a small lamp on the nightstand, and a window facing an apartment building'},
     'bedroom8-bed':{label:'Bedroom',big:1024,alt:'Warm bedroom with a queen bed in white bedding and a knit throw, a lamp on a wooden nightstand, a painting of a Mediterranean-style house, an arched window onto trees, and a cane chair at a desk'},
     'study-bedroom1-desk':{label:'Bedroom',big:1024,alt:'Bedroom with a full bed in gray bedding, a large bean bag chair, a window with blinds, and a desk with a lamp, computer monitor and black office chair'},
+    // Plain indoor crops (no windows, palms or Miami details), used for Term Swap students' rooms in other cities
+    'study-bedroom1-shelf':{label:'Bedroom',big:720,alt:'Bedroom corner with a tall black bookshelf full of books, a woven basket and a small globe, next to a full bed in gray bedding with a knit throw'},
+    'bedroom8-plain':{label:'Bedroom',big:776,alt:'Bedroom with a queen bed in white bedding and a knit throw, an upholstered headboard, a lamp on a wooden nightstand, a cane chair at a wooden desk and a white door'},
+    'grove-bedroom1-plain':{label:'Bedroom',big:768,alt:'Light bedroom with a rattan headboard and nightstand, a white lamp, woven wall hangings, a round rattan mirror and a bookshelf with plants'},
+    'studio1-lounge':{label:'Studio',big:741,alt:'Studio living area with a gray sofa and a cream throw, a round wooden coffee table with a plant and a candle on a jute rug, and the foot of a bed behind'},
     'study-bedroom1':{label:'Bedroom',alt:'Cozy bedroom with a full bed in gray bedding, a tall bookshelf, a bean bag chair, and a desk with a computer monitor and office chair by a window with blinds'},
     'studio1':{label:'Studio',alt:'Studio apartment with a queen bed by a window with a city view, a gray sofa, a round coffee table, and a kitchen with stainless appliances and a counter with two stools'},
     'studio3':{label:'Studio',alt:'High-rise studio with a fold-away wall bed, built-in shelves, a sofa, a round coffee table, and a small table with two chairs by floor-to-ceiling windows facing downtown towers'},
@@ -1300,26 +1918,62 @@ window.TNBrowse = (() => {
     'laundry1':{label:'Laundry',alt:'Laundry closet with a stacked washer and dryer, open shelves with baskets and towels, and a woven hamper'},
     'pool1':{label:'Pool',alt:'Building pool with lounge chairs and umbrellas, surrounded by palm trees and apartment buildings'}
   };
-  const SAMPLE_TAG = '<span class="sample-tag" aria-hidden="true">Sample photo</span>';
+  // Spanish label and alt text for each photo
+  const PHOTOS_ES = {
+    'bedroom1':['Habitación','Habitación luminosa con cama doble de sábanas blancas, escritorio y silla de madera junto a una ventana grande con palmeras afuera, un librero y fotos en la pared'],
+    'bedroom2':['Habitación','Habitación soleada con cama queen de ropa blanca, escritorio y silla de madera bajo una ventana grande con vista a torres y al agua, un espejo alto y plantas colgantes'],
+    'bedroom8':['Habitación','Habitación cálida con cama queen, cómoda de madera con espejo, una ventana en arco que da a los árboles, ventilador de techo, alfombra tejida y un escritorio pequeño con silla'],
+    'brickell-bedroom1':['Habitación','Habitación en un piso alto con cama queen de ropa gris, dos mesitas de noche con lámparas, un sillón y ventanales del piso al techo con vista a los edificios de la ciudad y la bahía al atardecer'],
+    'grove-bedroom1':['Habitación','Habitación luminosa con cabecera de ratán, mesita y lámpara a juego, ventilador de techo, un librero, muchas plantas y una ventana que da a árboles tropicales'],
+    'bedroom7':['Habitación','Habitación acogedora y en penumbra con cama queen de ropa verde oscuro, una cómoda alta negra, cuadros enmarcados y un escritorio con dos monitores y una silla gamer junto a una ventana frente a un edificio de apartamentos'],
+    'bedroom2-bed':['Habitación','Habitación luminosa con cama queen de ropa blanca y un conejito de peluche sobre las almohadas, cuadros de playa en la pared, un espejo alto con enredaderas y una ventana con vista a torres y al agua'],
+    'bedroom7-bed':['Habitación','Habitación en penumbra con cama queen de ropa verde oscuro y una manta doblada, una cómoda alta negra, una lamparita en la mesita de noche y una ventana frente a un edificio de apartamentos'],
+    'bedroom8-bed':['Habitación','Habitación cálida con cama queen de ropa blanca y una manta tejida, una lámpara sobre una mesita de madera, un cuadro de una casa de estilo mediterráneo, una ventana en arco que da a los árboles y una silla de rejilla frente a un escritorio'],
+    'study-bedroom1-desk':['Habitación','Habitación con cama doble de ropa gris, un puf grande, una ventana con persianas y un escritorio con lámpara, monitor y silla de oficina negra'],
+    'study-bedroom1-shelf':['Habitación','Rincón de una habitación con un librero alto negro lleno de libros, una canasta tejida y un pequeño globo terráqueo, junto a una cama doble de ropa gris con una manta tejida'],
+    'bedroom8-plain':['Habitación','Habitación con cama queen de ropa blanca y una manta tejida, cabecera tapizada, una lámpara sobre una mesita de madera, una silla de rejilla frente a un escritorio de madera y una puerta blanca'],
+    'grove-bedroom1-plain':['Habitación','Habitación luminosa con cabecera y mesita de ratán, una lámpara blanca, tapices tejidos, un espejo redondo de ratán y un librero con plantas'],
+    'studio1-lounge':['Estudio','Sala de un estudio con un sofá gris y una manta color crema, una mesa de centro redonda de madera con una planta y una vela sobre una alfombra de yute, y el pie de una cama al fondo'],
+    'study-bedroom1':['Habitación','Habitación acogedora con cama doble de ropa gris, un librero alto, un puf y un escritorio con monitor y silla de oficina junto a una ventana con persianas'],
+    'studio1':['Estudio','Estudio con cama queen junto a una ventana con vista a la ciudad, un sofá gris, una mesa de centro redonda y una cocina con electrodomésticos de acero inoxidable y una barra con dos taburetes'],
+    'studio3':['Estudio','Estudio en un piso alto con cama abatible, repisas empotradas, un sofá, una mesa de centro redonda y una mesita con dos sillas junto a ventanales del piso al techo frente a las torres del centro'],
+    'unfurnished-bedroom1':['Habitación vacía','Habitación vacía sin amueblar con piso tipo madera, una ventana grande con palmeras y torres afuera y un clóset de puertas corredizas'],
+    'unfurnished-bedroom1-window':['Habitación vacía','Habitación vacía sin amueblar con una ventana grande con vista a palmeras y torres, sol sobre el piso tipo madera y la puerta corrediza del clóset cerrada'],
+    'unfurnished-bedroom1-closet':['Habitación vacía','Habitación vacía sin amueblar con el clóset de puertas corredizas abierto y su barra para colgar, una ventana con palmeras afuera y la puerta de la habitación'],
+    'unfurnished-bedroom1-light':['Habitación vacía','Habitación vacía sin amueblar con piso ancho tipo madera bajo un sol intenso, paredes blancas y una ventana con vista a palmeras y torres'],
+    'unfurnished-bedroom1-door':['Habitación vacía','Rincón de una habitación vacía sin amueblar con la puerta corrediza del clóset entreabierta, un clóset vacío con barra para colgar, un interruptor de luz y la puerta de la habitación'],
+    'livingroom1':['Sala','Sala con un sofá seccional grande, una mesa de centro redonda, un televisor en la pared sobre un mueble bajo y puertas de vidrio a un balcón con palmeras y torres al fondo'],
+    'livingroom2':['Sala','Sala con un sofá seccional blanco, una mesa de centro redonda de madera, un sillón, una alfombra de yute y puertas de vidrio a un balcón con vista a la ciudad'],
+    'kitchen1':['Cocina','Cocina luminosa con gabinetes blancos, refrigerador, microondas y lavavajillas de acero inoxidable, una barra con dos taburetes y una mesita redonda con dos sillas junto a una ventana'],
+    'bathroom1':['Baño','Baño con ducha de vidrio y azulejos blancos, inodoro, un mueble de madera con lavabo blanco y espejo redondo, toallas blancas y un tapete tejido'],
+    'balcony1':['Balcón','Balcón con dos sillas de exterior con cojines, una mesita redonda y plantas en macetas, con vista a palmeras y edificios hasta el agua'],
+    'laundry1':['Lavandería','Clóset de lavandería con lavadora y secadora apiladas, repisas abiertas con canastas y toallas, y un cesto tejido'],
+    'pool1':['Piscina','Piscina del edificio con camastros y sombrillas, rodeada de palmeras y edificios de apartamentos']
+  };
+  const photoLabel = k => es() ? PHOTOS_ES[k][0] : PHOTOS[k].label;
+  const photoAlt = k => es() ? 'Foto de muestra: ' + PHOTOS_ES[k][1] : 'Sample photo: ' + PHOTOS[k].alt;
+  const sampleTag = () => `<span class="sample-tag" aria-hidden="true">${es() ? 'Foto de muestra' : 'Sample photo'}</span>`;
   function photoImg(key, sizes, lazy = true) {
     const k = PHOTOS[key] ? key : 'bedroom1', big = PHOTOS[k].big || 1280;   // big: width of the large file
     return `<img src="${IMG_DIR}${k}-640.jpg" srcset="${IMG_DIR}${k}-640.jpg 640w, ${IMG_DIR}${k}-${big}.jpg ${big}w" sizes="${sizes}"
-      alt="${esc('Sample photo: ' + PHOTOS[k].alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async">`;
+      alt="${esc(photoAlt(k))}"${lazy ? ' loading="lazy"' : ''} decoding="async">`;
   }
-  const galleryInner = (l, i) => `${photoImg(l.photos[i], '(min-width:960px) 55vw, 100vw', i > 0)}${SAMPLE_TAG}
-    <span class="ph-label" aria-hidden="true">Photo ${i+1} of ${l.photos.length} · ${esc(PHOTOS[l.photos[i]].label)}</span>`;
+  const galleryInner = (l, i) => `${photoImg(l.photos[i], '(min-width:960px) 55vw, 100vw', i > 0)}${sampleTag()}
+    <span class="ph-label" aria-hidden="true">${es() ? 'Foto' : 'Photo'} ${i+1} ${es() ? 'de' : 'of'} ${l.photos.length} · ${esc(photoLabel(l.photos[i]))}</span>`;
 
-  function cardHTML(l) {
+  const distText = d => es() ? `a ${d} mi del campus` : `${d} mi to campus`;
+  function cardHTML(listing) {
+    const l = loc(listing);
     return `<li class="card">
-      <div class="photo">${photoImg(l.photos[0], '(min-width:1000px) 400px, (min-width:640px) 50vw, 100vw')}${SAMPLE_TAG}</div>
-      <span class="pill">${ic('verified',16)}Verified student</span>
-      <span class="term-tag">${timing(l)} move-in</span>
+      <div class="photo">${photoImg(l.photos[0], '(min-width:1000px) 400px, (min-width:640px) 50vw, 100vw')}${sampleTag()}</div>
+      <span class="pill">${ic('verified',16)}${t('Verified student')}</span>
+      <span class="term-tag">${es() ? TIMING_ES[timing(l)] : timing(l) + ' move-in'}</span>
       <div class="card-body">
-        ${l.boosted ? `<p class="boost-tag">${ic('bolt',16)} Boosted</p>` : ''}
+        ${l.boosted ? `<p class="boost-tag">${ic('bolt',16)} ${es() ? 'Con Boost' : 'Boosted'}</p>` : ''}
         <h2><a class="card-link" href="#listing-${l.id}">${esc(l.title)}</a></h2>
-        <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
-        <dl class="mini-dates"><div><dt>Move-in</dt><dd>${fmt(l.moveIn)}</dd></div><div><dt>Move-out</dt><dd>${fmt(l.moveOut)}</dd></div></dl>
-        <p class="price"><strong>${money(l.price)}</strong> / month</p>
+        <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${distText(l.dist)}</p>
+        <dl class="mini-dates"><div><dt>${t('Move-in')}</dt><dd>${fmt(l.moveIn)}</dd></div><div><dt>${t('Move-out')}</dt><dd>${fmt(l.moveOut)}</dd></div></dl>
+        <p class="price"><strong>${money(l.price)}</strong> ${t('/ month')}</p>
       </div></li>`;
   }
   // Filters show how many sublets each choice would find, and choices that would find none are turned off,
@@ -1332,18 +1986,18 @@ window.TNBrowse = (() => {
     form.querySelectorAll('input[name="term"]').forEach(i => {
       const k = n({term: i.value}), span = i.nextElementSibling;
       i.disabled = k === 0 && !i.checked;
-      span.textContent = `${span.dataset.label} · ${k}`;
+      span.textContent = `${t(span.dataset.label)} · ${k}`;
     });
     [['#fPrice', v => ({max: Number(v) || 0})], ['#fArea', v => ({area: v})]].forEach(([sel, over]) => {
       document.querySelectorAll(sel + ' option').forEach(o => {
         const k = n(over(o.value));
         o.disabled = k === 0 && !o.selected;
-        o.textContent = `${o.dataset.label} (${k})`;
+        o.textContent = `${t(o.dataset.label)} (${k})`;
       });
     });
     const kf = n({furn: true}), fc = document.getElementById('fFurn');
     fc.disabled = kf === 0 && !fc.checked;
-    furnLabel.textContent = `Furnished only (${kf})`;
+    furnLabel.textContent = `${t('Furnished only')} (${kf})`;
   }
   function render() {
     const f = new FormData(form);
@@ -1352,69 +2006,86 @@ window.TNBrowse = (() => {
     facets(c);
     const res = LISTINGS.filter(l => pass(l, c));
     cards.innerHTML = res.map(cardHTML).join('');
-    count.textContent = res.length === LISTINGS.length ? `Showing all ${res.length} sublets` : `${res.length} of ${LISTINGS.length} sublets match`;
+    count.textContent = es()
+      ? (res.length === LISTINGS.length ? `Mostrando los ${res.length} subarriendos` : `${res.length} de ${LISTINGS.length} subarriendos coinciden`)
+      : (res.length === LISTINGS.length ? `Showing all ${res.length} sublets` : `${res.length} of ${LISTINGS.length} sublets match`);
     empty.hidden = res.length > 0;
+    const TERM_ES = {Spring:'de primavera', Summer:'de verano', Fall:'de otoño', 'Full year':'por todo el año'};
     if (!res.length) emptyMsg.textContent = term && !LISTINGS.some(l => timing(l) === term)
-      ? `No ${term === 'Full year' ? 'full-year' : term.toLowerCase()} sublets are listed right now. Try another move-in time, or check back soon.`
-      : 'Try a different move-in time, a higher price, or another neighborhood.';
+      ? (es() ? `Por ahora no hay subarriendos ${TERM_ES[term]}. Prueba otra fecha de entrada o vuelve pronto.`
+              : `No ${term === 'Full year' ? 'full-year' : term.toLowerCase()} sublets are listed right now. Try another move-in time, or check back soon.`)
+      : t('Try a different move-in time, a higher price, or another neighborhood.');
   }
+  // Redraw everything in the new language (the open listing too, on the same photo)
+  document.addEventListener('tn:lang', () => {
+    render();
+    if (current) {
+      const p = photo; detail.innerHTML = detailHTML(current, p); photo = p;
+      document.title = loc(current).title + ' · TermNest';
+    }
+  });
   form.addEventListener('change', render);
   form.addEventListener('reset', () => setTimeout(render));
   document.getElementById('emptyClear').addEventListener('click', () => { form.reset(); form.querySelector('input[name="term"]').focus(); });
   render();
 
   // ---- detail view ----
-  function row(q, v) { return `<li><span class="h-ic">${ic(q.icon,22)}</span><span><span class="h-lbl">${q.label}</span><span class="h-val">${esc(q.opts[v])}</span></span></li>`; }
-  function detailHTML(l, photo) {
-    const h = HOUSE[l.id] || {}, first = l.host.name.split(' ')[0];
+  function row(q, v) { return `<li><span class="h-ic">${ic(q.icon,22)}</span><span><span class="h-lbl">${t(q.label)}</span><span class="h-val">${esc(t(q.opts[v]))}</span></span></li>`; }
+  function detailHTML(listing, photo) {
+    const l = loc(listing), h = HOUSE[l.id] || {}, first = l.host.name.split(' ')[0];
     const habits = HABITS.filter(q => h[q.key] !== undefined), rules = RULES.filter(q => h[q.key] !== undefined);
-    return `<a class="back-btn" href="#browse">${ic('back',22)} Back to all sublets</a>
+    const mates = es()
+      ? (l.roommates ? `${l.roommates} ${l.roommates > 1 ? 'compañeros' : 'compañero'} de casa` : 'Sin compañeros de casa')
+      : (l.roommates ? l.roommates + ' roommate' + (l.roommates > 1 ? 's' : '') : 'No roommates');
+    return `<a class="back-btn" href="#browse">${ic('back',22)} ${t('Back to all sublets')}</a>
       <div class="detail">
         <div>
           <div class="gallery">
             <div class="photo" id="galPhoto" aria-live="polite">${galleryInner(l, photo)}</div>
             <div class="gal-nav">
-              <button type="button" data-photo="-1" aria-label="Previous photo">${ic('back')}</button>
-              <button type="button" data-photo="1" aria-label="Next photo">${ic('next')}</button>
+              <button type="button" data-photo="-1" aria-label="${t('Previous photo')}">${ic('back')}</button>
+              <button type="button" data-photo="1" aria-label="${t('Next photo')}">${ic('next')}</button>
             </div>
           </div>
-          <h2 class="section-h">About this place</h2>
+          <h2 class="section-h">${t('About this place')}</h2>
           <p>${esc(l.desc)}</p>
           <ul class="facts">
-            <li>${ic('bed',20)}${esc(l.type)}</li>
-            <li>${ic('people',20)}${l.roommates ? l.roommates + ' roommate' + (l.roommates > 1 ? 's' : '') : 'No roommates'}</li>
-            <li>${ic('sofa',20)}${l.furnished ? 'Furnished' : 'Unfurnished'}</li>
-            <li>${ic('bolt',20)}${l.utilities ? 'Utilities included' : 'Utilities extra'}</li>
+            <li>${ic('bed',20)}${esc(t(l.type))}</li>
+            <li>${ic('people',20)}${mates}</li>
+            <li>${ic('sofa',20)}${t(l.furnished ? 'Furnished' : 'Unfurnished')}</li>
+            <li>${ic('bolt',20)}${t(l.utilities ? 'Utilities included' : 'Utilities extra')}</li>
           </ul>
-          <h2 class="section-h">Roommate habits</h2>
+          <h2 class="section-h">${t('Roommate habits')}</h2>
           ${habits.length ? `<ul class="habits">${habits.map(q => row(q, h[q.key])).join('')}</ul>`
-            : `<p class="no-habits">This is an entire place, so you won’t have roommates. Building rules are below.</p>`}
-          <h2 class="section-h">${l.roommates ? 'House rules' : 'Building rules'}</h2>
+            : `<p class="no-habits">${t('This is an entire place, so you won’t have roommates. Building rules are below.')}</p>`}
+          <h2 class="section-h">${t(l.roommates ? 'House rules' : 'Building rules')}</h2>
           <ul class="habits rules">${rules.map(q => row(q, h[q.key])).join('')}</ul>
-          <h2 class="section-h">Commute to UM Coral Gables campus</h2>
-          <ul class="commute-tiles">${commute(l.dist).map(x => `<li>${ic(x.icon,28)}<strong>${fmtMin(x.min)}</strong><span>${x.label}</span></li>`).join('')}</ul>
-          <p class="help" style="margin-top:8px">Estimates for ${l.dist} mi. Driving includes typical traffic, not parking.</p>
-          <h2 class="section-h">Listed by</h2>
+          <h2 class="section-h">${t('Commute to UM Coral Gables campus')}</h2>
+          <ul class="commute-tiles">${commute(l.dist).map(x => `<li>${ic(x.icon,28)}<strong>${fmtMin(x.min)}</strong><span>${t(x.label)}</span></li>`).join('')}</ul>
+          <p class="help" style="margin-top:8px">${es() ? `Estimaciones para ${l.dist} mi. El tiempo en auto incluye el tráfico habitual, pero no buscar estacionamiento.` : `Estimates for ${l.dist} mi. Driving includes typical traffic, not parking.`}</p>
+          <h2 class="section-h">${t('Listed by')}</h2>
           <div class="host"><span class="avatar">${esc(l.host.initials)}</span><div><strong>${esc(l.host.name)}</strong><span>${esc(l.host.about)}</span></div></div>
         </div>
         <div>
-          <span class="verified">${ic('verified',18)} Verified student · .edu</span>
+          <span class="verified">${ic('verified',18)} ${t('Verified student')} · .edu</span>
           <h1 class="d-title" id="detailH" tabindex="-1">${esc(l.title)}</h1>
-          <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
+          <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${distText(l.dist)}</p>
           <div class="action-card">
-            <p class="price-lg"><strong>${money(l.price)}</strong> / month</p>
+            <p class="price-lg"><strong>${money(l.price)}</strong> ${t('/ month')}</p>
             <div class="date-box">
               <div class="cols">
-                <div><p class="lbl">Move-in</p><p class="val">${fmt(l.moveIn)}</p><p class="wd">${weekday(l.moveIn)}</p></div>
-                <div><p class="lbl">Move-out</p><p class="val">${fmt(l.moveOut)}</p><p class="wd">${weekday(l.moveOut)}</p></div>
+                <div><p class="lbl">${t('Move-in')}</p><p class="val">${fmt(l.moveIn)}</p><p class="wd">${weekday(l.moveIn)}</p></div>
+                <div><p class="lbl">${t('Move-out')}</p><p class="val">${fmt(l.moveOut)}</p><p class="wd">${weekday(l.moveOut)}</p></div>
               </div>
-              <p class="dur">${weeks(l.moveIn, l.moveOut)} weeks · ${termName(l.moveIn)}</p>
+              <p class="dur">${weeks(l.moveIn, l.moveOut)} ${es() ? 'semanas' : 'weeks'} · ${t(termName(l.moveIn))}</p>
             </div>
-            <button type="button" class="btn btn-primary" data-app="message" data-name="${esc(first)}">${ic('chat')} Message lister</button>
-            <button type="button" class="btn btn-accent" data-app="reserve" data-name="${esc(first)}">${ic('calendar')} Reserve this place</button>
-            <p class="action-note">${ic('lock',20)}<span>Free to browse. Messaging and booking happen in the TermNest app.</span></p>
+            <button type="button" class="btn btn-primary" data-app="message" data-name="${esc(first)}">${ic('chat')} ${t('Message lister')}</button>
+            <button type="button" class="btn btn-accent" data-app="reserve" data-name="${esc(first)}">${ic('calendar')} ${t('Reserve this place')}</button>
+            <p class="action-note">${ic('lock',20)}<span>${t('Free to browse. Messaging and booking happen in the TermNest app.')}</span></p>
           </div>
-          <div class="protect">${ic('shield',28)}<div><strong>Rent held until move-in</strong>When you book in the app, your payment stays with TermNest and is released to ${esc(first)} only after you move in.</div></div>
+          <div class="protect">${ic('shield',28)}<div><strong>${t('Rent held until move-in')}</strong>${es()
+            ? `Cuando reservas en la app, tu pago queda en manos de TermNest y se le entrega a ${esc(first)} solo después de que te mudas.`
+            : `When you book in the app, your payment stays with TermNest and is released to ${esc(first)} only after you move in.`}</div></div>
         </div>
       </div>`;
   }
@@ -1425,7 +2096,7 @@ window.TNBrowse = (() => {
     current = l; photo = 0;
     detail.innerHTML = detailHTML(l, photo);
     list.hidden = true; detail.hidden = false;
-    return l.title;
+    return loc(l).title;
   }
   detail.addEventListener('click', e => {
     const b = e.target.closest('[data-photo]');
@@ -1443,11 +2114,11 @@ window.TNBrowse = (() => {
   function openDialog(kind, name, from) {
     opener = from;
     if (kind === 'message') {
-      dlgH.textContent = `Message ${name} in the TermNest app`;
-      dlgP.textContent = 'For your safety, messaging happens in the TermNest app, not by email or text. Open the app to send your first message.';
+      dlgH.textContent = es() ? `Escríbele a ${name} en la app de TermNest` : `Message ${name} in the TermNest app`;
+      dlgP.textContent = t('For your safety, messaging happens in the TermNest app, not by email or text. Open the app to send your first message.');
     } else {
-      dlgH.textContent = 'Reserve this place in the TermNest app';
-      dlgP.textContent = 'For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in and how you both sign the sublease.';
+      dlgH.textContent = t('Reserve this place in the TermNest app');
+      dlgP.textContent = t('For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in and how you both sign the sublease.');
     }
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
   }
@@ -1456,7 +2127,469 @@ window.TNBrowse = (() => {
   document.getElementById('dlgKeep').addEventListener('click', closeDlg);
   dlg.addEventListener('click', e => { if (e.target === dlg) closeDlg(); });     // click on the dark backdrop
   dlg.addEventListener('close', () => { if (opener) opener.focus(); });
-  return { show };
+  return { show, photoImg, sampleTag, esc, currentTitle: () => current && loc(current).title };
+})();
+
+// Term Swap page: students from other cities who need Miami. Same data as the Term Swap screen in app/index.html.
+(() => {
+  /* ---------- Term Swap ----------
+     Sample students from other cities who need a place in Miami. Same data as the Term Swap page on the website
+     (index.html). Every city has at least one student for each term: Spring, Summer and Fall 2027. */
+  const SWAP_CITIES = ['New York, NY','Washington, DC','Chicago, IL','Boston, MA','Los Angeles, CA','San Francisco, CA','Atlanta, GA','Austin, TX',
+    'London, UK','Madrid, Spain','Barcelona, Spain'];
+  const SWAP_TERMS = {Spring:['2027-01-08','2027-05-14'], Summer:['2027-05-16','2027-08-14'], Fall:['2027-08-16','2027-12-18']};   // UM term dates
+  const SWAPS = {
+    'New York, NY':[
+      {id:'w1',name:'Jordan K.',initials:'JK',school:'NYU',domain:'nyu.edu',about:'Junior · Spring internship in Brickell',
+       from:'2027-01-08',to:'2027-05-15',place:'Private room in Greenwich Village',area:'Greenwich Village',type:'Private room',roommates:2,value:1650,near:'0.3 mi to NYU',photo:'bedroom7',
+       desc:'Room in a walk-up with two NYU seniors. Steps from Washington Square Park and the subway. Desk, full bed and a radiator that actually works.'},
+      {id:'w2',name:'Sam R.',initials:'SR',school:'Columbia',domain:'columbia.edu',about:'Grad student · Marine science research at UM',
+       from:'2027-01-15',to:'2027-05-10',place:'Studio in Morningside Heights',area:'Morningside Heights',type:'Entire place',roommates:0,value:1900,near:'0.4 mi to Columbia',photo:'studio1-lounge',
+       desc:'Small, quiet studio with a kitchenette and laundry in the building. Ten minutes’ walk to Columbia and Riverside Park.'},
+      {id:'w3',name:'Taylor B.',initials:'TB',school:'The New School',domain:'newschool.edu',about:'Senior · Design co-op in Wynwood',
+       from:'2027-01-25',to:'2027-05-14',place:'Shared room in Williamsburg, Brooklyn',area:'Williamsburg',type:'Shared room',roommates:1,value:1100,near:'25 min to campus by subway',photo:'study-bedroom1-shelf',
+       desc:'Shared bedroom in a creative household with a big living room. Close to the L train, cafes and the waterfront.'},
+      {id:'w6',name:'Ava L.',initials:'AL',school:'NYU',domain:'nyu.edu',about:'Sophomore · Summer research at UM’s marine school',
+       from:'2027-05-20',to:'2027-08-12',place:'Private room in the East Village',area:'East Village',type:'Private room',roommates:2,value:1500,near:'0.6 mi to NYU',photo:'bedroom7-bed',
+       desc:'Quiet back bedroom in a three-bedroom apartment. Blackout curtains, a queen bed and two roommates who are around all summer.'},
+      {id:'w7',name:'Marcus T.',initials:'MT',school:'Columbia',domain:'columbia.edu',about:'Junior · Fall exchange semester at UM',
+       from:'2027-08-18',to:'2027-12-15',place:'Studio on the Upper West Side',area:'Upper West Side',type:'Entire place',roommates:0,value:2000,near:'15 min to Columbia by subway',photo:'studio1-lounge',
+       desc:'Studio with a full kitchen, a queen bed and a comfy sofa. Two blocks from Central Park.'}
+    ],
+    'Washington, DC':[
+      {id:'w4',name:'Malik J.',initials:'MJ',school:'Georgetown',domain:'georgetown.edu',about:'Junior · Exchange semester at UM',
+       from:'2027-01-06',to:'2027-05-08',place:'Private room in Georgetown',area:'Georgetown',type:'Private room',roommates:3,value:1450,near:'0.5 mi to Georgetown',photo:'bedroom8-plain',
+       desc:'Room in a rowhouse with three Georgetown students. Quiet street, shared kitchen and a small backyard.'},
+      {id:'w5',name:'Chloe D.',initials:'CD',school:'George Washington',domain:'gwu.edu',about:'Sophomore · Spring internship in Coral Gables',
+       from:'2027-01-20',to:'2027-04-30',place:'Room in Foggy Bottom',area:'Foggy Bottom',type:'Private room',roommates:1,value:1500,near:'0.2 mi to GWU',photo:'grove-bedroom1-plain',
+       desc:'Bright room in a two-bedroom apartment near the Metro. One roommate who studies at home and keeps things tidy.'},
+      {id:'w8',name:'Nate P.',initials:'NP',school:'American University',domain:'american.edu',about:'Junior · Summer internship in downtown Miami',
+       from:'2027-05-18',to:'2027-08-10',place:'Private room in Tenleytown',area:'Tenleytown',type:'Private room',roommates:2,value:1300,near:'0.4 mi to American University',photo:'study-bedroom1-shelf',
+       desc:'Room with a full bed and a big bookshelf in a townhouse near the Red Line. Two roommates who are in DC all summer.'},
+      {id:'w9',name:'Grace O.',initials:'GO',school:'Howard',domain:'howard.edu',about:'Senior · Fall semester at UM’s business school',
+       from:'2027-08-17',to:'2027-12-17',place:'Private room in Shaw',area:'Shaw',type:'Private room',roommates:1,value:1250,near:'0.6 mi to Howard',photo:'bedroom7',
+       desc:'Cozy room in a two-bedroom condo close to restaurants and the Green Line. One roommate who works from home.'}
+    ],
+    'Chicago, IL':[
+      {id:'w10',name:'Elena R.',initials:'ER',school:'University of Chicago',domain:'uchicago.edu',about:'Junior · Spring exchange semester at UM',
+       from:'2027-01-05',to:'2027-05-12',place:'Private room in Hyde Park',area:'Hyde Park',type:'Private room',roommates:2,value:1100,near:'0.3 mi to UChicago',photo:'study-bedroom1-shelf',
+       desc:'Room in a vintage three-flat with two grad students. Radiator heat, a big closet and a short walk to the lake.'},
+      {id:'w11',name:'Ben W.',initials:'BW',school:'Northwestern',domain:'northwestern.edu',about:'Sophomore · Summer research at UM',
+       from:'2027-05-21',to:'2027-08-14',place:'Private room in Evanston',area:'Evanston',type:'Private room',roommates:1,value:1200,near:'0.5 mi to Northwestern',photo:'bedroom7-bed',
+       desc:'Quiet room in a two-bedroom apartment near the beach and the Purple Line. One roommate staying for the summer.'},
+      {id:'w12',name:'Kayla M.',initials:'KM',school:'DePaul',domain:'depaul.edu',about:'Senior · Fall internship in Brickell',
+       from:'2027-08-20',to:'2027-12-16',place:'Studio in Lincoln Park',area:'Lincoln Park',type:'Entire place',roommates:0,value:1450,near:'0.4 mi to DePaul',photo:'studio1-lounge',
+       desc:'Studio with a sofa, a queen bed and a small kitchen. Laundry and a gym in the building.'}
+    ],
+    'Boston, MA':[
+      {id:'w13',name:'Liam C.',initials:'LC',school:'Boston University',domain:'bu.edu',about:'Junior · Spring co-op in Coral Gables',
+       from:'2027-01-10',to:'2027-05-14',place:'Private room in Fenway',area:'Fenway',type:'Private room',roommates:2,value:1600,near:'0.5 mi to BU',photo:'bedroom7',
+       desc:'Room in a brownstone apartment a few blocks from Fenway Park and the Green Line. Two roommates who are BU seniors.'},
+      {id:'w14',name:'Hana S.',initials:'HS',school:'Northeastern',domain:'northeastern.edu',about:'Sophomore · Summer co-op at a Miami hospital',
+       from:'2027-05-17',to:'2027-08-13',place:'Shared room in Mission Hill',area:'Mission Hill',type:'Shared room',roommates:1,value:1050,near:'0.4 mi to Northeastern',photo:'study-bedroom1-shelf',
+       desc:'Shared room in a friendly apartment near the hospitals and the E train. Your roommate is a nursing student.'},
+      {id:'w15',name:'Owen F.',initials:'OF',school:'Harvard',domain:'harvard.edu',about:'Grad student · Fall research at UM',
+       from:'2027-08-23',to:'2027-12-18',place:'Room with a skyline view in Cambridge',area:'Cambridge',type:'Private room',roommates:1,value:1800,near:'0.7 mi to Harvard',photo:'bedroom8-plain',
+       desc:'Quiet room in a high-rise across the Charles River from Boston. Gym and study room in the building.'}
+    ],
+    'Los Angeles, CA':[
+      {id:'w16',name:'Sofia V.',initials:'SV',school:'UCLA',domain:'ucla.edu',about:'Junior · Spring exchange semester at UM',
+       from:'2027-01-07',to:'2027-05-13',place:'Private room in Westwood',area:'Westwood',type:'Private room',roommates:2,value:1550,near:'0.4 mi to UCLA',photo:'bedroom8-plain',
+       desc:'Big room in a Spanish-style house with two UCLA students. Queen bed, a desk and a shared patio.'},
+      {id:'w17',name:'Ethan K.',initials:'EK',school:'USC',domain:'usc.edu',about:'Sophomore · Summer film internship in Miami',
+       from:'2027-05-24',to:'2027-08-16',place:'Private room near USC',area:'University Park',type:'Private room',roommates:3,value:1000,near:'0.3 mi to USC',photo:'grove-bedroom1-plain',
+       desc:'Light, plant-filled room in a house with three USC students. Walk to campus and the Expo Line.'},
+      {id:'w18',name:'Mia T.',initials:'MT',school:'UCLA',domain:'ucla.edu',about:'Senior · Fall internship in Wynwood',
+       from:'2027-08-21',to:'2027-12-17',place:'Studio in Santa Monica',area:'Santa Monica',type:'Entire place',roommates:0,value:1900,near:'20 min to UCLA by bus',photo:'studio1-lounge',
+       desc:'Studio with a full kitchen ten minutes from the beach. Bike storage and laundry in the building.'}
+    ],
+    'San Francisco, CA':[
+      {id:'w19',name:'Leo H.',initials:'LH',school:'UCSF',domain:'ucsf.edu',about:'Grad student · Spring rotation at a Miami hospital',
+       from:'2027-01-11',to:'2027-05-14',place:'Private room in the Inner Sunset',area:'Inner Sunset',type:'Private room',roommates:2,value:1700,near:'0.3 mi to UCSF',photo:'study-bedroom1-shelf',
+       desc:'Quiet room in a flat near Golden Gate Park and the N train. Two roommates who are med students.'},
+      {id:'w20',name:'Ruby N.',initials:'RN',school:'San Francisco State',domain:'sfsu.edu',about:'Junior · Summer internship in Coral Gables',
+       from:'2027-05-19',to:'2027-08-12',place:'Private room in the Mission District',area:'Mission District',type:'Private room',roommates:1,value:1400,near:'25 min to SF State by train',photo:'bedroom7-bed',
+       desc:'Room with a queen bed in a two-bedroom apartment. Lots of cafes and taquerias nearby.'},
+      {id:'w21',name:'Daniel A.',initials:'DA',school:'University of San Francisco',domain:'usfca.edu',about:'Senior · Fall exchange semester at UM',
+       from:'2027-08-16',to:'2027-12-14',place:'Private room in Hayes Valley',area:'Hayes Valley',type:'Private room',roommates:1,value:1650,near:'0.8 mi to USF',photo:'bedroom8-plain',
+       desc:'Room with a desk in a bright two-bedroom flat. One roommate who is a USF grad student.'}
+    ],
+    'Atlanta, GA':[
+      {id:'w22',name:'Imani B.',initials:'IB',school:'Emory',domain:'emory.edu',about:'Junior · Spring semester at UM’s nursing school',
+       from:'2027-01-09',to:'2027-05-11',place:'Private room in Druid Hills',area:'Druid Hills',type:'Private room',roommates:2,value:1050,near:'0.5 mi to Emory',photo:'grove-bedroom1-plain',
+       desc:'Light room with a rattan bed and lots of plants in a house with two Emory students. Front porch too.'},
+      {id:'w23',name:'Chris L.',initials:'CL',school:'Georgia Tech',domain:'gatech.edu',about:'Senior · Summer engineering co-op in Doral',
+       from:'2027-05-16',to:'2027-08-13',place:'Studio in Midtown',area:'Midtown',type:'Entire place',roommates:0,value:1300,near:'0.6 mi to Georgia Tech',photo:'studio1-lounge',
+       desc:'Studio with a full kitchen, a sofa and a queen bed. Walk to Piedmont Park and the MARTA.'},
+      {id:'w24',name:'Zara K.',initials:'ZK',school:'Spelman',domain:'spelman.edu',about:'Sophomore · Fall exchange semester at UM',
+       from:'2027-08-18',to:'2027-12-16',place:'Private room in the West End',area:'West End',type:'Private room',roommates:2,value:900,near:'0.4 mi to Spelman',photo:'bedroom7-bed',
+       desc:'Calm room in a townhouse near the BeltLine and the MARTA. Two roommates who are Spelman juniors.'}
+    ],
+    'Austin, TX':[
+      {id:'w25',name:'Jake M.',initials:'JM',school:'UT Austin',domain:'utexas.edu',about:'Junior · Spring internship in Brickell',
+       from:'2027-01-12',to:'2027-05-14',place:'Private room in West Campus',area:'West Campus',type:'Private room',roommates:3,value:1100,near:'0.3 mi to UT',photo:'study-bedroom1-shelf',
+       desc:'Room in a four-bedroom apartment. Full bed, a big bookshelf and three UT roommates.'},
+      {id:'w26',name:'Lucia G.',initials:'LG',school:'UT Austin',domain:'utexas.edu',about:'Grad student · Summer research at UM',
+       from:'2027-05-22',to:'2027-08-14',place:'Private room in Hyde Park, Austin',area:'Hyde Park',type:'Private room',roommates:1,value:1000,near:'1 mi to UT',photo:'grove-bedroom1-plain',
+       desc:'Light, plant-filled room in a bungalow with one roommate. Shady yard and an easy bike ride to campus.'},
+      {id:'w27',name:'Ryan D.',initials:'RD',school:'St. Edward’s',domain:'stedwards.edu',about:'Senior · Fall marketing internship in Wynwood',
+       from:'2027-08-19',to:'2027-12-15',place:'Studio near South Congress',area:'South Congress',type:'Entire place',roommates:0,value:1350,near:'0.8 mi to St. Edward’s',photo:'studio1-lounge',
+       desc:'Cozy studio with a sofa and a queen bed. Walk to food trucks and music on South Congress.'}
+    ],
+    'London, UK':[
+      {id:'w28',name:'Olivia H.',initials:'OH',school:'University College London',domain:'ucl.ac.uk',about:'Second year · Spring exchange at UM',
+       from:'2027-01-09',to:'2027-05-14',place:'Private room in Bloomsbury',area:'Bloomsbury',type:'Private room',roommates:2,value:1800,near:'0.2 mi to UCL',photo:'bedroom8-plain',
+       desc:'Room in a Georgian flat near Russell Square and the Tube. Two flatmates who are UCL students.'},
+      {id:'w29',name:'Arjun P.',initials:'AP',school:'King’s College London',domain:'kcl.ac.uk',about:'Master’s student · Summer research at UM',
+       from:'2027-05-18',to:'2027-08-14',place:'Studio near the South Bank',area:'South Bank',type:'Entire place',roommates:0,value:1700,near:'0.5 mi to King’s',photo:'studio1-lounge',
+       desc:'Studio with a sofa, a queen bed and a small kitchen. Walk to the river and Waterloo station.'},
+      {id:'w30',name:'Emily W.',initials:'EW',school:'London School of Economics',domain:'lse.ac.uk',about:'Third year · Fall exchange at UM',
+       from:'2027-08-20',to:'2027-12-17',place:'Private room in Holborn',area:'Holborn',type:'Private room',roommates:1,value:1650,near:'0.3 mi to LSE',photo:'bedroom7-bed',
+       desc:'Quiet room in a two-bedroom flat close to campus and Covent Garden. One flatmate who studies law.'}
+    ],
+    'Madrid, Spain':[
+      {id:'w31',name:'Lucía M.',initials:'LM',school:'Universidad Complutense',domain:'ucm.es',about:'Third year · Spring exchange at UM',
+       from:'2027-01-11',to:'2027-05-14',place:'Private room in Moncloa',area:'Moncloa',type:'Private room',roommates:2,value:850,near:'0.4 mi to Complutense',photo:'grove-bedroom1-plain',
+       desc:'Big, bright room with a rattan bed and lots of plants in a flat with two students. Near the metro and the Parque del Oeste.'},
+      {id:'w32',name:'Pablo R.',initials:'PR',school:'IE University',domain:'ie.edu',about:'Master’s student · Summer internship in Brickell',
+       from:'2027-05-20',to:'2027-08-13',place:'Private room in Chamberí',area:'Chamberí',type:'Private room',roommates:1,value:1000,near:'0.5 mi to IE',photo:'bedroom8-plain',
+       desc:'Elegant room in an older building with high ceilings. One flatmate and a quiet street full of cafes.'},
+      {id:'w33',name:'Carmen S.',initials:'CS',school:'Universidad Autónoma de Madrid',domain:'uam.es',about:'Second year · Fall exchange at UM',
+       from:'2027-08-23',to:'2027-12-17',place:'Private room in Malasaña',area:'Malasaña',type:'Private room',roommates:2,value:800,near:'25 min to UAM by train',photo:'study-bedroom1-shelf',
+       desc:'Cozy room with a full bed and a big bookshelf in a lively neighborhood. Two flatmates who are also students.'}
+    ],
+    'Barcelona, Spain':[
+      {id:'w34',name:'Marc V.',initials:'MV',school:'Universitat de Barcelona',domain:'ub.edu',about:'Third year · Spring exchange at UM',
+       from:'2027-01-08',to:'2027-05-12',place:'Private room in Eixample',area:'Eixample',type:'Private room',roommates:2,value:900,near:'0.3 mi to UB',photo:'grove-bedroom1-plain',
+       desc:'Bright room with a rattan bed and lots of plants in a classic Eixample flat. Two flatmates who study at UB.'},
+      {id:'w35',name:'Laia F.',initials:'LF',school:'Pompeu Fabra',domain:'upf.edu',about:'Second year · Summer research at UM',
+       from:'2027-05-17',to:'2027-08-12',place:'Private room in Gràcia',area:'Gràcia',type:'Private room',roommates:1,value:950,near:'20 min to UPF by metro',photo:'bedroom8-plain',
+       desc:'Room with a big bed and a desk in a flat over a quiet square. One flatmate and lots of small cafes nearby.'},
+      {id:'w36',name:'Jordi C.',initials:'JC',school:'ESADE',domain:'esade.edu',about:'Master’s student · Fall exchange at UM',
+       from:'2027-08-19',to:'2027-12-16',place:'Private room in Sant Gervasi',area:'Sant Gervasi',type:'Private room',roommates:1,value:1100,near:'0.6 mi to ESADE',photo:'bedroom7-bed',
+       desc:'Calm room with a big bed in a quiet, uphill neighborhood. One flatmate who works in tech.'}
+    ]
+  };
+  const { photoImg, sampleTag, esc } = window.TNBrowse;
+  const { t, es } = window.I18N;
+  const toDate = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
+  const fmt = (iso, y) => toDate(iso).toLocaleDateString(I18N.locale(), y ? {month:'short',day:'numeric',year:'numeric'} : {month:'short',day:'numeric'});
+  // A swap student's term is the term they arrive in Miami (same rule as the app's term dates).
+  const termOf = m => { const mo = toDate(m.from).getMonth(); return mo <= 1 || mo === 11 ? 'Spring' : mo >= 4 && mo <= 6 ? 'Summer' : 'Fall'; };
+  const ABROAD = ['London, UK','Madrid, Spain','Barcelona, Spain'];
+  // City names shown in Spanish (the values, used in app links, stay in English)
+  const CITY_ES = {'New York, NY':'Nueva York, NY','Los Angeles, CA':'Los Ángeles, CA','London, UK':'Londres, Reino Unido','Madrid, Spain':'Madrid, España','Barcelona, Spain':'Barcelona, España'};
+  const cityLabel = c => es() && CITY_ES[c] || c;
+  const cityName = c => cityLabel(c).split(',')[0];
+  const tick = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>';
+  const arrow = '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const city = document.getElementById('swCity'), terms = document.getElementById('swTerms');
+  const list = document.getElementById('swList'), count = document.getElementById('swCount');
+  const group = (label, cities) => `<optgroup label="${t(label)}">${cities.map(c => `<option value="${esc(c)}">${esc(cityLabel(c))}</option>`).join('')}</optgroup>`;
+  function drawCities() {
+    const keep = city.value;
+    city.innerHTML = group('United States', SWAP_CITIES.filter(c => !ABROAD.includes(c))) + group('Abroad', SWAP_CITIES.filter(c => ABROAD.includes(c)));
+    if (keep) city.value = keep;
+  }
+  drawCities();
+  terms.innerHTML = Object.keys(SWAP_TERMS).map((term, i) =>
+    `<label class="pill-opt"><input type="radio" name="term" value="${term}"${i === 0 ? ' checked' : ''}><span data-label="${term}">${term}</span></label>`).join('');
+  function card(m, c, term) {
+    const first = m.name.split(' ')[0];
+    const href = `app/index.html?swapCity=${encodeURIComponent(c)}&swapTerm=${encodeURIComponent(term)}`;
+    return `<li class="sw-card">
+      <div class="photo">${photoImg(m.photo, '(min-width:1200px) 400px, (min-width:700px) 50vw, 100vw')}${sampleTag()}</div>
+      <div class="sw-body">
+        <div class="sw-who"><span class="avatar" aria-hidden="true">${esc(first[0])}</span>
+          <div><strong>${esc(first)}</strong><span class="sub">${esc(m.school)}</span></div></div>
+        <span class="verified">${tick} ${es() ? `${esc(m.domain)} verificado` : `${esc(m.domain)} verified`}</span>
+        <dl class="sl-facts">
+          <div><dt>${t('Needs Miami')}</dt><dd>${fmt(m.from)} – ${fmt(m.to, true)}</dd></div>
+          <div><dt>${t('Their place')}</dt><dd>${esc(m.area)}</dd></div>
+          <div><dt>${t('Their rent')}</dt><dd>$${m.value.toLocaleString('en-US')}${t('/mo')}</dd></div>
+        </dl>
+        <a class="btn btn-accent" href="${href}">${t('Propose swap in the app')}${arrow}<span class="sr-only"> ${es() ? 'a' : 'to'} ${esc(first)}</span></a>
+      </div></li>`;
+  }
+  const IN_TERM = {Spring:['the spring','en primavera'], Summer:['the summer','en verano'], Fall:['the fall','en otoño']};
+  function render() {
+    const c = city.value, term = (terms.querySelector('input:checked') || {}).value;
+    terms.querySelectorAll('input').forEach(i => {                  // how many students each term has for this city
+      const s = i.nextElementSibling; s.textContent = `${t(s.dataset.label)} · ${SWAPS[c].filter(m => termOf(m) === i.value).length}`;
+    });
+    const res = SWAPS[c].filter(m => termOf(m) === term), one = res.length === 1;
+    count.textContent = es()
+      ? `${res.length} ${one ? 'estudiante' : 'estudiantes'} de ${cityName(c)} ${one ? 'busca' : 'buscan'} lugar en Miami ${IN_TERM[term][1]}`
+      : `${res.length} student${one ? '' : 's'} from ${cityName(c)} need${one ? 's' : ''} Miami in ${IN_TERM[term][0]}`;
+    list.innerHTML = res.map(m => card(m, c, term)).join('');
+  }
+  document.addEventListener('tn:lang', () => { drawCities(); render(); });
+  document.getElementById('swapForm').addEventListener('change', render);
+  document.getElementById('swapForm').addEventListener('submit', e => e.preventDefault());
+  render();
+})();
+
+// "Can you sublet your place?" quiz on the I'm subleasing page: 3 questions, then an answer, next steps,
+// and a landlord approval request to copy. Every string has English and Spanish side by side: [English, Spanish].
+// General guidance only, not legal advice.
+(() => {
+  const box = document.getElementById('quiz');
+  const es = () => I18N.es(), L = pair => pair[es() ? 1 : 0];
+  const esc = window.TNBrowse.esc;
+  const QUESTIONS = [
+    {key:'home', q:['Where do you live now?','¿Dónde vives ahora?'], opts:[
+      {v:'landlord', t:['Off campus, and I rent from a landlord','Fuera del campus, y le alquilo a un propietario'],
+        h:['An apartment, condo or house with a lease from a landlord or property manager.','Un apartamento, condominio o casa con contrato con un propietario o una administradora.']},
+      {v:'campus', t:['In on-campus UM housing','En una residencia de UM en el campus'],
+        h:['A residence hall or university apartment, under a housing contract with UM.','Una residencia estudiantil o apartamento universitario, con contrato de vivienda con UM.']}]},
+    {key:'lease', q:['Does your lease say anything about subletting?','¿Tu contrato de alquiler dice algo sobre subarrendar?'],
+      hint:['Look for the words “sublet,” “sublease” or “assign.” They’re often in a section about occupants or assignment.','Busca las palabras “sublet”, “sublease” o “assign” (subarrendar, ceder). Suelen estar en una sección sobre ocupantes o cesión.'], opts:[
+      {v:'allows', t:['Yes, it allows subletting','Sí, permite subarrendar'], h:['Often only with the landlord’s written OK.','Muchas veces, solo con el visto bueno por escrito del propietario.']},
+      {v:'forbids', t:['Yes, it says no subletting','Sí, dice que no se puede subarrendar']},
+      {v:'silent', t:['It doesn’t mention subletting','No menciona el subarriendo']},
+      {v:'unsure', t:['I’m not sure','No lo sé'], h:['Or I haven’t checked yet.','O todavía no lo he revisado.']}]},
+    {key:'asked', q:['Have you asked your landlord about subletting?','¿Ya le preguntaste a tu propietario si puedes subarrendar?'], opts:[
+      {v:'approved', t:['Yes, and they approved it in writing','Sí, y lo aprobó por escrito'], h:['An email, text or signed letter.','Un correo, un mensaje o una carta firmada.']},
+      {v:'verbal', t:['Yes, they said OK, but not in writing','Sí, me dijo que sí, pero no por escrito']},
+      {v:'waiting', t:['Yes, and I’m waiting to hear back','Sí, y estoy esperando su respuesta']},
+      {v:'no', t:['Yes, and they said no','Sí, y me dijo que no']},
+      {v:'notyet', t:['Not yet','Todavía no']}]}
+  ];
+  const state = {step: 0, a: {}, f: {you:'', landlord:'', address:'', from:'', to:''}, letterLang: null, edited: false, text: ''};
+  const btnArrow = '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  // ---- the answer ----
+  const LEASE_NOTE = {
+    allows: ['Your lease allows subletting. Most leases that do still require the landlord’s written OK, so get it in writing.',
+             'Tu contrato permite subarrendar. La mayoría de los contratos que lo permiten igual piden el visto bueno del propietario por escrito, así que pídelo por escrito.'],
+    forbids: ['Your lease says no subletting, so you can only sublet if your landlord makes an exception in writing.',
+              'Tu contrato prohíbe subarrendar, así que solo puedes hacerlo si tu propietario hace una excepción por escrito.'],
+    silent: ['Your lease doesn’t mention subletting. Ask anyway: it keeps you on good terms with your landlord and protects your deposit.',
+             'Tu contrato no menciona el subarriendo. Pregunta de todos modos: así mantienes una buena relación con tu propietario y proteges tu depósito.'],
+    unsure: ['Check your lease for “sublet,” “sublease” or “assign” before you go further. If you can’t find it, ask your landlord.',
+             'Revisa tu contrato y busca “sublet”, “sublease” o “assign” antes de seguir. Si no lo encuentras, pregúntale a tu propietario.']
+  };
+  const POST = {href:'app/index.html', t:['Post your room in the app','Publica tu habitación en la app']};
+  const CALC = {href:'#calc', t:['See how much you could save','Calcula cuánto podrías ahorrar'], ghost:true};
+  function result() {
+    const {home, lease, asked} = state.a;
+    if (home === 'campus') return {tone:'stop', badge:['On-campus housing','Vivienda en el campus'],
+      h:['University housing can’t be sublet on TermNest','La vivienda universitaria no se puede subarrendar en TermNest'],
+      p:['On-campus rooms are assigned by UM under your housing contract, and those contracts generally don’t allow you to pass your room to someone else.',
+         'Las habitaciones del campus las asigna UM según tu contrato de vivienda, y esos contratos por lo general no te permiten cederle tu habitación a otra persona.'],
+      steps:[['Read your housing contract for what happens if you leave for a semester, such as release or cancellation fees.','Lee tu contrato de vivienda para saber qué pasa si te vas por un semestre, como cargos por cancelación o liberación del contrato.'],
+             ['Contact UM Housing & Residential Life to ask about your options before you leave.','Contacta a Housing & Residential Life de UM para preguntar por tus opciones antes de irte.'],
+             ['Moving off campus when you’re back? Browse sublets near UM.','¿Te mudas fuera del campus cuando vuelvas? Mira subarriendos cerca de UM.']],
+      cta:[{href:'#browse', t:['Browse sublets','Ver subarriendos']}], letter:false};
+    const note = LEASE_NOTE[lease];
+    if (asked === 'approved') return {tone:'ready', badge:['You’re ready','Todo listo'],
+      note: lease === 'forbids' ? ['Your lease says no subletting, so keep your landlord’s written exception with your lease.',
+                                   'Tu contrato prohíbe subarrendar, así que guarda la excepción por escrito de tu propietario junto con tu contrato.'] : null,
+      h:['You can sublet your place','Puedes subarrendar tu lugar'],
+      p:['Your landlord approved it in writing. That’s the most important step.','Tu propietario lo aprobó por escrito. Ese es el paso más importante.'],
+      steps:[['Save a copy of the written approval. You’ll add it to your listing in the app.','Guarda una copia de la aprobación por escrito. La vas a agregar a tu anuncio en la app.'],
+             ['Post your room for free, with photos, rent and your exact dates.','Publica tu habitación gratis, con fotos, el alquiler y tus fechas exactas.'],
+             ['Pick a verified student and sign the sublease agreement in the app. The $15 fee is charged only then.','Elige a un estudiante verificado y firmen el contrato de subarriendo en la app. La tarifa de $15 se cobra solo en ese momento.']],
+      cta:[POST, CALC], letter:false};
+    if (asked === 'no') return {tone:'stop', badge:['Not yet','Todavía no'], note,
+      h:['Don’t sublet without your landlord’s OK','No subarriendes sin el visto bueno de tu propietario'],
+      p:['Subletting after your landlord said no can break your lease. You could lose your deposit or even be evicted.','Subarrendar después de que tu propietario dijo que no puede romper tu contrato. Podrías perder tu depósito o incluso enfrentar un desalojo.'],
+      steps:[['Ask what would change their mind, such as meeting the subletter or a shorter sublet. The request below covers the usual worries.','Pregúntale qué le haría cambiar de opinión, como conocer al subarrendatario o un subarriendo más corto. La solicitud de abajo responde a las preocupaciones más comunes.'],
+             ['Ask about other options: a lease transfer, where a new tenant takes over your lease, or ending your lease early.','Pregunta por otras opciones: un traspaso, en el que otra persona asume tu contrato, o terminar el contrato antes.'],
+             ['Only post your room once you have a yes in writing.','Publica tu habitación solo cuando tengas un sí por escrito.']],
+      cta:[], letter:true, letterH:['If you ask again','Si vuelves a preguntar']};
+    if (asked === 'verbal') return {tone:'ask', badge:['Almost there','Ya casi'], note,
+      h:['Get your landlord’s OK in writing','Pide el visto bueno de tu propietario por escrito'],
+      p:['A spoken OK is easy to forget or dispute later. A short email reply or a signed letter protects you both.','Un sí de palabra se olvida fácil o se puede discutir después. Una respuesta por correo o una carta firmada los protege a ambos.'],
+      steps:[['Send the request below and ask them to reply with their approval.','Envía la solicitud de abajo y pídele que responda con su aprobación.'],
+             ['Meanwhile, post your room for free in the app.','Mientras tanto, publica tu habitación gratis en la app.'],
+             ['Add the written approval in the app before anyone signs the sublease.','Agrega la aprobación por escrito en la app antes de que alguien firme el subarriendo.']],
+      cta:[POST], letter:true};
+    if (asked === 'waiting') return {tone:'ask', badge:['Waiting on your landlord','Esperando a tu propietario'], note,
+      h:['Wait for a written answer before anyone moves in','Espera una respuesta por escrito antes de que alguien se mude'],
+      p:['You can get everything else ready while you wait.','Mientras esperas, puedes dejar todo lo demás listo.'],
+      steps:[['No answer in a week? Follow up in writing. You can use the request below.','¿Sin respuesta en una semana? Vuelve a escribirle. Puedes usar la solicitud de abajo.'],
+             ['Post your room for free in the app. Nobody can sign until your landlord’s approval is in.','Publica tu habitación gratis en la app. Nadie puede firmar hasta que esté la aprobación de tu propietario.'],
+             ['If they say yes, add their written approval in the app. If they say no, don’t sublet.','Si dice que sí, agrega su aprobación por escrito en la app. Si dice que no, no subarriendes.']],
+      cta:[POST], letter:true, letterH:['A follow-up you can send','Un seguimiento que puedes enviar']};
+    if (lease === 'forbids') return {tone:'ask', badge:['Ask first','Pregunta primero'], note: null,   // the summary already covers the lease
+      h:['Ask your landlord for an exception','Pide una excepción a tu propietario'],
+      p:['Your lease says no subletting, but many landlords agree when they know who’s moving in and that you stay responsible for rent.','Tu contrato prohíbe subarrendar, pero muchos propietarios aceptan cuando saben quién se va a mudar y que tú sigues respondiendo por el alquiler.'],
+      steps:[['Send the request below. It explains that you stay responsible for the lease and rent.','Envía la solicitud de abajo. Explica que sigues respondiendo por el contrato y el alquiler.'],
+             ['Only sublet if your landlord agrees in writing.','Subarrienda solo si tu propietario acepta por escrito.'],
+             ['If they say no, ask about a lease transfer or ending your lease early.','Si dice que no, pregunta por un traspaso del contrato o por terminarlo antes.']],
+      cta:[], letter:true};
+    return {tone:'ask', badge:['Next step','Siguiente paso'], note,
+      h:['Ask your landlord before you sublet','Pregúntale a tu propietario antes de subarrendar'],
+      p:['This is the step most students skip, and the one that protects you most. It takes one email.','Es el paso que más estudiantes se saltan y el que más te protege. Basta con un correo.'],
+      steps:[['Send the request below to your landlord or property manager.','Envía la solicitud de abajo a tu propietario o a la administradora.'],
+             ['Meanwhile, post your room for free in the app.','Mientras tanto, publica tu habitación gratis en la app.'],
+             ['Once they approve in writing, add it in the app. Then pick a verified student and sign the sublease.','Cuando lo apruebe por escrito, agrégalo en la app. Luego elige a un estudiante verificado y firmen el subarriendo.']],
+      cta:[POST, CALC], letter:true};
+  }
+
+  // ---- the landlord approval request ----
+  function letter(lang) {
+    const f = state.f, isEs = lang === 'es';
+    const blank = (v, en, sp) => v.trim() || (isEs ? sp : en);
+    const day = iso => { if (!iso) return ''; const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d).toLocaleDateString(isEs ? 'es-US' : 'en-US', {month:'long', day:'numeric', year:'numeric'}); };
+    const from = day(f.from) || (isEs ? '[fecha en que te vas]' : '[date you leave]');
+    const to = day(f.to) || (isEs ? '[fecha en que vuelves]' : '[date you return]');
+    const addr = blank(f.address, '[your address and unit]', '[tu dirección y número de unidad]');
+    const ll = blank(f.landlord, '[landlord’s name]', '[nombre del propietario]');
+    const you = blank(f.you, '[your name]', '[tu nombre]');
+    return isEs ? `Asunto: Solicitud de autorización para subarrendar ${addr}
+
+Estimado/a ${ll}:
+
+Le escribo para pedirle su autorización por escrito para subarrendar mi habitación en ${addr} mientras estoy fuera, del ${from} al ${to}.
+
+La persona que se quedaría es estudiante de la Universidad de Miami, con su correo universitario verificado a través de TermNest. Esto es lo que propongo:
+
+• Yo sigo siendo responsable del contrato de alquiler y de que el alquiler se pague a tiempo durante todo ese período.
+• La persona firmará un contrato de subarriendo que cumple con todas las condiciones de mi contrato, incluidas las reglas del edificio.
+• Le enviaré su nombre y sus datos de contacto antes de que se mude.
+• El subarriendo termina el ${to}, cuando vuelvo a vivir aquí. Mi contrato no cambia en nada más.
+
+Si está de acuerdo, ¿podría responder a este mensaje confirmando su autorización o firmar abajo? Con gusto respondo cualquier pregunta o coordino un momento para que conozca a la persona.
+
+Muchas gracias,
+${you}
+[tu teléfono o correo]
+
+Autorizado por: ______________________   Fecha: ____________`
+    : `Subject: Request to sublet ${addr}
+
+Dear ${ll},
+
+I’m writing to ask for your written approval to sublet my room at ${addr}, while I’m away from ${from} to ${to}.
+
+The subletter would be a University of Miami student whose school email has been verified through TermNest. Here’s what I propose:
+
+• I stay responsible for the lease and for rent being paid on time for the whole period.
+• The subletter will sign a sublease agreement that follows all the terms of my lease, including the building rules.
+• I’ll send you the subletter’s name and contact information before they move in.
+• The sublet ends on ${to}, when I move back in. Nothing else about my lease changes.
+
+If you agree, could you reply to this message to confirm, or sign below? I’m happy to answer any questions or set up a time for you to meet the subletter.
+
+Thank you,
+${you}
+[your phone or email]
+
+Approved by: ______________________   Date: ____________`;
+  }
+  const letterLang = () => state.letterLang || (es() ? 'es' : 'en');
+  function letterHTML(r) {
+    const f = state.f, ll = letterLang();
+    const field = (k, label, type = 'text', auto = '', cls = '') => `<div${cls ? ` class="${cls}"` : ''}><label for="lt-${k}">${L(label)}</label>
+      <input id="lt-${k}" data-f="${k}" type="${type}" value="${esc(f[k])}"${auto ? ` autocomplete="${auto}"` : ''}></div>`;
+    if (!state.edited) state.text = letter(ll);
+    return `<div class="letter">
+      <h4>${L(r.letterH || ['Your landlord approval request','Tu solicitud de autorización al propietario'])}</h4>
+      <p>${L(['Fill in what you know, and the request updates as you type. You can also edit the text before you copy it.','Completa lo que sepas y la solicitud se actualiza mientras escribes. También puedes editar el texto antes de copiarlo.'])}</p>
+      <div class="letter-fields">
+        ${field('you', ['Your name','Tu nombre'], 'text', 'name')}
+        ${field('landlord', ['Landlord or property manager','Propietario o administradora'])}
+        ${field('address', ['Address and unit','Dirección y número de unidad'], 'text', 'street-address', 'wide')}
+        ${field('from', ['Away from','Fuera desde'], 'date')}
+        ${field('to', ['Back on','De vuelta el'], 'date')}
+      </div>
+      <fieldset class="letter-lang"><legend class="f-label">${L(['Language of the request','Idioma de la solicitud'])}</legend>
+        <div class="pills">
+          <label class="pill-opt"><input type="radio" name="letterLang" value="en"${ll === 'en' ? ' checked' : ''}><span>English</span></label>
+          <label class="pill-opt"><input type="radio" name="letterLang" value="es"${ll === 'es' ? ' checked' : ''}><span>Español</span></label>
+        </div></fieldset>
+      <label class="f-label" for="letterTxt">${L(['Request to send','Solicitud para enviar'])}</label>
+      <textarea id="letterTxt" spellcheck="true">${esc(state.text)}</textarea>
+      <div class="letter-copy">
+        <button type="button" class="btn btn-accent" data-q="copy">${L(['Copy request','Copiar solicitud'])}</button>
+        ${state.edited ? `<button type="button" class="link-btn" data-q="reset-letter">${L(['Undo my edits','Deshacer mis cambios'])}</button>` : ''}
+        <span class="copy-msg" id="copyMsg" role="status"></span>
+      </div>
+      ${state.edited ? `<p class="help">${L(['You edited the text, so the fields above no longer change it.','Editaste el texto, así que los campos de arriba ya no lo cambian.'])}</p>` : ''}
+    </div>`;
+  }
+
+  // ---- drawing ----
+  function draw(focus) {
+    const total = QUESTIONS.length;
+    if (state.step < total) {
+      const Q = QUESTIONS[state.step], cur = state.a[Q.key], last = state.step === total - 1;
+      box.innerHTML = `<p class="quiz-prog">${L(['Question','Pregunta'])} ${state.step + 1} ${L(['of','de'])} ${total}</p>
+        <div class="quiz-bar" aria-hidden="true"><span style="width:${Math.round((state.step + 1) / (total + 1) * 100)}%"></span></div>
+        <fieldset aria-describedby="quizErr"><legend id="quizQ" tabindex="-1">${L(Q.q)}</legend>
+          ${Q.hint ? `<p class="quiz-hint">${L(Q.hint)}</p>` : ''}
+          <div class="quiz-opts">${Q.opts.map(o => `<label class="quiz-opt"><input type="radio" name="quiz-${Q.key}" value="${o.v}"${cur === o.v ? ' checked' : ''}>
+            <span><span><strong>${L(o.t)}</strong>${o.h ? `<small>${L(o.h)}</small>` : ''}</span></span></label>`).join('')}</div>
+        </fieldset>
+        <p class="err" id="quizErr" aria-live="polite"></p>
+        <div class="quiz-nav">
+          ${state.step > 0 ? `<button type="button" class="btn btn-ghost" data-q="back">${L(['Back','Atrás'])}</button>` : ''}
+          <button type="button" class="btn btn-primary" data-q="next">${L(last ? ['See my answer','Ver mi respuesta'] : ['Next','Siguiente'])}${btnArrow}</button>
+        </div>`;
+      if (focus) document.getElementById('quizQ').focus({preventScroll: true});
+      return;
+    }
+    const r = result();
+    box.innerHTML = `<div class="quiz-r ${r.tone}">
+      <span class="quiz-badge">${L(r.badge)}</span>
+      <h3 id="quizRes" tabindex="-1">${L(r.h)}</h3>
+      <p>${L(r.p)}</p>
+      ${r.note ? `<p class="quiz-lease">${L(r.note)}</p>` : ''}
+      <h4>${L(['Next steps','Próximos pasos'])}</h4>
+      <ol>${r.steps.map(s => `<li>${L(s)}</li>`).join('')}</ol>
+      ${r.cta.length ? `<div class="btn-row">${r.cta.map(c => `<a class="btn ${c.ghost ? 'btn-ghost' : 'btn-primary'}" href="${c.href}">${L(c.t)}</a>`).join('')}</div>` : ''}
+      ${r.letter ? letterHTML(r) : ''}
+      <p class="help" style="margin-top:20px">${L(['This is general guidance, not legal advice. Your lease and your landlord have the final say.','Esto es una guía general, no asesoría legal. Lo que cuenta es tu contrato y lo que diga tu propietario.'])}</p>
+      <div class="quiz-again">
+        <button type="button" class="link-btn" data-q="back">${L(['Change my answers','Cambiar mis respuestas'])}</button>
+        <button type="button" class="link-btn" data-q="restart">${L(['Start over','Empezar de nuevo'])}</button>
+      </div></div>`;
+    if (focus) document.getElementById('quizRes').focus({preventScroll: true});
+  }
+  const scrollToQuiz = () => { if (box.getBoundingClientRect().top < 70) box.scrollIntoView({block: 'start'}); };
+
+  box.addEventListener('change', e => {
+    const i = e.target;
+    if (i.name && i.name.startsWith('quiz-')) { state.a[i.name.slice(5)] = i.value; document.getElementById('quizErr').textContent = ''; }
+    if (i.name === 'letterLang') { state.letterLang = i.value; state.edited = false; draw(); document.querySelector(`#quiz input[name="letterLang"][value="${i.value}"]`).focus(); }
+  });
+  box.addEventListener('input', e => {
+    const i = e.target;
+    if (i.dataset.f) { state.f[i.dataset.f] = i.value; if (!state.edited) document.getElementById('letterTxt').value = state.text = letter(letterLang()); }
+    if (i.id === 'letterTxt') {
+      state.text = i.value;
+      if (!state.edited) { state.edited = true; const pos = i.selectionStart; draw(); const t = document.getElementById('letterTxt'); t.focus(); t.setSelectionRange(pos, pos); }
+    }
+  });
+  box.addEventListener('click', async e => {
+    const b = e.target.closest('[data-q]'); if (!b) return;
+    const act = b.dataset.q;
+    if (act === 'next') {
+      const Q = QUESTIONS[state.step];
+      if (!state.a[Q.key]) { document.getElementById('quizErr').textContent = L(['Pick one answer to continue.','Elige una respuesta para seguir.']); box.querySelector('.quiz-opt input').focus(); return; }
+      // On-campus housing goes straight to the answer: the lease questions don't apply.
+      state.step = Q.key === 'home' && state.a.home === 'campus' ? QUESTIONS.length : state.step + 1;
+      draw(true); scrollToQuiz();
+    } else if (act === 'back') {
+      state.step = state.step >= QUESTIONS.length && state.a.home === 'campus' ? 0 : Math.max(0, state.step - 1);
+      draw(true); scrollToQuiz();
+    } else if (act === 'restart') {
+      state.step = 0; state.a = {}; draw(true); scrollToQuiz();
+    } else if (act === 'reset-letter') {
+      state.edited = false; draw(); document.getElementById('letterTxt').focus();
+    } else if (act === 'copy') {
+      const t = document.getElementById('letterTxt'), msg = document.getElementById('copyMsg');
+      let ok = false;
+      try { await navigator.clipboard.writeText(t.value); ok = true; }
+      catch (err) { t.focus(); t.select(); try { ok = document.execCommand('copy'); } catch (err2) {} }
+      msg.textContent = ok ? L(['Copied. Paste it into an email or message to your landlord.','Copiado. Pégalo en un correo o mensaje para tu propietario.'])
+                           : L(['Couldn’t copy automatically. The text is selected: press Ctrl+C (or ⌘+C) to copy it.','No se pudo copiar automáticamente. El texto está seleccionado: presiona Ctrl+C (o ⌘+C) para copiarlo.']);
+    }
+  });
+  document.addEventListener('tn:lang', () => draw());   // keeps answers, fields and any edits to the request
+  draw();
 })();
 
 // Students looking for a place. Same data as STUDENTS in app/index.html.
@@ -1475,23 +2608,26 @@ window.TNBrowse = (() => {
   ];
   const SHOW = ['s1','s6','s8','s10'];   // one student per term: spring, summer, fall, full year
   const OPTS = {sleep:['Early bird','Night owl'], clean:['Very tidy','Average','Relaxed'], noise:['Quiet','Some noise','Lively'], study:['Studies at home','Studies out']};
+  const { t, es } = window.I18N;
   const toDate = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
-  const fmt = (iso, y) => toDate(iso).toLocaleDateString('en-US', y ? {month:'short',day:'numeric',year:'numeric'} : {month:'short',day:'numeric'});
+  const fmt = (iso, y) => toDate(iso).toLocaleDateString(I18N.locale(), y ? {month:'short',day:'numeric',year:'numeric'} : {month:'short',day:'numeric'});
   const weeks = (a,b) => Math.round((toDate(b) - toDate(a)) / 864e5 / 7);
   const term = s => { if (weeks(s.from, s.to) >= 39) return 'Full year'; const m = toDate(s.from).getMonth(); return m <= 1 || m === 11 ? 'Spring' : m >= 4 && m <= 6 ? 'Summer' : 'Fall'; };
   const tick = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>';
-  document.getElementById('slList').innerHTML = SHOW.map(id => STUDENTS.find(s => s.id === id)).map(s => `
+  const draw = () => { document.getElementById('slList').innerHTML = SHOW.map(id => STUDENTS.find(s => s.id === id)).map(s => `
     <li class="sl-card">
       <div class="sl-top"><span class="avatar" aria-hidden="true">${s.name[0]}</span>
-        <div><strong>${s.name}</strong><span class="sub">${s.year} · ${s.major}</span>
-          <span class="sl-tags"><span class="verified">${tick} Verified student</span><span class="sl-term">${term(s)}</span></span></div></div>
+        <div><strong>${s.name}</strong><span class="sub">${t(s.year)} · ${t(s.major)}</span>
+          <span class="sl-tags"><span class="verified">${tick} ${t('Verified student')}</span><span class="sl-term">${t(term(s))}</span></span></div></div>
       <dl class="sl-facts">
-        <div><dt>Needs</dt><dd>${fmt(s.from)} – ${fmt(s.to, true)}</dd></div>
-        <div><dt>Budget</dt><dd>Up to $${s.budget.toLocaleString('en-US')}/mo</dd></div>
-        <div><dt>Prefers</dt><dd>${s.area}</dd></div>
+        <div><dt>${t('Needs')}</dt><dd>${fmt(s.from)} – ${fmt(s.to, true)}</dd></div>
+        <div><dt>${t('Budget')}</dt><dd>${es() ? 'Hasta' : 'Up to'} $${s.budget.toLocaleString('en-US')}${t('/mo')}</dd></div>
+        <div><dt>${t('Prefers')}</dt><dd>${s.area}</dd></div>
       </dl>
-      <ul class="sl-habits" aria-label="${s.name}’s roommate habits">${Object.keys(OPTS).map(k => `<li>${OPTS[k][s.habits[k]]}</li>`).join('')}</ul>
-    </li>`).join('');
+      <ul class="sl-habits" aria-label="${es() ? `Hábitos de convivencia de ${s.name}` : `${s.name}’s roommate habits`}">${Object.keys(OPTS).map(k => `<li>${t(OPTS[k][s.habits[k]])}</li>`).join('')}</ul>
+    </li>`).join(''); };
+  draw();
+  document.addEventListener('tn:lang', draw);
 })();
 
 // Pages: show one page's sections at a time. Every in-page link (#id) goes through go(),
@@ -1499,7 +2635,7 @@ window.TNBrowse = (() => {
 (() => {
   const sections = [...document.querySelectorAll('main section[data-page]')];
   const PAGES = { home:'TermNest · Student subleases at the University of Miami', browse:'Browse sublets · TermNest', need:'I need a place · TermNest', subleasing:'I’m subleasing my place · TermNest',
-    features:'Features · TermNest', safety:'Safety · TermNest', pricing:'Pricing and FAQ · TermNest', contact:'Contact · TermNest' };
+    swap:'Term Swap · TermNest', features:'Features · TermNest', safety:'Safety · TermNest', pricing:'Pricing and FAQ · TermNest', contact:'Contact · TermNest' };
   const navLinks = [...document.querySelectorAll('.nav-links a, .site-footer a[href^="#"]')];
   let current = null;
   function setCurrentNav(page) {
@@ -1521,7 +2657,7 @@ window.TNBrowse = (() => {
     const changed = page !== current;
     sections.forEach(s => { s.hidden = s.dataset.page !== page; });
     current = page;
-    document.title = PAGES[page];
+    document.title = I18N.t(PAGES[page]);
     if (page === 'browse') {                                   // list, or one listing's detail view
       const listingTitle = window.TNBrowse.show(id);
       if (listingTitle) {
@@ -1554,8 +2690,31 @@ window.TNBrowse = (() => {
     go(a.getAttribute('href').slice(1), true);
   });
   window.addEventListener('popstate', () => go(location.hash.slice(1) || 'home', false));
+  document.addEventListener('tn:lang', () => { document.title = (current === 'browse' && TNBrowse.currentTitle()) ? TNBrowse.currentTitle() + ' · TermNest' : I18N.t(PAGES[current]); });
   go(location.hash.slice(1) || 'home');
 })();
+
+// Menu: show the full row of links only when it fits beside the logo with room to spare (and never below 1,440px).
+// Otherwise fold it into the Menu button. Re-checked on resize and when the language changes, since Spanish labels are longer.
+(() => {
+  const header = document.querySelector('.site-header'), row = header.querySelector('.nav-row');
+  const logo = row.querySelector('.logo'), links = document.getElementById('navLinks'), btn = header.querySelector('.menu-btn');
+  function fit() {
+    const wasOpen = links.classList.contains('open');
+    header.classList.remove('compact');
+    const cs = getComputedStyle(row), room = row.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const fits = window.innerWidth >= 1440 && logo.offsetWidth + links.scrollWidth + 40 <= room;   // at least 40px between logo and links
+    header.classList.toggle('compact', !fits);
+    if (fits && wasOpen) { links.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+  }
+  let raf = 0;
+  window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); });
+  document.addEventListener('tn:lang', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fit();
+})();
+
+I18N.start();   // switch to Spanish now if that was the saved choice
 </script>
 </body>
 </html>
