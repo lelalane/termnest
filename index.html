@@ -279,6 +279,17 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .term-tag{position:absolute;top:14px;right:12px;z-index:1;background:#fff;color:var(--ink);font-weight:700;font-size:.85rem;padding:4px 10px;border:2px solid var(--ink);border-radius:6px}
 .card-body{padding:16px 18px 18px}
 .boost-tag{display:inline-flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:2px 8px;margin-bottom:8px;transform:rotate(-2deg)}
+.bldg{display:flex;align-items:flex-start;gap:6px;font-weight:700;font-size:.95rem;margin:2px 0 4px;color:var(--ink)}
+.bldg svg{flex:none;margin-top:2px;color:var(--green)}
+/* Tags on listings: Boosted, Approved Building, fair price (same as the app) */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.tag-row .boost-tag{margin:0}
+.fair-tag,.approved-tag{display:inline-flex;align-items:center;gap:4px;font-size:.82rem;font-weight:700;border:2px solid var(--ink);border-radius:6px;padding:2px 8px;line-height:1.3}
+.fair-tag.great{background:var(--green);color:#fff}
+.fair-tag.fair{background:var(--green-50);color:var(--green)}
+.fair-tag.high{background:#fff;color:var(--ink)}
+.approved-tag{background:#fff;color:var(--green);border-color:var(--green)}
+.approved-note{font-size:.95rem;color:var(--ink-2);margin:0 0 12px}
 .card h2{font-size:1.25rem;line-height:1.2;margin-bottom:6px}
 .card-link{color:var(--ink);text-decoration:none;font-weight:700}
 .card-link::after{content:"";position:absolute;inset:0;border-radius:12px}
@@ -542,7 +553,18 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 
 /* ---------- pricing ---------- */
 .price-grid{display:grid;gap:22px;margin-top:36px}
-@media (min-width:860px){.price-grid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:860px){.price-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1240px){.price-grid{grid-template-columns:repeat(4,1fr)}}
+.perks{margin-top:40px}
+.perks-h{font-size:1.5rem;margin-bottom:6px}
+.perks-lead{color:var(--ink-2);max-width:44rem}
+.perk-list{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:14px}
+@media (min-width:860px){.perk-list{grid-template-columns:repeat(3,1fr)}}
+.perk-list li{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:4px}
+.perk-list strong{font-family:var(--head);font-size:1.1rem}
+.perk-list span{color:var(--ink-2)}
+.perk-list b{align-self:flex-start;margin-top:6px;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:2px 8px;font-size:.9rem}
+.perks-note{font-size:.9rem;color:var(--ink-2);margin-top:10px}
 .price-card{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
 .price-card.featured{border-width:3px;box-shadow:6px 6px 0 var(--ink)}
 .price-card .who{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;color:var(--green)}
@@ -888,7 +910,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Landlord approval and sublease agreement in the app</span></li>
           <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Move-in photos saved with the booking</span></li>
         </ul>
-        <p class="cost"><strong>Cost to you: $15,</strong> only after a subletter signs. Optional $5 Boost to show higher in search.</p>
+        <p class="cost"><strong>Cost to you: $15,</strong> only after a subletter signs. Optional $5 Boost puts your listing at the top of search. It’s paid upfront and non-refundable.</p>
         <a class="btn btn-primary" href="#calc">See how much you could save</a>
         <a class="btn btn-ghost" href="app/index.html">Post your room in the app</a>
       </div>
@@ -1154,7 +1176,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       <li class="feat">
         <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span>
         <h3>Verified students only</h3>
-        <p>Everyone signs up with a school email and confirms a code. No strangers, no fake profiles.</p>
+        <p>Everyone signs up with a .edu school email and confirms a code. TermNest verifies the email only and doesn’t do background checks.</p>
       </li>
       <li class="feat">
         <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
@@ -1170,7 +1192,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></span>
         <span class="opt-tag">Optional</span>
         <h3>Roommate preferences and match</h3>
-        <p>Share your sleep schedule, cleanliness, guests and pets. Each room shows a match score with its roommates.</p>
+        <p>Share lifestyle habits like your sleep schedule, cleanliness, guests and pets. Once you set your preferences, rooms with roommates show a match score.</p>
       </li>
       <li class="feat">
         <span class="feat-ic"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg></span>
@@ -1218,12 +1240,12 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <span class="feat-ic"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
         <h3 id="sHeld">Rent is held until move-in</h3>
       </div>
-      <p class="s-text">You never send rent straight to a stranger. Your first month’s rent waits with TermNest until you’re in the room and happy with it.</p>
+      <p class="s-text">You never send rent straight to a stranger. Our third-party payment processor holds your first month’s rent until move-in day, when you’re in the room and happy with it.</p>
       <ol class="hold-track">
-        <li><strong>You pay in the app</strong><span>When you reserve, you pay the first month inside TermNest.</span></li>
-        <li class="held-step"><strong>TermNest holds it</strong><span>The host can see it’s paid, but can’t take it out yet.</span></li>
-        <li><strong>You move in and check</strong><span>You see the room in person and take your move-in photos.</span></li>
-        <li><strong>Rent is released</strong><span>After you confirm move-in, the host gets paid.</span></li>
+        <li><strong>Reserved</strong><span>You pay the first month in the app. Our payment processor holds it until move-in day.</span></li>
+        <li class="held-step"><strong>Lease signed</strong><span>You and the host sign the sublease in the app. The host can see the rent is paid, but can’t take it out yet.</span></li>
+        <li><strong>Moved in</strong><span>On move-in day, you see the room in person and take your move-in photos.</span></li>
+        <li><strong>Payment released</strong><span>After you confirm move-in, the payment processor pays the host.</span></li>
       </ol>
       <p class="note" style="margin-top:22px">
         <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
@@ -1314,7 +1336,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
   <div class="wrap">
     <span class="eyebrow">Pricing and FAQ</span>
     <h1 class="sec-h" id="priceH" tabindex="-1">Simple pricing. No surprises.</h1>
-    <p class="lead">Looking is always free. Hosts pay only when the sublease actually happens.</p>
+    <p class="lead">Looking is always free. Subleasers pay the $15 success fee only when a sublease is signed.</p>
     <div class="price-grid">
       <div class="price-card">
         <span class="who">For students looking</span>
@@ -1344,11 +1366,33 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <p class="amount">$5 <small>one time</small></p>
         <span class="when">Charged upfront</span>
         <ul>
-          <li>Your listing shows higher in search</li>
+          <li>Puts your listing at the top of search</li>
           <li>Marked with a Boost tag</li>
-          <li>Completely optional</li>
+          <li>Optional and non-refundable</li>
         </ul>
       </div>
+      <div class="price-card">
+        <span class="who">For landlords and property managers</span>
+        <h3>Approved Building</h3>
+        <p class="amount">$79 <small>a month</small></p>
+        <span class="when">Per building</span>
+        <ul>
+          <li>TermNest Approved Building status</li>
+          <li>Approved Building badge on listings in your building</li>
+          <li>Dashboard for sublets in your building</li>
+          <li>Students never pay for it</li>
+        </ul>
+      </div>
+    </div>
+    <div class="perks" aria-labelledby="perksH">
+      <h2 class="perks-h" id="perksH">Partner perks</h2>
+      <p class="perks-lead">Free for students. Moving out for the term or settling in? Get discounts from our partners. TermNest earns a commission from partners, never from students.</p>
+      <ul class="perk-list">
+        <li><strong>Nestbox Storage</strong><span>Storage for your things while you’re away</span><b>15% off</b></li>
+        <li><strong>Easy Haul Moving</strong><span>Movers for move-in and move-out day</span><b>15% off</b></li>
+        <li><strong>Roomful Furniture Rental</strong><span>Rent furniture for an unfurnished room</span><b>15% off</b></li>
+      </ul>
+      <p class="perks-note">Sample partner names for this prototype.</p>
     </div>
     <p class="note">
       <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
@@ -1359,11 +1403,11 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       <h3 class="sub">Frequently asked questions</h3>
       <details>
         <summary>Who can use TermNest?</summary>
-        <p>University of Miami students with a school email. You confirm a code sent to that email before you can post or message.</p>
+        <p>Students with a .edu school email. TermNest is built for University of Miami students, and Term Swap students from other schools verify the same way. You confirm a code sent to that email before you can post or message. We verify the email only and don’t do background checks.</p>
       </details>
       <details>
         <summary>How does “rent held until move-in” work?</summary>
-        <p>When you reserve, you pay the first month in the app. TermNest holds it. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.</p>
+        <p>When you reserve, you pay the first month in the app. Our third-party payment processor holds it until move-in day. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.</p>
       </details>
       <details>
         <summary>When do I pay the $15 success fee?</summary>
@@ -1371,7 +1415,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </details>
       <details>
         <summary>What does the $5 Boost do?</summary>
-        <p>Boost moves your listing higher in search results and adds a Boost tag. It’s optional and charged when you turn it on.</p>
+        <p>Boost puts your listing at the top of search results and adds a Boost tag. It’s optional, costs $5, is charged upfront when you turn it on, and isn’t refundable.</p>
       </details>
       <details>
         <summary>Do I need my landlord’s permission?</summary>
@@ -1506,7 +1550,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <h2 id="terms-responsibilities">5. Your responsibilities</h2>
 <p>If you post a listing or sign a sublease, you are responsible for:</p>
 <ul>
-<li><strong>Getting your landlord’s approval.</strong> Many leases don’t allow subletting without written permission. Getting that permission is your job, not TermNest’s.</li>
+<li><strong>Getting your landlord’s approval.</strong> Many leases don’t allow subletting without written permission. TermNest gives you a way to ask your landlord in the app, but getting that permission is still your responsibility.</li>
 <li><strong>Following your original lease.</strong> Subletting does not change your own lease. You still owe your landlord everything your lease says, including rent if your subletter doesn’t pay.</li>
 <li><strong>Keeping your listing accurate.</strong> Your photos, price, dates, and description must be true and up to date. Only list a place you have the right to sublet.</li>
 <li><strong>Following the law,</strong> including fair housing laws and any rules from your school, building, or city.</li>
@@ -1520,14 +1564,15 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <li><strong>Signing up is free.</strong> So is browsing, messaging, and posting a listing.</li>
 <li><strong>$15 success fee.</strong> If you’re subleasing your place, you owe TermNest a $15 success fee when you sign a sublease with someone you met on TermNest. We charge it to the card you have on file when the sublease is signed. If nobody signs, you don’t pay it.</li>
 <li><strong>$5 Boost.</strong> Boost puts your listing at the top of search results. It costs $5, paid up front when you add it. Boost is <strong>non-refundable</strong>, even if nobody books your room.</li>
+<li><strong>$79 Approved Building plan.</strong> Landlords and property managers can pay $79 per month for each building to get “TermNest Approved Building” status, a badge on listings in that building, and a dashboard.</li>
 </ul>
 <p>Payments are processed by a third-party payment company, not by TermNest. If we ever change our prices, we’ll tell you before the new price applies to you.</p>
 <h2 id="terms-held-rent">8. How held rent works</h2>
-<p>When a subletter reserves a room, the rent is paid through a <strong>licensed third-party payment processor</strong>. The processor holds the money until move-in, then releases it to the subleaser after the steps shown in the app.</p>
+<p>When a subletter reserves a room, the rent is paid through a <strong>licensed third-party payment processor</strong>. The processor holds the money until move-in day. It’s released to the subleaser when the subletter confirms move-in in the app, or automatically 24 hours after move-in if no problem is reported.</p>
 <ul>
 <li>TermNest does not hold your money in its own bank account, and TermNest is not a bank.</li>
 <li>The payment processor’s own terms also apply to these payments.</li>
-<li>If something is wrong at move-in, report it in the app within 24 hours. We’ll ask the processor to pause the payment while we help.</li>
+<li>If something is wrong at move-in, report it in the app instead of confirming, within 24 hours of move-in. We’ll ask the processor to keep holding the payment while we help, and if the room isn’t as listed, you get a full refund.</li>
 </ul>
 <h2 id="terms-non-circumvention">9. Don’t go around TermNest</h2>
 <p>If you meet someone on TermNest and then finish the deal somewhere else, like over text, email, or another app, you still owe the $15 success fee. This is true even if the sublease is signed outside the app.</p>
@@ -1554,7 +1599,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <p>The “Can I sublet?” quiz, the landlord approval request, and the sublease agreement template are <strong>general information</strong> to help you get started. They are <strong>not legal or real estate advice</strong>, and TermNest is not a law firm or real estate broker.</p>
 <p>Every lease is different. Read your own lease carefully. If you’re not sure about something, ask a lawyer or your school’s student legal services, if it has them.</p>
 <h2 id="terms-partners">13. Partner services</h2>
-<p>TermNest may offer optional perks from partner companies, like storage, moving help, or renters insurance. If you choose one:</p>
+<p>TermNest may offer optional perks from partner companies, like storage, moving help, furniture rental, or renters insurance. Perks are free for students. Partners pay TermNest a commission; students never do. If you choose one:</p>
 <ul>
 <li>Your agreement for that service is with the partner, not with TermNest.</li>
 <li>The partner is responsible for its own services, prices, and terms.</li>
@@ -1630,7 +1675,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <ul>
 <li>We collect what we need to run TermNest and keep students safe.</li>
 <li><strong>We never sell your data.</strong></li>
-<li>We only share it with storage, moving, or insurance partners if you choose one of their perks.</li>
+<li>We only share it with storage, moving, furniture rental, or insurance partners if you choose one of their perks.</li>
 <li>You can delete your account and your data at any time.</li>
 </ul>
 <h2 id="privacy-collect">2. What we collect</h2>
@@ -1659,11 +1704,11 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <ul>
 <li><strong>With other students,</strong> when you use TermNest. Students can see your listings, your public profile, and the messages you send them. Your email and phone number are not shown.</li>
 <li><strong>With our payment processor,</strong> so it can charge fees and hold rent.</li>
-<li><strong>With storage, moving, and insurance partners, only if you choose one of their perks.</strong> We share just what they need to help you, like your name, email, move dates, and the address of the room for renters insurance. If you don’t choose a perk, they get nothing.</li>
+<li><strong>With storage, moving, furniture rental, and insurance partners, only if you choose one of their perks.</strong> We share just what they need to help you, like your name, email, move dates, and the address of the room for renters insurance. If you don’t choose a perk, they get nothing.</li>
 <li><strong>If the law requires it,</strong> or to protect someone’s safety.</li>
 </ul>
 <h2 id="privacy-security">6. Keeping it safe</h2>
-<p>We use reasonable security measures to protect your information. No system is perfectly secure, so please use a strong password and never share your login.</p>
+<p>We use reasonable security measures to protect your information. No system is perfectly secure, so please keep your school email secure and never share your verification codes.</p>
 <h2 id="privacy-delete">7. Deleting your account and data</h2>
 <p>You can ask us to delete your account and your data at any time:</p>
 <ul>
@@ -1890,7 +1935,7 @@ window.I18N = (() => {
     "Landlord approval and sublease agreement in the app": "Aprobación del propietario y contrato de subarriendo en la app",
     "Move-in photos saved with the booking": "Fotos de la mudanza guardadas con la reserva",
     "Cost to you: $15,": "Tu costo: $15,",
-    "only after a subletter signs. Optional $5 Boost to show higher in search.": "solo cuando alguien firma el subarriendo. Boost opcional de $5 para aparecer más arriba en las búsquedas.",
+    "only after a subletter signs. Optional $5 Boost puts your listing at the top of search. It’s paid upfront and non-refundable.": "solo cuando alguien firma el subarriendo. El Boost opcional de $5 pone tu anuncio primero en las búsquedas. Se paga por adelantado y no se reembolsa.",
     "See how much you could save": "Calcula cuánto podrías ahorrar",
     "Post your room in the app": "Publica tu habitación en la app",
     "Students looking right now": "Estudiantes que buscan ahora mismo",
@@ -2042,13 +2087,13 @@ window.I18N = (() => {
     "Built for short stays and student safety": "Pensado para estadías cortas y la seguridad de los estudiantes",
     "Everything you need to sublet with confidence, in one place.": "Todo lo que necesitas para subarrendar con confianza, en un solo lugar.",
     "Verified students only": "Solo estudiantes verificados",
-    "Everyone signs up with a school email and confirms a code. No strangers, no fake profiles.": "Todos se registran con un correo universitario y confirman un código. Sin desconocidos ni perfiles falsos.",
+    "Everyone signs up with a .edu school email and confirms a code. TermNest verifies the email only and doesn’t do background checks.": "Todos se registran con un correo universitario .edu y confirman un código. TermNest solo verifica el correo y no revisa antecedentes.",
     "Every listing shows the real first and last day, so you never guess what “spring semester” means.": "Cada anuncio muestra el primer y el último día reales, así nunca tienes que adivinar qué significa “semestre de primavera”.",
     "Rent held until move-in": "Alquiler retenido hasta la mudanza",
     "The first month’s rent stays held in the app. It goes to the host only after you move in and confirm.": "El alquiler del primer mes queda retenido en la app. Le llega al anfitrión solo después de que te mudas y lo confirmas.",
     "Optional": "Opcional",
     "Roommate preferences and match": "Preferencias de convivencia y compatibilidad",
-    "Share your sleep schedule, cleanliness, guests and pets. Each room shows a match score with its roommates.": "Cuenta tu horario de sueño, cómo llevas el orden, las visitas y las mascotas. Cada habitación muestra qué tan compatible eres con sus compañeros de casa.",
+    "Share lifestyle habits like your sleep schedule, cleanliness, guests and pets. Once you set your preferences, rooms with roommates show a match score.": "Comparte hábitos de convivencia como tu horario de sueño, cómo llevas el orden, las visitas y las mascotas. Cuando configuras tus preferencias, las habitaciones con compañeros muestran tu porcentaje de compatibilidad.",
     "Leaving Miami? Trade rooms with a student coming here from the city you’re going to.": "¿Te vas de Miami? Intercambia habitación con un estudiante que viene aquí desde la ciudad a la que vas.",
     "See who’s swapping": "Mira quién quiere intercambiar",
     "Landlord approval and sublease agreement": "Aprobación del propietario y contrato de subarriendo",
@@ -2064,15 +2109,15 @@ window.I18N = (() => {
     "How TermNest keeps you safe": "Cómo te protege TermNest",
     "Subletting means trusting someone you just met. TermNest is built so you don’t have to take anyone’s word for it.": "Subarrendar significa confiar en alguien que acabas de conocer. TermNest está hecho para que no tengas que creerle a nadie solo por su palabra.",
     "Rent is held until move-in": "El alquiler queda retenido hasta la mudanza",
-    "You never send rent straight to a stranger. Your first month’s rent waits with TermNest until you’re in the room and happy with it.": "Nunca le mandas el alquiler directamente a un desconocido. El primer mes queda en manos de TermNest hasta que estés en la habitación y conforme con ella.",
-    "You pay in the app": "Pagas en la app",
-    "When you reserve, you pay the first month inside TermNest.": "Al reservar, pagas el primer mes dentro de TermNest.",
-    "TermNest holds it": "TermNest lo retiene",
-    "The host can see it’s paid, but can’t take it out yet.": "El anfitrión ve que está pagado, pero todavía no puede retirarlo.",
-    "You move in and check": "Te mudas y revisas",
-    "You see the room in person and take your move-in photos.": "Ves la habitación en persona y tomas tus fotos de la mudanza.",
-    "Rent is released": "Se libera el alquiler",
-    "After you confirm move-in, the host gets paid.": "Cuando confirmas la mudanza, el anfitrión recibe el pago.",
+    "You never send rent straight to a stranger. Our third-party payment processor holds your first month’s rent until move-in day, when you’re in the room and happy with it.": "Nunca le mandas el alquiler directamente a un desconocido. Nuestro procesador de pagos externo retiene el primer mes hasta el día de la mudanza, cuando ya estás en la habitación y conforme con ella.",
+    "Reserved": "Reservado",
+    "You pay the first month in the app. Our payment processor holds it until move-in day.": "Pagas el primer mes en la app. Nuestro procesador de pagos lo retiene hasta el día de la mudanza.",
+    "Lease signed": "Contrato firmado",
+    "You and the host sign the sublease in the app. The host can see the rent is paid, but can’t take it out yet.": "Tú y el anfitrión firman el subarriendo en la app. El anfitrión ve que el alquiler está pagado, pero todavía no puede retirarlo.",
+    "Moved in": "Mudanza hecha",
+    "On move-in day, you see the room in person and take your move-in photos.": "El día de la mudanza ves la habitación en persona y tomas tus fotos de entrada.",
+    "Payment released": "Pago liberado",
+    "After you confirm move-in, the payment processor pays the host.": "Cuando confirmas la mudanza, el procesador de pagos le paga al anfitrión.",
     "Room isn’t as listed?": "¿La habitación no es como en el anuncio?",
     "Don’t confirm move-in. Report it in the app instead. Your rent stays held while support looks into it, and if the room isn’t as listed, you get a full refund.": "No confirmes la mudanza; repórtalo en la app. Tu alquiler sigue retenido mientras soporte lo revisa y, si la habitación no es como en el anuncio, recibes un reembolso total.",
     "Every student is verified": "Cada estudiante está verificado",
@@ -2118,7 +2163,7 @@ window.I18N = (() => {
     "Contact TermNest support. A team member replies within 1 hour in the app.": "Contacta al soporte de TermNest. Alguien del equipo te responde en menos de 1 hora en la app.",
     "Contact TermNest": "Contactar a TermNest",
     "Simple pricing. No surprises.": "Precios simples. Sin sorpresas.",
-    "Looking is always free. Hosts pay only when the sublease actually happens.": "Buscar siempre es gratis. Los anfitriones pagan solo cuando el subarriendo se concreta.",
+    "Looking is always free. Subleasers pay the $15 success fee only when a sublease is signed.": "Buscar siempre es gratis. Quienes subarriendan pagan la comisión de éxito de $15 solo cuando se firma un subarriendo.",
     "For students looking": "Para quien busca",
     "Find a place": "Buscar lugar",
     "Always free": "Siempre gratis",
@@ -2134,20 +2179,20 @@ window.I18N = (() => {
     "Optional for hosts": "Opcional para anfitriones",
     "Boost": "Boost",
     "Charged upfront": "Se cobra por adelantado",
-    "Your listing shows higher in search": "Tu anuncio aparece más arriba en las búsquedas",
+    "Puts your listing at the top of search": "Pone tu anuncio primero en las búsquedas",
     "Marked with a Boost tag": "Lleva la etiqueta Boost",
-    "Completely optional": "Totalmente opcional",
+    "Optional and non-refundable": "Opcional y no reembolsable",
     "Only pay inside TermNest.": "Paga solo dentro de TermNest.",
     "Never pay a sublease with Zelle, Venmo, cash or a wire transfer. Payments outside the app are not protected.": "Nunca pagues un subarriendo con Zelle, Venmo, efectivo ni transferencia bancaria. Los pagos fuera de la app no están protegidos.",
     "Frequently asked questions": "Preguntas frecuentes",
     "Who can use TermNest?": "¿Quién puede usar TermNest?",
-    "University of Miami students with a school email. You confirm a code sent to that email before you can post or message.": "Los estudiantes de la Universidad de Miami con correo universitario. Antes de publicar o enviar mensajes, confirmas un código que llega a ese correo.",
+    "Students with a .edu school email. TermNest is built for University of Miami students, and Term Swap students from other schools verify the same way. You confirm a code sent to that email before you can post or message. We verify the email only and don’t do background checks.": "Estudiantes con correo universitario .edu. TermNest está pensado para estudiantes de la Universidad de Miami, y los estudiantes de otras universidades que usan Term Swap se verifican igual. Antes de publicar o enviar mensajes, confirmas un código que llega a ese correo. Solo verificamos el correo y no revisamos antecedentes.",
     "How does “rent held until move-in” work?": "¿Cómo funciona eso de “alquiler retenido hasta la mudanza”?",
-    "When you reserve, you pay the first month in the app. TermNest holds it. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.": "Al reservar, pagas el primer mes en la app y TermNest lo retiene. Cuando te mudas y confirmas que la habitación es como en el anuncio, el dinero le llega al anfitrión. Si no es como en el anuncio, recibes un reembolso total.",
+    "When you reserve, you pay the first month in the app. Our third-party payment processor holds it until move-in day. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.": "Al reservar, pagas el primer mes en la app y nuestro procesador de pagos externo lo retiene hasta el día de la mudanza. Cuando te mudas y confirmas que la habitación es como en el anuncio, el dinero le llega al anfitrión. Si no es como en el anuncio, recibes un reembolso total.",
     "When do I pay the $15 success fee?": "¿Cuándo pago la comisión de éxito de $15?",
     "Only after a subletter signs the sublease agreement for your room. Posting is free, and if nobody signs, you pay nothing.": "Solo cuando alguien firma el contrato de subarriendo de tu habitación. Publicar es gratis y, si nadie firma, no pagas nada.",
     "What does the $5 Boost do?": "¿Para qué sirve el Boost de $5?",
-    "Boost moves your listing higher in search results and adds a Boost tag. It’s optional and charged when you turn it on.": "Boost sube tu anuncio en los resultados de búsqueda y le agrega la etiqueta Boost. Es opcional y se cobra al activarlo.",
+    "Boost puts your listing at the top of search results and adds a Boost tag. It’s optional, costs $5, is charged upfront when you turn it on, and isn’t refundable.": "Boost pone tu anuncio primero en los resultados de búsqueda y le agrega la etiqueta Boost. Es opcional, cuesta $5, se cobra por adelantado al activarlo y no se reembolsa.",
     "Do I need my landlord’s permission?": "¿Necesito el permiso de mi propietario?",
     "Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement.": "La mayoría de los contratos de alquiler lo exigen. Con TermNest le envías la solicitud a tu propietario desde la app, y su aprobación queda en el contrato de subarriendo.",
     "What is Term Swap?": "¿Qué es Term Swap?",
@@ -2199,7 +2244,32 @@ window.I18N = (() => {
     "Privacy Policy · TermNest": "Política de privacidad · TermNest",
     "Terms of Use": "Términos de uso",
     "Privacy Policy": "Política de privacidad",
-    "Legal": "Legal"
+    "Legal": "Legal",
+    "For landlords and property managers": "Para propietarios y administradores",
+    "Approved Building": "Edificio aprobado",
+    "University Metrorail station": "Estación University del Metrorail",
+    "South Miami Metrorail station": "Estación South Miami del Metrorail",
+    "Brickell Metrorail station": "Estación Brickell del Metrorail",
+    "Douglas Road Metrorail station": "Estación Douglas Road del Metrorail",
+    "Biltmore Hotel": "Hotel Biltmore",
+    "Sunset Drive and Red Road": "Sunset Drive y Red Road",
+    "a month": "al mes",
+    "Per building": "Por edificio",
+    "TermNest Approved Building status": "Estatus de Edificio aprobado por TermNest",
+    "Approved Building badge on listings in your building": "Insignia de Edificio aprobado en los anuncios de tu edificio",
+    "Dashboard for sublets in your building": "Panel para los subarriendos de tu edificio",
+    "Students never pay for it": "Los estudiantes nunca lo pagan",
+    "Partner perks": "Beneficios de socios",
+    "Free for students. Moving out for the term or settling in? Get discounts from our partners. TermNest earns a commission from partners, never from students.": "Gratis para estudiantes. ¿Te vas por el semestre o te estás instalando? Obtén descuentos de nuestros socios. TermNest gana una comisión de los socios, nunca de los estudiantes.",
+    "Storage for your things while you’re away": "Almacenamiento para tus cosas mientras no estás",
+    "Movers for move-in and move-out day": "Mudanzas para el día que entras y el día que sales",
+    "Rent furniture for an unfurnished room": "Alquila muebles para una habitación sin amueblar",
+    "15% off": "15% de descuento",
+    "Sample partner names for this prototype.": "Nombres de socios de muestra para este prototipo.",
+    "Great price": "Muy buen precio",
+    "Fair price": "Precio justo",
+    "Above average": "Sobre el promedio",
+    "Compared with similar rooms nearby": "Comparado con habitaciones parecidas de la zona"
   };
   let lang = 'en';
   try {
@@ -2301,58 +2371,58 @@ document.addEventListener('keydown', e => {
 // Browse sublets. LISTINGS and HOUSE are copied from app/index.html so the site matches the app.
 window.TNBrowse = (() => {
   const LISTINGS = [
-    {id:1,title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
+    {id:1,building:'Sabal Arch Residences',street:'Ponce de Leon Blvd',title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
      desc:'Bright corner bedroom in a 3-bedroom apartment, a short walk to campus and the Metrorail. Comes with a desk, full bed and closet. My two roommates are UM juniors and quiet during the week.',
      host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['bedroom1','livingroom2','kitchen1','bathroom1']},
-    {id:2,title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
+    {id:2,approved:true,building:'Sunline Studios',street:'University Metrorail station',title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
      desc:'Whole studio to yourself with a kitchenette and in-building laundry. Two minutes to University station. Great for grad students who want quiet.',
      host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['studio1','bathroom1','laundry1']},
-    {id:3,title:'Summer room in the Grove',area:'Coconut Grove',dist:3.1,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+    {id:3,building:'Kingfisher Court Cottages',street:'Main Highway',title:'Summer room in the Grove',area:'Coconut Grove',dist:3.6,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Leafy, walkable neighborhood with cafes and the bay nearby. Room has a window AC, queen bed and a big desk. One roommate who is a UM senior staying for summer research.',
      host:{name:'Priya K.',initials:'PK',about:'UM sophomore · Home for the summer'},photos:['bedroom8','kitchen1','bathroom1']},
-    {id:4,boosted:true,title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
+    {id:4,boosted:true,building:'Cypress Lantern House',street:'Red Road',title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
      desc:'Room in a house shared with three UM students. Shared backyard, parking spot included, and bikeable to campus in under 10 minutes.',
      host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['study-bedroom1','kitchen1','laundry1']},
-    {id:5,title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+    {id:5,approved:true,building:'Harbor Lumen Tower',street:'Brickell Metrorail station',title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Room with a city view, building pool and gym. Ideal for a summer internship downtown. About 20 minutes to campus on the Metrorail.',
      host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['brickell-bedroom1','balcony1','pool1','kitchen1']},
-    {id:6,title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
+    {id:6,building:'Corbel House',street:'Biltmore Hotel',title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
      desc:'Shared room in a calm household of graduate students. Lots of natural light and a study nook. Bring your own bed or ask about borrowing one.',
      host:{name:'Jordan L.',initials:'JL',about:'UM PhD student · Fieldwork in Peru'},photos:['unfurnished-bedroom1','livingroom2','kitchen1']},
-    {id:7,title:'Fall room off Sunset Drive',area:'South Miami',dist:1.4,price:1100,moveIn:'2027-08-16',moveOut:'2027-12-18',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+    {id:7,building:'Tamarind Lane Flats',street:'Sunset Drive',title:'Fall room off Sunset Drive',area:'South Miami',dist:1.4,price:1100,moveIn:'2027-08-16',moveOut:'2027-12-18',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Furnished room in a 2-bedroom condo with a small balcony and covered parking. Close to shops on Sunset Drive and a quick bike ride to campus. My roommate is a UM senior who studies late.',
      host:{name:'Lena V.',initials:'LV',about:'UM junior · Fall semester in London'},photos:['bedroom7','balcony1','livingroom1','kitchen1']},
-    {id:8,title:'Full-year room by Miracle Mile',area:'Coral Gables',dist:1.6,price:1250,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Private room',roommates:2,furnished:true,utilities:false,tone:3,
+    {id:8,building:'Portico Lane Apartments',street:'Miracle Mile',title:'Full-year room by Miracle Mile',area:'Coral Gables',dist:2.7,price:1250,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Private room',roommates:2,furnished:true,utilities:false,tone:3,
      desc:'Room for the whole school year in a quiet 3-bedroom apartment near Miracle Mile. Big closet, desk and blackout curtains. Two roommates who are UM grad students and keep a tidy home.',
      host:{name:'Omar H.',initials:'OH',about:'UM junior · Year abroad in Tokyo'},photos:['bedroom8-bed','livingroom2','kitchen1','laundry1']},
-    {id:9,title:'Shared room steps from campus',area:'Coral Gables',dist:0.3,price:800,moveIn:'2027-01-03',moveOut:'2027-05-15',type:'Shared room',roommates:1,furnished:true,utilities:true,tone:1,
+    {id:9,building:'Copperleaf Commons',street:'San Amaro Drive',title:'Shared room steps from campus',area:'Coral Gables',dist:0.3,price:800,moveIn:'2027-01-03',moveOut:'2027-05-15',type:'Shared room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Share a big double room in an apartment right across from campus. Two beds, two desks and a walk-in closet. My roommate is a UM junior who is up late and out a lot.',
      host:{name:'Nia W.',initials:'NW',about:'UM sophomore · Spring internship in D.C.'},photos:['study-bedroom1-desk','kitchen1','bathroom1']},
-    {id:10,title:'Budget summer room near Red Road',area:'Red Road',dist:0.8,price:785,moveIn:'2027-05-15',moveOut:'2027-08-15',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:0,
+    {id:10,building:'Mango Row Duplexes',street:'Miller Drive',title:'Budget summer room near Red Road',area:'Red Road',dist:0.8,price:785,moveIn:'2027-05-15',moveOut:'2027-08-15',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:0,
      desc:'Shared room in a lively house with two UM students who stay for summer classes. Bring your own bed. Big kitchen, backyard and a short bike ride to campus.',
      host:{name:'Carlos D.',initials:'CD',about:'UM junior · Summer research in Boston'},photos:['unfurnished-bedroom1-window','kitchen1','laundry1']},
-    {id:11,title:'Fall shared room by the Metrorail',area:'South Miami',dist:0.7,price:795,moveIn:'2027-08-14',moveOut:'2027-12-20',type:'Shared room',roommates:1,furnished:true,utilities:false,tone:2,
+    {id:11,building:'Ninebark Lofts',street:'South Miami Metrorail station',title:'Fall shared room by the Metrorail',area:'South Miami',dist:1.3,price:795,moveIn:'2027-08-14',moveOut:'2027-12-20',type:'Shared room',roommates:1,furnished:true,utilities:false,tone:2,
      desc:'Shared room in a quiet, tidy apartment a few minutes from South Miami station. Furnished with a twin bed and desk. My roommate is an early riser who studies at home.',
      host:{name:'Hannah S.',initials:'HS',about:'UM junior · Fall abroad in Florence'},photos:['bedroom2-bed','livingroom2','kitchen1']},
-    {id:12,title:'Full-year shared room near Red Road',area:'Red Road',dist:0.9,price:800,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Shared room',roommates:2,furnished:true,utilities:true,tone:3,
+    {id:12,building:'Seagrape Walk',street:'Red Road',title:'Full-year shared room near Red Road',area:'Red Road',dist:0.9,price:800,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Shared room',roommates:2,furnished:true,utilities:true,tone:3,
      desc:'Shared room for the whole school year in a friendly house off Red Road. Utilities and Wi-Fi are included. The household has a cat and likes a movie night now and then.',
      host:{name:'Kofi A.',initials:'KA',about:'UM senior · Year-long co-op in Seattle'},photos:['bedroom7-bed','livingroom1','kitchen1']},
-    {id:13,title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:2.8,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
+    {id:13,building:'Bayline Lattice Flats',street:'South Bayshore Drive',title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:4.2,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
      desc:'Private room with a peek of the bay, a queen bed and a ceiling fan. Walk to cafes and the marina. My roommate is a grad student with a friendly dog.',
      host:{name:'Grace L.',initials:'GL',about:'UM senior · Summer internship in Chicago'},photos:['grove-bedroom1','balcony1','kitchen1']},
-    {id:14,title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
+    {id:14,approved:true,building:'Vantage Reef Tower',street:'Brickell City Centre',title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
      desc:'Whole studio on a high floor with a pool, gym and front desk. Steps from Brickell City Centre and the Metromover. About 25 minutes to campus on the Metrorail.',
      host:{name:'Mateo G.',initials:'MG',about:'UM grad student · Summer fellowship in D.C.'},photos:['studio3','pool1','balcony1','laundry1']},
-    {id:15,title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.4,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
+    {id:15,building:'Thornbury Townhomes',street:'Douglas Road Metrorail station',title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.1,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
      desc:'Unfurnished private room in a two-story townhouse with a patio. The two roommates are social, have friends over often and keep things relaxed. Smoking is OK on the patio.',
      host:{name:'Zoe M.',initials:'ZM',about:'UM junior · Fall semester in Sydney'},photos:['unfurnished-bedroom1-closet','kitchen1','livingroom1']},
-    {id:16,title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+    {id:16,approved:true,building:'Ferro Bay Residences',street:'Brickell Avenue',title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Furnished room with a city view and its own bathroom. The building has a pool and a study lounge. My roommate is a very tidy night owl who works downtown.',
      host:{name:'Ethan B.',initials:'EB',about:'UM senior · Fall co-op in New York'},photos:['bedroom2','bathroom1','pool1','livingroom1']},
-    {id:17,title:'Garden room on Red Road',area:'Red Road',dist:1.0,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
+    {id:17,building:'Firebush Garden Flats',street:'Sunset Drive and Red Road',title:'Garden room on Red Road',area:'Red Road',dist:1,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
      desc:'Private room that opens onto a garden in a house with three UM students. Unfurnished, so bring your own things. Early risers who often have friends over for dinner.',
      host:{name:'Ava P.',initials:'AP',about:'UM sophomore · Spring abroad in Barcelona'},photos:['unfurnished-bedroom1-light','kitchen1','laundry1']},
-    {id:18,title:'Year-long room in South Miami',area:'South Miami',dist:1.3,price:1150,moveIn:'2027-08-12',moveOut:'2028-05-15',type:'Private room',roommates:1,furnished:false,utilities:true,tone:1,
+    {id:18,building:'Wrenfield Apartments',street:'Sunset Place',title:'Year-long room in South Miami',area:'South Miami',dist:1.3,price:1150,moveIn:'2027-08-12',moveOut:'2028-05-15',type:'Private room',roommates:1,furnished:false,utilities:true,tone:1,
      desc:'Unfurnished private room for the full school year in a calm two-bedroom near Sunset Place. My roommate is a quiet law student who studies at home.',
      host:{name:'Rahul N.',initials:'RN',about:'UM junior · Year abroad in Singapore'},photos:['unfurnished-bedroom1-door','livingroom2','kitchen1','bathroom1']}
   ];
@@ -2408,6 +2478,7 @@ window.TNBrowse = (() => {
     back:'<path d="M15 5l-7 7 7 7"/>', next:'<path d="M9 5l7 7-7 7"/>',
     chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
     calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    home:'<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
     lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
   };
   const ic = (n, s=24) => `<svg aria-hidden="true" focusable="false" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[n]}</svg>`;
@@ -2553,6 +2624,22 @@ window.TNBrowse = (() => {
     <span class="ph-label" aria-hidden="true">${es() ? 'Foto' : 'Photo'} ${i+1} ${es() ? 'de' : 'of'} ${l.photos.length} · ${esc(photoLabel(l.photos[i]))}</span>`;
 
   const distText = d => es() ? `a ${d} mi del campus` : `${d} mi to campus`;
+  // Fair price tag: compares a listing with similar rooms nearby (same room type in the same area, or the
+  // same room type anywhere if it's the only one in its area). The app uses the same rule and labels.
+  function fairPrice(shown) {
+    const l = LISTINGS.find(x => x.id === shown.id) || shown;   // compare the English data, whatever the language
+    let comps = LISTINGS.filter(x => x.id !== l.id && x.type === l.type && x.area === l.area);
+    if (!comps.length) comps = LISTINGS.filter(x => x.id !== l.id && x.type === l.type);
+    if (!comps.length) return 'fair';
+    const r = l.price / (comps.reduce((a, x) => a + x.price, 0) / comps.length);
+    return r < 0.9 ? 'great' : r > 1.1 ? 'high' : 'fair';
+  }
+  const FAIR = {great:'Great price', fair:'Fair price', high:'Above average'};
+  const fairTag = l => { const k = fairPrice(l); return `<span class="fair-tag ${k}" title="${t('Compared with similar rooms nearby')}">${t(FAIR[k])}<span class="sr-only"> (${t('Compared with similar rooms nearby')})</span></span>`; };
+  const approvedTag = () => `<span class="approved-tag">${ic('home',14)} ${t('Approved Building')}</span>`;
+  // Made-up building name and a real nearby street or landmark (same in the app)
+  const bldg = l => `<p class="bldg">${ic('home',16)}<span>${esc(l.building)} · ${esc(t(l.street))}</span></p>`;
+  const tagRow = l => `<p class="tag-row">${l.boosted ? `<span class="boost-tag">${ic('bolt',16)} ${es() ? 'Con Boost' : 'Boosted'}</span>` : ''}${l.approved ? approvedTag() : ''}${fairTag(l)}</p>`;
   function cardHTML(listing) {
     const l = loc(listing);
     return `<li class="card">
@@ -2560,8 +2647,9 @@ window.TNBrowse = (() => {
         <span class="term-tag">${es() ? TIMING_ES[timing(l)] : timing(l) + ' move-in'}</span></div>
       <span class="pill">${ic('verified',16)}${t('Verified student')}</span>
       <div class="card-body">
-        ${l.boosted ? `<p class="boost-tag">${ic('bolt',16)} ${es() ? 'Con Boost' : 'Boosted'}</p>` : ''}
+        ${tagRow(l)}
         <h2><a class="card-link" href="#listing-${l.id}">${esc(l.title)}</a></h2>
+        ${bldg(l)}
         <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${distText(l.dist)}</p>
         <dl class="mini-dates"><div><dt>${t('Move-in')}</dt><dd>${fmt(l.moveIn)}</dd></div><div><dt>${t('Move-out')}</dt><dd>${fmt(l.moveOut)}</dd></div></dl>
         <p class="price"><strong>${money(l.price)}</strong> ${t('/ month')}</p>
@@ -2660,7 +2748,12 @@ window.TNBrowse = (() => {
         <div>
           <span class="verified">${ic('verified',18)} ${t('Verified student')} · .edu</span>
           <h1 class="d-title" id="detailH" tabindex="-1">${esc(l.title)}</h1>
+          ${bldg(l)}
           <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${distText(l.dist)}</p>
+          ${tagRow(l)}
+          ${l.approved ? `<p class="approved-note">${es()
+            ? 'Edificio aprobado por TermNest: el propietario de este edificio trabaja con TermNest.'
+            : 'TermNest Approved Building: the landlord of this building works with TermNest.'}</p>` : ''}
           <div class="action-card">
             <p class="price-lg"><strong>${money(l.price)}</strong> ${t('/ month')}</p>
             <div class="date-box">
@@ -2675,8 +2768,8 @@ window.TNBrowse = (() => {
             <p class="action-note">${ic('lock',20)}<span>${t('Free to browse. Messaging and booking happen in the TermNest app.')}</span></p>
           </div>
           <div class="protect">${ic('shield',28)}<div><strong>${t('Rent held until move-in')}</strong>${es()
-            ? `Cuando reservas en la app, tu pago queda en manos de TermNest y se le entrega a ${esc(first)} solo después de que te mudas.`
-            : `When you book in the app, your payment stays with TermNest and is released to ${esc(first)} only after you move in.`}</div></div>
+            ? `Cuando reservas en la app, nuestro procesador de pagos externo retiene tu pago hasta el día de la mudanza y se lo entrega a ${esc(first)} solo después de que te mudas.`
+            : `When you book in the app, our third-party payment processor holds your payment until move-in day and releases it to ${esc(first)} only after you move in.`}</div></div>
         </div>
       </div>`;
   }
@@ -2830,25 +2923,25 @@ window.TNBrowse = (() => {
        desc:'Cozy studio with a sofa and a queen bed. Walk to food trucks and music on South Congress.'}
     ],
     'London, UK':[
-      {id:'w28',name:'Olivia H.',initials:'OH',school:'University College London',domain:'ucl.ac.uk',about:'Second year · Spring exchange at UM',
-       from:'2027-01-09',to:'2027-05-14',place:'Private room in Bloomsbury',area:'Bloomsbury',type:'Private room',roommates:2,value:1800,near:'0.2 mi to UCL',photo:'bedroom8-plain',
-       desc:'Room in a Georgian flat near Russell Square and the Tube. Two flatmates who are UCL students.'},
-      {id:'w29',name:'Arjun P.',initials:'AP',school:'King’s College London',domain:'kcl.ac.uk',about:'Master’s student · Summer research at UM',
-       from:'2027-05-18',to:'2027-08-14',place:'Studio near the South Bank',area:'South Bank',type:'Entire place',roommates:0,value:1700,near:'0.5 mi to King’s',photo:'studio1-lounge',
+      {id:'w28',name:'Olivia H.',initials:'OH',school:'NYU London',domain:'nyu.edu',about:'Second year · Spring exchange at UM',
+       from:'2027-01-09',to:'2027-05-14',place:'Private room in Bloomsbury',area:'Bloomsbury',type:'Private room',roommates:2,value:1800,near:'0.2 mi to NYU London',photo:'bedroom8-plain',
+       desc:'Room in a Georgian flat near Russell Square and the Tube. Two flatmates who are NYU London students.'},
+      {id:'w29',name:'Arjun P.',initials:'AP',school:'Hult International Business School',domain:'hult.edu',about:'Master’s student · Summer research at UM',
+       from:'2027-05-18',to:'2027-08-14',place:'Studio near the South Bank',area:'South Bank',type:'Entire place',roommates:0,value:1700,near:'Walk to Waterloo station',photo:'studio1-lounge',
        desc:'Studio with a sofa, a queen bed and a small kitchen. Walk to the river and Waterloo station.'},
-      {id:'w30',name:'Emily W.',initials:'EW',school:'London School of Economics',domain:'lse.ac.uk',about:'Third year · Fall exchange at UM',
-       from:'2027-08-20',to:'2027-12-17',place:'Private room in Holborn',area:'Holborn',type:'Private room',roommates:1,value:1650,near:'0.3 mi to LSE',photo:'bedroom7-bed',
+      {id:'w30',name:'Emily W.',initials:'EW',school:'Boston University London',domain:'bu.edu',about:'Third year · Fall exchange at UM',
+       from:'2027-08-20',to:'2027-12-17',place:'Private room in Holborn',area:'Holborn',type:'Private room',roommates:1,value:1650,near:'Near Covent Garden',photo:'bedroom7-bed',
        desc:'Quiet room in a two-bedroom flat close to campus and Covent Garden. One flatmate who studies law.'}
     ],
     'Madrid, Spain':[
-      {id:'w31',name:'Lucía M.',initials:'LM',school:'Universidad Complutense',domain:'ucm.es',about:'Third year · Spring exchange at UM',
-       from:'2027-01-11',to:'2027-05-14',place:'Private room in Moncloa',area:'Moncloa',type:'Private room',roommates:2,value:850,near:'0.4 mi to Complutense',photo:'grove-bedroom1-plain',
+      {id:'w31',name:'Lucía M.',initials:'LM',school:'Universidad Pontificia Comillas',domain:'comillas.edu',about:'Third year · Spring exchange at UM',
+       from:'2027-01-11',to:'2027-05-14',place:'Private room in Moncloa',area:'Moncloa',type:'Private room',roommates:2,value:850,near:'0.5 mi to Comillas',photo:'grove-bedroom1-plain',
        desc:'Big, bright room with a rattan bed and lots of plants in a flat with two students. Near the metro and the Parque del Oeste.'},
       {id:'w32',name:'Pablo R.',initials:'PR',school:'IE University',domain:'ie.edu',about:'Master’s student · Summer internship in Brickell',
        from:'2027-05-20',to:'2027-08-13',place:'Private room in Chamberí',area:'Chamberí',type:'Private room',roommates:1,value:1000,near:'0.5 mi to IE',photo:'bedroom8-plain',
        desc:'Elegant room in an older building with high ceilings. One flatmate and a quiet street full of cafes.'},
-      {id:'w33',name:'Carmen S.',initials:'CS',school:'Universidad Autónoma de Madrid',domain:'uam.es',about:'Second year · Fall exchange at UM',
-       from:'2027-08-23',to:'2027-12-17',place:'Private room in Malasaña',area:'Malasaña',type:'Private room',roommates:2,value:800,near:'25 min to UAM by train',photo:'study-bedroom1-shelf',
+      {id:'w33',name:'Carmen S.',initials:'CS',school:'Saint Louis University Madrid',domain:'slu.edu',about:'Second year · Fall exchange at UM',
+       from:'2027-08-23',to:'2027-12-17',place:'Private room in Malasaña',area:'Malasaña',type:'Private room',roommates:2,value:800,near:'Metro to SLU Madrid',photo:'study-bedroom1-shelf',
        desc:'Cozy room with a full bed and a big bookshelf in a lively neighborhood. Two flatmates who are also students.'}
     ],
     'Barcelona, Spain':[
@@ -3244,13 +3337,13 @@ Approved by: ______________________   Date: ____________`;
     { name:'Olivia Poppas',
       role:['Co-founder & Chief Operating Officer', 'Equipo fundador · COO (Operaciones)'],
       year:['Sophomore', 'Segundo año'], major:['Finance and Legal Studies', 'Finanzas y Estudios Jurídicos'],
-      hometown:'', fun:'', photo:'',
+      hometown:'', fun:'', photo:'images/founder-olivia.jpg',
       why:['Most students don’t realize subletting without landlord approval can break their lease. TermNest makes doing it the right way simple, so nobody gets into trouble or gets scammed.',
            'La mayoría de los estudiantes no sabe que subarrendar sin la aprobación del propietario puede romper su contrato. TermNest hace que hacerlo bien sea simple, para que nadie se meta en problemas ni sufra una estafa.'] },
     { name:'Jaiden Grocher',
       role:['Co-founder & Chief Marketing Officer', 'Equipo fundador · CMO (Marketing)'],
       year:['Sophomore', 'Segundo año'], major:['Management', 'Administración de Empresas'],
-      hometown:'', fun:'', photo:'images/founder-jaiden-336.jpg',
+      hometown:'', fun:'', photo:'images/founder-jaiden.jpg',
       why:['Students study abroad, take internships, and travel more than ever. TermNest makes it easy to leave for a semester without your housing holding you back.',
            'Los estudiantes estudian en el extranjero, hacen prácticas y viajan más que nunca. TermNest hace que sea fácil irte un semestre sin que tu vivienda te frene.'] },
   ];
@@ -3311,11 +3404,11 @@ Approved by: ______________________   Date: ____________`;
       mind:['Rooms closest to campus go fast, so start looking early.','Las habitaciones más cerca del campus se van rápido, así que empieza a buscar con tiempo.'] },
     { area:'Red Road',
       tag:['Quiet streets of single-family houses close to campus. Rooms are often in houses shared by several students.',
-           'Calles tranquilas de casas cerca del campus. Muchas habitaciones están en casas que comparten varios estudiantes.'],
+           'Calles tranquilas de casas unifamiliares cerca del campus. Muchas habitaciones están en casas que comparten varios estudiantes.'],
       go:['Most rooms are a short bike ride or a quick drive from campus, and many houses come with parking.',
           'La mayoría de las habitaciones está a un paseo corto en bici o a pocos minutos en auto del campus, y muchas casas tienen estacionamiento.'],
       good:[['Lower rent, especially for shared rooms','Alquiler más bajo, sobre todo en habitaciones compartidas'],['Houses with a yard and a big kitchen','Casas con patio y cocina grande'],['Living with other UM students','Vivir con otros estudiantes de UM']],
-      mind:['There are fewer shops within walking distance, so a bike or car helps.','Hay pocas tiendas a las que puedas ir caminando, así que una bici o un auto ayudan.'] },
+      mind:['There are fewer shops within walking distance, so a bike or car helps.','Hay menos tiendas a las que puedas ir caminando, así que una bici o un auto ayudan.'] },
     { area:'South Miami',
       tag:['A small city right next to campus, with a lively downtown along Sunset Drive.',
            'Una ciudad pequeña junto al campus, con un centro animado sobre Sunset Drive.'],
