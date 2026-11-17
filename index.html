@@ -18,7 +18,7 @@
   --ink:#1A1A1A; --ink-2:#474C49; --soft:#D6DDD8;
   --shadow:4px 4px 0 var(--ink); --shadow-sm:3px 3px 0 var(--ink);
   --head:'Bricolage Grotesque','Atkinson Hyperlegible',system-ui,sans-serif;
-  --wrap:1120px;
+  --wrap:1280px;
 }
 *{box-sizing:border-box}
 html{font-size:18px;scroll-behavior:smooth;scroll-padding-top:96px}
@@ -43,15 +43,11 @@ a{color:var(--green);font-weight:700;text-decoration-thickness:2px;text-underlin
 .nav-row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px}
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:1.5rem;color:var(--ink);text-decoration:none;min-height:48px}
 .logo svg{flex:none}
-.nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0}
-.nav-links a{display:inline-flex;align-items:center;min-height:48px;padding:0 12px;border-radius:10px;color:var(--ink);text-decoration:none;font-size:1rem}
-.nav-links a:hover{background:var(--green-50);text-decoration:underline}
+.nav-links,.nav-sub{list-style:none;margin:0;padding:0}
+.nav-links a{color:var(--ink);text-decoration:none;border-radius:10px}
 .nav-links a[aria-current="page"]{background:var(--green);color:#fff}
-.site-header .wrap{max-width:1640px}
-.nav-links{gap:2px}
-.nav-links a{padding:0 9px;font-size:.95rem}
-.menu-btn{display:none;align-items:center;gap:8px;min-height:52px;padding:0 16px;border:2px solid var(--ink);border-radius:12px;background:#fff;font:inherit;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;color:var(--ink)}
-.nav-links a{white-space:nowrap}
+.menu-btn{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 16px;border:2px solid var(--ink);border-radius:12px;background:#fff;font:inherit;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;color:var(--ink)}
+.nav-dd,.dd-d{display:none}
 /* Language toggle (English / Español), the last item in the menu */
 .lang{display:inline-flex;border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:#fff;margin-left:6px}
 .lang button{min-height:44px;min-width:44px;padding:0 10px;border:0;background:#fff;color:var(--ink);font:inherit;font-size:.95rem;font-weight:700;cursor:pointer}
@@ -59,19 +55,49 @@ a{color:var(--green);font-weight:700;text-decoration-thickness:2px;text-underlin
 .lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .lang button:hover:not([aria-pressed="true"]){background:var(--green-50);text-decoration:underline}
 .lang .lg-full{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}   /* full row: show EN / ES */
-/* The full row of links folds into the Menu button whenever it doesn't fit comfortably beside the logo.
-   A script measures this (the Spanish labels are longer), and adds .compact to the header. Below 1,440px it always folds. */
-.site-header.compact .menu-btn{display:inline-flex}
-.site-header.compact .nav-links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:2px solid var(--ink);padding:8px 16px 16px;
-  max-height:calc(100vh - 78px);overflow-y:auto}
-.site-header.compact .nav-links.open{display:flex}
-.site-header.compact .nav-links a{display:flex;min-height:56px;font-size:1.1rem;border-bottom:2px dashed var(--soft);border-radius:0}
-.site-header.compact .nav-links li:nth-last-child(2) a{border-bottom:0}
-.site-header.compact .lang-li{padding-top:12px;border-top:2px solid var(--ink)}
-.site-header.compact .lang{margin:0;width:100%}
-.site-header.compact .lang button{flex:1;min-height:52px;font-size:1.05rem}
-.site-header.compact .lang .lg-full{position:static;width:auto;height:auto;overflow:visible;clip:auto}
-.site-header.compact .lang .lg-short{display:none}
+/* Phones and small tablets (under 1,024px): the menu folds into the Menu button.
+   Groups show as small headings with their pages listed underneath. */
+@media (max-width:1023px){
+  .nav-links{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;background:var(--bg);border-bottom:2px solid var(--ink);padding:8px 16px 16px;
+    max-height:calc(100vh - 78px);overflow-y:auto}
+  .nav-links.open{display:flex}
+  .nav-links>li{border-bottom:2px dashed var(--soft);padding:0}
+  .nav-links a{display:flex;align-items:center;min-height:48px;padding:0 12px;font-size:1.1rem}
+  .nav-links a:hover{background:var(--green-50);text-decoration:underline}
+  .nav-glabel{display:block;padding:6px 12px 0;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green)}
+  .nav-sub a{min-height:44px;padding-left:24px}
+  .nav-links>li.lang-li{border-bottom:0;padding-top:12px}
+  .lang{margin:0;width:100%}
+  .lang button{flex:1;min-height:52px;font-size:1.05rem}
+  .lang .lg-full{position:static;width:auto;height:auto;overflow:visible;clip:auto}
+  .lang .lg-short{display:none}
+}
+/* Laptops and desktops (1,024px and up): a normal menu bar across the top, with dropdowns for the two main groups. */
+@media (min-width:1024px){
+  .menu-btn,.nav-home,.nav-glabel{display:none}
+  .nav-links{display:flex;align-items:center;gap:2px}
+  .nav-links>li{position:relative}
+  .nav-links>li>a,.nav-dd{display:inline-flex;align-items:center;gap:6px;min-height:48px;padding:0 12px;border:0;border-radius:10px;background:none;
+    font:inherit;font-size:.95rem;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}
+  .nav-links>li>a:hover,.nav-dd:hover{background:var(--green-50);text-decoration:underline}
+  .nav-dd svg{flex:none;transition:transform .15s}
+  .nav-dd[aria-expanded="true"]{background:var(--green-50)}
+  .nav-dd[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .nav-dd.has-current{box-shadow:inset 0 -4px 0 var(--green)}          /* you're on one of this group's pages */
+  .nav-sub{display:none;position:absolute;top:calc(100% + 10px);left:0;width:340px;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:8px}
+  .nav-dd[aria-expanded="true"]+.nav-sub{display:block}
+  .nav-sub a{display:block;padding:10px 14px;font-size:1rem}
+  .nav-sub a:hover{background:var(--green-50)}
+  .nav-sub a:hover .dd-t{text-decoration:underline}
+  .dd-t{display:block}
+  .dd-d{display:block;margin-top:2px;font-weight:400;font-size:.85rem;line-height:1.35;color:var(--ink-2)}
+  .nav-sub a[aria-current="page"] .dd-d{color:#fff}
+  .lang{margin-left:10px}
+}
+@media (min-width:1024px) and (max-width:1199px){
+  .nav-links>li>a,.nav-dd{padding:0 9px;font-size:.9rem}
+  .logo{font-size:1.35rem}
+}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:60px;padding:0 24px;border-radius:12px;font-size:1.05rem;font-weight:700;
@@ -106,6 +132,15 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .props li:nth-child(2){transform:rotate(-1deg)}
 .props svg{flex:none;color:var(--green)}
 
+/* Desktop hero: headline and photo side by side, the three promises in a row underneath. Phones skip the photo. */
+.hero-photo{display:none}
+@media (min-width:1024px){
+  .hero{padding:72px 0 84px}
+  .hero-grid{grid-template-columns:1fr 1fr;gap:40px 64px}
+  .hero-photo{display:block;position:relative;margin:0;aspect-ratio:4/3;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:#fff;box-shadow:8px 8px 0 var(--ink);transform:rotate(1.5deg)}
+  .hero-photo img{display:block;width:100%;height:100%;object-fit:cover}
+  .props{grid-column:1 / -1;grid-template-columns:repeat(3,1fr);gap:24px}
+}
 .big-ic{width:64px;height:64px;border-radius:14px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--orange);color:var(--ink);transform:rotate(-4deg);box-shadow:var(--shadow-sm)}
 .big-ic.g{background:var(--green);color:#fff}
 
@@ -229,7 +264,11 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .result-count{font-weight:700;margin:24px 0 16px;color:var(--ink-2);font-size:1.05rem}
 .cards{list-style:none;margin:0;padding:0;display:grid;gap:26px}
 @media (min-width:640px){.cards{grid-template-columns:1fr 1fr}}
-@media (min-width:1000px){.cards{grid-template-columns:1fr 1fr 1fr}}
+@media (min-width:960px){.cards{grid-template-columns:1fr 1fr 1fr}}
+@media (min-width:1240px){.cards{grid-template-columns:repeat(4,1fr);gap:24px}
+  /* 4 across: move-in tag to the bottom right, sample-photo label under the "Verified student" ribbon, so nothing overlaps in either language */
+  .cards .term-tag{top:auto;bottom:12px}
+  .cards .sample-tag{bottom:auto;top:54px}}
 .card{position:relative;border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s}
 .card:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
 .card:has(.card-link:active){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
@@ -335,7 +374,7 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 #swCount{font-family:var(--head);color:var(--ink);font-size:clamp(1.3rem,3vw,1.6rem);line-height:1.2;margin:32px 0 18px}
 .swap-cards{list-style:none;margin:0;padding:0;display:grid;gap:26px}
 @media (min-width:700px){.swap-cards{grid-template-columns:1fr 1fr}}
-@media (min-width:1200px){.swap-cards{grid-template-columns:1fr 1fr 1fr}}
+@media (min-width:1024px){.swap-cards{grid-template-columns:1fr 1fr 1fr}}
 .sw-card{display:flex;flex-direction:column;background:#fff;border:2px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
 .sw-card .photo{height:190px}
 .sw-body{display:flex;flex-direction:column;gap:12px;padding:16px 18px 18px;flex:1}
@@ -348,6 +387,13 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .sw-card .btn{margin-top:auto;width:100%;min-height:56px;padding:0 14px;gap:8px;font-size:1rem;white-space:nowrap}
 .sl-list{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:22px}
 @media (min-width:760px){.sl-list{grid-template-columns:1fr 1fr}}
+/* 4 across: labels sit above their values, and the badges get the card's full width under the name */
+@media (min-width:1240px){.sl-list{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .sl-list .sl-top{display:grid;grid-template-columns:auto 1fr;gap:0 12px}
+  .sl-list .sl-top .avatar{grid-row:span 2}
+  .sl-list .sl-top>div{display:contents}
+  .sl-list .sl-tags{grid-column:1 / -1;margin-top:10px}
+  .sl-list .sl-facts div{flex-direction:column;gap:0}.sl-list .sl-facts dd{text-align:left}}
 .sl-card{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
 .sl-top{display:flex;gap:14px;align-items:flex-start}
 .sl-top .avatar{background:var(--orange);color:var(--ink)}
@@ -370,6 +416,30 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .steps-h{font-size:1.5rem;margin-top:36px}
 .steps-h+.aud-grid{margin-top:18px}
 .aud-steps li:last-child::before{background:var(--orange);transform:rotate(-4deg);box-shadow:var(--shadow-sm)}
+/* Desktop: the steps run across the page in a row (6 steps: 3 by 2), and "What you get" becomes a wide box underneath,
+   with the checklist on the left and the price and buttons on the right. */
+@media (min-width:1024px){
+  .aud-grid{grid-template-columns:1fr}
+  .aud-steps{grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:16px}
+  .aud-steps li{grid-template-columns:1fr;align-content:start;gap:6px}
+  .aud-steps li::before{grid-row:auto;margin-bottom:8px}
+  .aud-steps strong{align-self:start;font-size:1.08rem;line-height:1.25}
+  .aud-steps span{font-size:.95rem}
+  .aud-steps:has(li:nth-child(6)){grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}
+  .aud-steps:has(li:nth-child(6)) li{grid-template-columns:52px 1fr;gap:4px 16px}
+  .aud-steps:has(li:nth-child(6)) li::before{grid-row:span 2;margin:0}
+  .aud-side{display:grid;grid-template-columns:1.25fr 1fr;gap:0 48px;align-items:start;padding:28px 32px}
+  .aud-side>*{grid-column:1}
+  .aud-side .checks{grid-row:2 / span 3;margin-bottom:0}
+  .aud-side .cost{grid-column:2;grid-row:1 / span 2;margin:0}
+  .aud-side .btn{grid-column:2}
+  .aud-side .cost+.btn{margin-top:18px}
+  .aud-side .btn+.btn{margin-top:14px}
+  .quiz-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:48px;align-items:start;margin-top:36px}
+  .quiz-intro{position:sticky;top:110px}
+  .quiz-intro .steps-h{margin-top:0}
+  .quiz-layout .quiz{margin-top:0;max-width:none}
+}
 
 /* ---------- "Can you sublet?" quiz (I'm subleasing page) ---------- */
 .quiz{margin-top:18px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:24px;box-shadow:var(--shadow);max-width:52rem}
@@ -425,6 +495,7 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .feat-grid{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:22px}
 @media (min-width:640px){.feat-grid{grid-template-columns:1fr 1fr}}
 @media (min-width:1000px){.feat-grid{grid-template-columns:1fr 1fr 1fr}}
+@media (min-width:1240px){.feat-grid{grid-template-columns:repeat(5,1fr);gap:20px}}   /* 10 features: two even rows of 5 */
 .feat{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
 .feat-ic{width:56px;height:56px;border-radius:12px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--green);color:#fff;transform:rotate(-4deg)}
 .feat:nth-child(3n+2) .feat-ic{background:var(--orange);color:var(--ink)}
@@ -488,6 +559,109 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 /* ---------- FAQ ---------- */
 .faq{margin-top:48px;max-width:52rem}
 .faq h3.sub{font-size:1.7rem;margin-bottom:16px}
+/* ---------- about us ---------- */
+.about-top{display:grid;gap:36px;align-items:start}
+@media (min-width:1024px){.about-top{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:64px}}
+.about-story{display:grid;gap:16px;margin-top:8px;max-width:44rem;font-size:1.12rem;color:var(--ink-2)}
+.about-problem{background:#fff;border:2px solid var(--ink);border-radius:16px;padding:24px;box-shadow:6px 6px 0 var(--ink);transform:rotate(1deg)}
+@media (min-width:1024px){.about-problem{margin-top:56px}}
+.about-problem h2{font-size:1.3rem;margin-bottom:14px}
+.about-problem ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.about-problem li{display:flex;gap:12px;align-items:flex-start}
+.about-problem .x{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:2px solid var(--ink);background:var(--orange);font-weight:700;font-size:.85rem;line-height:1}
+.about-fix{margin-top:18px;padding:12px 14px;border-radius:10px;background:var(--green-50);border:2px dashed var(--green)}
+.about-mission{background:var(--green);color:#fff;border-bottom:8px solid var(--orange)}
+.mission-h{font-size:clamp(1.9rem,4.5vw,3rem);line-height:1.08;max-width:40rem}
+.values{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:22px}
+@media (min-width:760px){.values{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.values li{background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:16px;padding:24px;box-shadow:6px 6px 0 var(--ink)}
+.values h3{font-size:1.35rem;margin:16px 0 6px}
+.values p{color:var(--ink-2)}
+.founders{list-style:none;margin:32px 0 0;padding:0;display:grid;gap:24px}
+@media (min-width:640px){.founders{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){.founders{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.founder{display:flex;flex-direction:column;gap:10px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.founder-pic{width:112px;height:112px;border-radius:50%;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--orange);overflow:hidden;flex:none;margin-bottom:6px}
+.founder-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.founder-pic.initials{display:grid;place-items:center;background:var(--green);color:#fff;font-family:var(--head);font-weight:800;font-size:2.4rem;letter-spacing:.02em}
+.founder h3{font-size:1.4rem;line-height:1.15}
+.founder .role{display:inline-block;align-self:flex-start;font-weight:700;font-size:.9rem;padding:3px 10px;border:2px solid var(--ink);border-radius:6px;background:var(--orange)}
+.founder .meta-line{color:var(--ink-2);font-size:.98rem}
+.founder blockquote{margin:6px 0 0;padding:0 0 0 14px;border-left:4px solid var(--green);font-style:italic}
+.founder .fun{margin-top:auto;padding-top:10px;border-top:2px dashed var(--soft);font-size:.95rem}
+.founder.placeholder{border-style:dashed;box-shadow:none}
+
+/* ---------- Terms of Use and Privacy Policy pages ---------- */
+.legal-layout{display:grid;gap:24px}
+.legal-head .sec-h{margin-bottom:6px}
+html:not([lang="es"]) .legal-es{display:none}
+.legal-es{font-weight:700;color:var(--ink-2)}
+.legal-toc{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:16px 20px}
+.legal-toc h2{font-size:1rem;margin-bottom:6px}
+.legal-toc ol{margin:0;padding-left:22px}
+.legal-toc li a{display:block;padding:3px 0;font-weight:600;line-height:1.3;font-size:.94rem}
+.legal{max-width:44rem;font-size:1.05rem;line-height:1.6;min-width:0}
+.legal h2{font-size:1.35rem;line-height:1.25;margin:34px 0 10px;scroll-margin-top:96px}
+.legal p,.legal ul{margin:0 0 12px}
+.legal ul{padding-left:22px}
+.legal li{margin-bottom:6px}
+.legal-sample{background:var(--orange-50);border:2px solid var(--ink);border-left:8px solid var(--orange);border-radius:12px;padding:14px 16px;margin-top:16px;line-height:1.5;max-width:44rem}
+.legal-sample strong{display:block}
+.legal-date{color:var(--ink-2);font-size:.95rem}
+@media (min-width:1024px){
+  .legal-layout{grid-template-columns:minmax(0,1fr) 300px;column-gap:56px;align-items:start}
+  .legal-head{grid-column:1/-1}
+  .legal{grid-column:1;grid-row:2}
+  .legal-toc{grid-column:2;grid-row:2;position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+}
+.foot-legal{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:20px}
+.foot-legal a{display:inline-flex;align-items:center;min-height:44px}
+.about-cta{margin-top:56px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;background:var(--orange-50);border:2px solid var(--ink);border-radius:18px;padding:28px;box-shadow:6px 6px 0 var(--ink)}
+.about-cta h2{font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15}
+.about-cta p{color:var(--ink-2);margin-top:6px}
+@media (max-width:520px){.about-cta .btn{width:100%}}
+
+/* ---------- neighborhoods ---------- */
+.hood-table-wrap{display:none;margin-top:32px}
+@media (min-width:760px){.hood-table-wrap{display:block}}       /* phones get the same numbers in each area's section */
+.hood-table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:2px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.hood-table caption{text-align:left;font-family:var(--head);font-weight:700;font-size:1.4rem;margin-bottom:12px}
+.hood-table th,.hood-table td{padding:14px 18px;text-align:left;border-bottom:2px dashed var(--soft)}
+.hood-table thead th{background:var(--green-50);border-bottom:2px solid var(--ink);font-size:.9rem}
+.hood-table tbody tr:last-child>*{border-bottom:0}
+.hood-table tbody th{font-family:var(--head);font-size:1.08rem}
+.hood-table-wrap .f-hint{margin-top:12px}
+.hoods{display:grid;gap:32px;margin-top:40px}
+.hood{display:grid;background:#fff;border:2px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);scroll-margin-top:96px}
+.hood .photo{height:220px}
+.hood-body{padding:24px}
+@media (min-width:640px){.hood-body{padding:32px}.hood .photo{height:280px}}
+.hood h2{font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.1}
+.hood-tag{margin-top:8px;font-size:1.08rem;color:var(--ink-2)}
+.hood-stats{list-style:none;margin:20px 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hood-stats li{border:2px solid var(--ink);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.hood-stats span{display:block;font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green)}
+.hood-stats strong{font-family:var(--head);font-size:1.12rem}
+.hood-cols{display:grid;gap:18px 36px;margin-top:20px}
+@media (min-width:640px){.hood-cols{grid-template-columns:1fr 1fr}}
+.hood h3{font-size:1.1rem;margin-bottom:8px}
+.hood .checks{margin:0}
+.hood .btn{margin-top:24px}
+@media (max-width:520px){.hood .btn{width:100%}}
+/* Desktop: photo and text side by side, alternating sides down the page */
+@media (min-width:1024px){
+  .hood{grid-template-columns:5fr 7fr}
+  .hood .photo{height:auto;min-height:100%;border-bottom:0;border-right:2px solid var(--ink)}
+  .hood:nth-child(even){grid-template-columns:7fr 5fr}
+  .hood:nth-child(even) .photo{order:2;border-right:0;border-left:2px solid var(--ink)}
+}
+/* Desktop: FAQ heading on the left, questions on the right, instead of one narrow column */
+@media (min-width:1024px){
+  .faq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:0 48px;align-items:start;max-width:none}
+  .faq h3.sub{grid-row:1 / span 99;position:sticky;top:110px}
+  .faq details{grid-column:2}
+  #pricing .note{max-width:none}
+}
 details{background:#fff;border:2px solid var(--ink);border-radius:12px;margin-bottom:14px}
 details[open]{box-shadow:var(--shadow-sm)}
 summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:64px;padding:12px 18px;font-family:var(--head);font-weight:700;font-size:1.15rem}
@@ -520,6 +694,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 .site-footer{background:var(--ink);color:#fff;padding:52px 0 32px}
 .foot-grid{display:grid;gap:32px}
 @media (min-width:760px){.foot-grid{grid-template-columns:1.3fr 1fr 1fr}}
+@media (min-width:1024px){.foot-grid{grid-template-columns:1.2fr 1.6fr 1fr;gap:48px}.foot-pages{columns:2;column-gap:32px}.foot-pages li{break-inside:avoid}}
 .site-footer .logo{color:#fff}
 .site-footer h2{font-size:1.1rem;margin-bottom:12px}
 .site-footer ul{list-style:none;margin:0;padding:0}
@@ -532,7 +707,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 
-<header class="site-header compact">
+<header class="site-header">
   <div class="wrap nav-row">
     <a class="logo" href="#home" aria-label="TermNest home">
       <svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44">
@@ -550,14 +725,35 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
     </button>
     <nav aria-label="Main">
       <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#browse">Browse sublets</a></li>
-        <li><a href="#need">I need a place</a></li>
-        <li><a href="#subleasing">I’m subleasing my place</a></li>
-        <li><a href="#swap">Term Swap</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#safety">Safety</a></li>
-        <li><a href="#pricing">Pricing and FAQ</a></li>
+        <li class="nav-home"><a href="#home">Home</a></li>
+        <li class="nav-group">
+          <span class="nav-glabel" aria-hidden="true">Find a place</span>
+          <button class="nav-dd" type="button" aria-expanded="false" aria-controls="ddFind">Find a place<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="nav-sub" id="ddFind" aria-label="Find a place">
+            <li><a href="#need"><span class="dd-t">I need a place</span><span class="dd-d">How finding a room works</span></a></li>
+            <li><a href="#browse"><span class="dd-t">Browse sublets</span><span class="dd-d">See rooms near campus, no account needed</span></a></li>
+            <li><a href="#neighborhoods"><span class="dd-t">Neighborhoods</span><span class="dd-d">Compare areas by commute and rent</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <span class="nav-glabel" aria-hidden="true">Sublet your place</span>
+          <button class="nav-dd" type="button" aria-expanded="false" aria-controls="ddSublet">Sublet your place<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="nav-sub" id="ddSublet" aria-label="Sublet your place">
+            <li><a href="#subleasing"><span class="dd-t">I’m subleasing my place</span><span class="dd-d">How to sublet your room while you’re away</span></a></li>
+            <li><a href="#quizH"><span class="dd-t">Can I sublet? Quiz</span><span class="dd-d">3 questions, plus a landlord request to copy</span></a></li>
+            <li><a href="#swap"><span class="dd-t">Term Swap</span><span class="dd-d">Trade rooms with a student from another city</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-group">
+          <span class="nav-glabel" aria-hidden="true">Why TermNest</span>
+          <button class="nav-dd" type="button" aria-expanded="false" aria-controls="ddWhy">Why TermNest<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <ul class="nav-sub" id="ddWhy" aria-label="Why TermNest">
+            <li><a href="#about"><span class="dd-t">About us</span><span class="dd-d">Our story and the students behind TermNest</span></a></li>
+            <li><a href="#features"><span class="dd-t">Features</span><span class="dd-d">What the app does for you</span></a></li>
+            <li><a href="#safety"><span class="dd-t">Safety</span><span class="dd-d">How we protect students and their rent</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#pricing">Pricing</a></li>
         <li><a href="#contact">Contact</a></li>
         <li class="lang-li" data-i18n-skip>
           <div class="lang" role="group" aria-label="Language / Idioma">
@@ -590,6 +786,10 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <a class="btn btn-ghost" href="#need">See how it works</a>
       </div>
     </div>
+    <figure class="hero-photo">
+      <img src="images/bedroom2-1280.jpg" srcset="images/bedroom2-640.jpg 640w, images/bedroom2-1280.jpg 1280w" sizes="(min-width:1024px) 600px, 1px" width="1280" height="960" alt="Sample photo: sunny bedroom with a queen bed, a desk under a big window looking out at towers and the water, and hanging plants">
+      <span class="sample-tag" aria-hidden="true">Sample photo</span>
+    </figure>
     <ul class="props" aria-label="Why students trust TermNest">
       <li><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Every student is verified with a school email</span></li>
       <li><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Exact move-in and move-out dates</span></li>
@@ -678,7 +878,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <li><strong>Post your room for free</strong><span>Add photos, rent, and your exact move-in and move-out dates.</span></li>
         <li><strong>Get landlord approval</strong><span>Send the request from the app. Your landlord approves in a few taps.</span></li>
         <li><strong>Pick your subletter</strong><span>Chat with verified students. Or use <a href="#swap">Term Swap</a> to trade rooms with a student coming to Miami.</span></li>
-        <li><strong>Sign the sublease agreement</strong><span>You and your subletter sign inside the app. The $15 listing fee is charged only now.</span></li>
+        <li><strong>Sign the sublease agreement</strong><span>You and your subletter sign inside the app. The $15 success fee is charged only now.</span></li>
         <li><strong>Get paid at move-in</strong><span>The first month’s rent is released to you after your subletter confirms move-in.</span></li>
       </ol>
       <div class="aud-side">
@@ -694,10 +894,14 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </div>
     </div>
 
-    <h2 class="steps-h" id="quizH">Can you sublet your place?</h2>
-    <p class="lead" style="margin-top:8px">Answer 3 quick questions to find out what to do first. At the end, you’ll get a landlord approval request you can copy and send.</p>
-    <div class="quiz" id="quiz" aria-labelledby="quizH" role="region" data-i18n-skip>
-      <noscript><p>This check needs JavaScript. In short: if you rent from a landlord, get their approval in writing before you sublet.</p></noscript>
+    <div class="quiz-layout">
+      <div class="quiz-intro">
+        <h2 class="steps-h" id="quizH">Can you sublet your place?</h2>
+        <p class="lead" style="margin-top:8px">Answer 3 quick questions to find out what to do first. At the end, you’ll get a landlord approval request you can copy and send.</p>
+      </div>
+      <div class="quiz" id="quiz" aria-labelledby="quizH" role="region" data-i18n-skip>
+        <noscript><p>This check needs JavaScript. In short: if you rent from a landlord, get their approval in writing before you sublet.</p></noscript>
+      </div>
     </div>
 
     <h2 class="steps-h" id="lookingH">Students looking right now</h2>
@@ -779,7 +983,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <output class="save-amt" id="saveAmt" for="rent months" aria-live="polite">$4,385</output>
         <dl class="breakdown">
           <div><dt>Rent while you’re away</dt><dd id="bRent">$4,400</dd></div>
-          <div><dt>TermNest listing fee</dt><dd>− $15</dd></div>
+          <div><dt>TermNest success fee</dt><dd>− $15</dd></div>
           <div><dt>You keep</dt><dd id="bKeep">$4,385</dd></div>
         </dl>
         <p class="small">The $15 fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.</p>
@@ -829,6 +1033,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <button type="reset" class="link-btn" id="fClear">Clear filters</button>
         </div>
         <p class="f-hint">Numbers show how many sublets each choice would find. Choices with none are crossed out.</p>
+        <p class="f-hint">New to the area? <a href="#neighborhoods">Compare the neighborhoods</a></p>
       </form>
 
       <p class="result-count" id="resultCount" aria-live="polite" data-i18n-skip></p>
@@ -841,6 +1046,17 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
     </div>
 
     <div id="listingDetail" hidden data-i18n-skip></div>
+  </div>
+</section>
+
+<!-- ================= NEIGHBORHOODS ================= -->
+<section id="neighborhoods" data-page="neighborhoods" aria-labelledby="hoodH">
+  <div class="wrap">
+    <span class="eyebrow">Neighborhoods</span>
+    <h1 class="sec-h" id="hoodH" tabindex="-1">Where to live near UM</h1>
+    <p class="lead">Five areas where UM students sublet, compared by commute and rent. The numbers come from the sublets listed on TermNest right now.</p>
+    <div id="hoods" data-i18n-skip></div>
+    <a class="back-link" href="#choices">← Back to home</a>
   </div>
 </section>
 
@@ -864,6 +1080,71 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 </dialog>
 
 <!-- ================= FEATURES ================= -->
+<!-- ================= ABOUT US ================= -->
+<section id="about" data-page="about" aria-labelledby="aboutH">
+  <div class="wrap about-top">
+    <div>
+      <span class="eyebrow">About us</span>
+      <h1 class="sec-h" id="aboutH" tabindex="-1">Made by UM students, for UM students</h1>
+      <div class="about-story">
+        <p>If you’ve ever tried to sublet at UM, you know how it goes. You post in a Facebook group or a giant group chat and scroll through a hundred messages. Half the rooms are already gone, the dates never quite match your semester, and someone always wants a deposit over Zelle before you’ve even seen the place.</p>
+        <p>That’s where students get scammed by listings that aren’t real. It’s where people sign a sublease and only later find out their landlord never said yes. And honestly, most of us had no idea whether we were even allowed to sublet in the first place.</p>
+        <p>So we built TermNest. We’re UM students, and we wanted a safe, simple way to sublet that actually fits the school calendar: spring, summer, fall and full-year terms, with real move-in and move-out dates. Everyone on it is a verified UM student, your rent is held until move-in day, and getting your landlord’s OK is part of the process, not an afterthought.</p>
+      </div>
+    </div>
+    <aside class="about-problem" aria-labelledby="probH">
+      <h2 id="probH">What we kept seeing in group chats</h2>
+      <ul>
+        <li><span class="x" aria-hidden="true">✕</span><span><strong>Fake listings</strong> and deposits sent to strangers</span></li>
+        <li><span class="x" aria-hidden="true">✕</span><span><strong>Dates that don’t line up</strong> with the semester</span></li>
+        <li><span class="x" aria-hidden="true">✕</span><span><strong>No one knows</strong> if their lease even allows subletting</span></li>
+      </ul>
+      <p class="about-fix"><strong>TermNest:</strong> verified students, real term dates, and landlord approval built in.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="about-mission on-green" data-page="about" aria-labelledby="missionH">
+  <div class="wrap">
+    <span class="try-eyebrow">Our mission</span>
+    <h2 class="mission-h" id="missionH">Make subletting at UM safe and simple, every term.</h2>
+    <ul class="values">
+      <li>
+        <span class="big-ic"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+        <h3>Safety first</h3>
+        <p>Every student is verified with a school email, rent is held until move-in, and we’ll never ask you to pay outside the app.</p>
+      </li>
+      <li>
+        <span class="big-ic"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+        <h3>Built for students</h3>
+        <p>Search by semester, not random dates. We built TermNest around the UM calendar, because that’s how we live.</p>
+      </li>
+      <li>
+        <span class="big-ic"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></svg></span>
+        <h3>Fair for everyone</h3>
+        <p>Students pay a fair price, subleasers stop paying rent on an empty room, and landlords get asked first, in writing.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section data-page="about" aria-labelledby="foundersH">
+  <div class="wrap">
+    <span class="eyebrow">The team</span>
+    <h2 class="sec-h" id="foundersH">Meet the founders</h2>
+    <p class="lead">The UM students behind TermNest.</p>
+    <ul class="founders" id="founders" data-i18n-skip></ul>
+    <div class="about-cta">
+      <div>
+        <h2>Got a question, an idea, or want to help?</h2>
+        <p>We’d love to hear from you.</p>
+      </div>
+      <a class="btn btn-accent" href="#contact">Contact us
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
 <section id="features" data-page="features" aria-labelledby="featH">
   <div class="wrap">
     <span class="eyebrow">Features</span>
@@ -1048,7 +1329,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </div>
       <div class="price-card featured">
         <span class="who">For students posting</span>
-        <h3>Listing fee</h3>
+        <h3>Success fee</h3>
         <p class="amount">$15 <small>one time</small></p>
         <span class="when">Only after a subletter signs</span>
         <ul>
@@ -1085,7 +1366,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <p>When you reserve, you pay the first month in the app. TermNest holds it. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.</p>
       </details>
       <details>
-        <summary>When do I pay the $15 listing fee?</summary>
+        <summary>When do I pay the $15 success fee?</summary>
         <p>Only after a subletter signs the sublease agreement for your room. Posting is free, and if nobody signs, you pay nothing.</p>
       </details>
       <details>
@@ -1152,6 +1433,255 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
   </div>
 </section>
 
+<!-- LEGAL:START Terms of Use and Privacy Policy. Made from the scratchpad's legal-src.js by inject-legal.js -->
+<section id="terms" data-page="terms" aria-labelledby="termsH">
+  <div class="wrap legal-layout">
+    <div class="legal-head">
+      <span class="eyebrow">Legal</span>
+      <h1 class="sec-h" id="termsH" tabindex="-1">Terms of Use</h1>
+      <p class="legal-es" lang="es" data-i18n-skip>Estos términos solo están disponibles en inglés.</p>
+      <div lang="en" data-i18n-skip><div class="legal-sample"><strong>Sample terms for a student project prototype.</strong> TermNest is a class project, not a real company yet. These terms show how TermNest would work. They have not been reviewed by a lawyer and are not a binding legal agreement.</div></div>
+    </div>
+    <nav class="legal-toc" aria-labelledby="termsTocH" data-i18n-skip lang="en"><h2 id="termsTocH">On this page</h2><ol>
+<li><a href="#terms-who">Who can use TermNest</a></li>
+<li><a href="#terms-security">Keeping your account secure</a></li>
+<li><a href="#terms-marketplace">TermNest is only a marketplace</a></li>
+<li><a href="#terms-verification">What we check, and what we don’t</a></li>
+<li><a href="#terms-responsibilities">Your responsibilities</a></li>
+<li><a href="#terms-fair-housing">Fair housing</a></li>
+<li><a href="#terms-fees">Fees</a></li>
+<li><a href="#terms-held-rent">How held rent works</a></li>
+<li><a href="#terms-non-circumvention">Don’t go around TermNest</a></li>
+<li><a href="#terms-prohibited">What’s not allowed</a></li>
+<li><a href="#terms-photos">Your photos</a></li>
+<li><a href="#terms-not-advice">General information, not legal advice</a></li>
+<li><a href="#terms-partners">Partner services</a></li>
+<li><a href="#terms-notifications">Emails and notifications</a></li>
+<li><a href="#terms-removal">Removing listings and suspending accounts</a></li>
+<li><a href="#terms-as-is">TermNest is provided “as is”</a></li>
+<li><a href="#terms-liability">Limits on our responsibility</a></li>
+<li><a href="#terms-indemnity">Protecting TermNest (indemnification)</a></li>
+<li><a href="#terms-arbitration">Disputes: arbitration and no class actions</a></li>
+<li><a href="#terms-law">Florida law</a></li>
+<li><a href="#terms-changes">Changes to these terms</a></li>
+<li><a href="#terms-general">Other legal terms</a></li>
+<li><a href="#terms-contact">Contact us</a></li>
+    </ol></nav>
+    <article class="legal" lang="en" data-i18n-skip>
+<p class="legal-date">Last updated: November 16, 2026</p>
+<p>These terms explain the rules for using TermNest, our website and app for student sublets. By creating an account or using TermNest, you agree to these terms and to our <a href="#privacy">Privacy Policy</a>. If you don’t agree, please don’t use TermNest. <strong>Please note:</strong> section 19 says most disputes will be settled by individual arbitration instead of in court, and that you can’t bring a class action.</p>
+<h2 id="terms-who">1. Who can use TermNest</h2>
+<p>To use TermNest, you must:</p>
+<ul>
+<li>Be at least 18 years old.</li>
+<li>Be a current college or university student.</li>
+<li>Sign up with your own school email address that ends in <strong>.edu</strong>.</li>
+</ul>
+<p>You may have only one account, and you can’t share it or give it to anyone else.</p>
+<h2 id="terms-security">2. Keeping your account secure</h2>
+<p>You’re responsible for keeping your account safe.</p>
+<ul>
+<li>You log in with codes sent to your school email, so keep that email account secure too.</li>
+<li>Never share a verification code with anyone. TermNest will never ask you for one.</li>
+<li>Tell us right away if you think someone else has used your account.</li>
+</ul>
+<p>You’re responsible for what happens on your account, unless it happened because of a mistake by TermNest.</p>
+<h2 id="terms-marketplace">3. TermNest is only a marketplace</h2>
+<p>TermNest helps students find each other to sublet rooms. That’s all we do.</p>
+<ul>
+<li>TermNest is <strong>not</strong> a landlord, property manager, real estate broker, or roommate service.</li>
+<li>TermNest is <strong>not</strong> a party to any sublease. A sublease is an agreement only between the students who sign it.</li>
+<li>We don’t own, inspect, or manage any listed room, and we don’t promise that any listing, user, or sublease is safe, accurate, or legal.</li>
+</ul>
+<p>Before you sign anything, check the place, the person, and the agreement yourself.</p>
+<h2 id="terms-verification">4. What we check, and what we don’t</h2>
+<p>When you sign up, TermNest checks one thing: that you can get into a school email address ending in <strong>.edu</strong>. That’s what the “Verified student” badge means.</p>
+<p>TermNest does <strong>not</strong>:</p>
+<ul>
+<li>Do background checks, criminal record checks, or credit checks.</li>
+<li>Check IDs or confirm that someone is who they say they are.</li>
+<li>Confirm that someone has the right to sublet the place they list.</li>
+</ul>
+<p>Use your own judgment. Ask for a video tour, ask questions, and keep all payments in TermNest.</p>
+<h2 id="terms-responsibilities">5. Your responsibilities</h2>
+<p>If you post a listing or sign a sublease, you are responsible for:</p>
+<ul>
+<li><strong>Getting your landlord’s approval.</strong> Many leases don’t allow subletting without written permission. Getting that permission is your job, not TermNest’s.</li>
+<li><strong>Following your original lease.</strong> Subletting does not change your own lease. You still owe your landlord everything your lease says, including rent if your subletter doesn’t pay.</li>
+<li><strong>Keeping your listing accurate.</strong> Your photos, price, dates, and description must be true and up to date. Only list a place you have the right to sublet.</li>
+<li><strong>Following the law,</strong> including fair housing laws and any rules from your school, building, or city.</li>
+</ul>
+<h2 id="terms-fair-housing">6. Fair housing</h2>
+<p>Everyone deserves a fair shot at a place to live. When you post a listing, message students, or choose a subletter, you may not treat anyone differently because of their race, color, religion, sex, sexual orientation, gender identity, national origin, disability, familial status (like having children or being pregnant), age, marital status, or any other trait protected by federal, Florida, or local law.</p>
+<p>This includes the words in your listing. For example, a listing can’t say who is or isn’t welcome based on any of these traits.</p>
+<p><strong>How roommate matching works:</strong> matches are based only on lifestyle habits you choose to share, like your sleep schedule, cleanliness, guests, noise, pets, smoking, and study style. Matching <strong>never</strong> uses race, religion, or any other protected trait, and TermNest doesn’t ask for them.</p>
+<h2 id="terms-fees">7. Fees</h2>
+<ul>
+<li><strong>Signing up is free.</strong> So is browsing, messaging, and posting a listing.</li>
+<li><strong>$15 success fee.</strong> If you’re subleasing your place, you owe TermNest a $15 success fee when you sign a sublease with someone you met on TermNest. We charge it to the card you have on file when the sublease is signed. If nobody signs, you don’t pay it.</li>
+<li><strong>$5 Boost.</strong> Boost puts your listing at the top of search results. It costs $5, paid up front when you add it. Boost is <strong>non-refundable</strong>, even if nobody books your room.</li>
+</ul>
+<p>Payments are processed by a third-party payment company, not by TermNest. If we ever change our prices, we’ll tell you before the new price applies to you.</p>
+<h2 id="terms-held-rent">8. How held rent works</h2>
+<p>When a subletter reserves a room, the rent is paid through a <strong>licensed third-party payment processor</strong>. The processor holds the money until move-in, then releases it to the subleaser after the steps shown in the app.</p>
+<ul>
+<li>TermNest does not hold your money in its own bank account, and TermNest is not a bank.</li>
+<li>The payment processor’s own terms also apply to these payments.</li>
+<li>If something is wrong at move-in, report it in the app within 24 hours. We’ll ask the processor to pause the payment while we help.</li>
+</ul>
+<h2 id="terms-non-circumvention">9. Don’t go around TermNest</h2>
+<p>If you meet someone on TermNest and then finish the deal somewhere else, like over text, email, or another app, you still owe the $15 success fee. This is true even if the sublease is signed outside the app.</p>
+<p>Keeping the deal in TermNest also keeps you safer. Rent is held until move-in, and you have a record of your messages and agreement.</p>
+<h2 id="terms-prohibited">10. What’s not allowed</h2>
+<p>When using TermNest, you may not:</p>
+<ul>
+<li>Post fake, misleading, or duplicate listings, or list a place you don’t have the right to sublet.</li>
+<li>Scam anyone, including asking for deposits or rent outside TermNest through Zelle, Venmo, cash, gift cards, or wire transfers.</li>
+<li>Discriminate against anyone (see section 6, Fair housing).</li>
+<li>Upload photos you don’t have the right to use.</li>
+<li>Harass, threaten, or bully other users.</li>
+<li>Pretend to be someone else, or use someone else’s school email.</li>
+<li>Send spam, collect other users’ information, or try to break or hack TermNest.</li>
+</ul>
+<h2 id="terms-photos">11. Your photos</h2>
+<ul>
+<li><strong>You own your photos.</strong> Uploading them to TermNest doesn’t change that.</li>
+<li><strong>You give TermNest permission to show them.</strong> When you upload a photo, you let TermNest display, resize, and crop it on our website and app to show your listing or profile. This permission is free and non-exclusive, so you can still use your photos anywhere else. It ends when you delete the photo or your account.</li>
+<li><strong>Only upload photos you have the right to use,</strong> like photos you took yourself. Don’t upload photos of other people without their permission.</li>
+</ul>
+<p><strong>Think a photo is being misused?</strong> If someone uploaded your photo without permission, or a photo doesn’t match the place, tell us. In the app, go to <strong>Profile → Help &amp; safety → Chat with support</strong>, or email <a href="mailto:hello@termnest.app">hello@termnest.app</a>. We’ll review it and remove photos that break these rules.</p>
+<h2 id="terms-not-advice">12. General information, not legal advice</h2>
+<p>The “Can I sublet?” quiz, the landlord approval request, and the sublease agreement template are <strong>general information</strong> to help you get started. They are <strong>not legal or real estate advice</strong>, and TermNest is not a law firm or real estate broker.</p>
+<p>Every lease is different. Read your own lease carefully. If you’re not sure about something, ask a lawyer or your school’s student legal services, if it has them.</p>
+<h2 id="terms-partners">13. Partner services</h2>
+<p>TermNest may offer optional perks from partner companies, like storage, moving help, or renters insurance. If you choose one:</p>
+<ul>
+<li>Your agreement for that service is with the partner, not with TermNest.</li>
+<li>The partner is responsible for its own services, prices, and terms.</li>
+<li>TermNest doesn’t guarantee partner services and isn’t responsible for problems with them.</li>
+</ul>
+<p>Our <a href="#privacy">Privacy Policy</a> explains what we share with partners, and only when you choose a perk.</p>
+<h2 id="terms-notifications">14. Emails and notifications</h2>
+<p>By creating an account, you agree that TermNest can send you emails and app notifications about your account. These include verification codes, messages, booking and payment updates, receipts, safety alerts, and changes to these terms.</p>
+<p>You can turn off app notifications in <strong>Profile → Notifications</strong>. We’ll still send the emails we need to run your account. You can unsubscribe from any promotional emails at any time.</p>
+<h2 id="terms-removal">15. Removing listings and suspending accounts</h2>
+<p>We may remove any listing, message, or photo, and we may suspend or close any account, if we believe it breaks these terms, puts someone at risk, or hurts TermNest. When we can, we’ll tell you why. You can close your account at any time. Fees you already owe are still due after your account is closed.</p>
+<h2 id="terms-as-is">16. TermNest is provided “as is”</h2>
+<p>We work hard to make TermNest useful and safe, but we provide it <strong>“as is”</strong> and <strong>“as available.”</strong> We don’t promise that TermNest will always work, be free of errors, or be available at any given time. To the fullest extent the law allows, we make no promises about TermNest beyond what is written in these terms.</p>
+<h2 id="terms-liability">17. Limits on our responsibility</h2>
+<p>To the fullest extent the law allows:</p>
+<ul>
+<li>TermNest is not responsible for anything that happens between users, including problems with a room, a sublease, rent, a deposit, damage, or someone’s behavior.</li>
+<li>TermNest is not responsible for indirect losses, like lost money, lost housing, or lost opportunities.</li>
+<li>If TermNest is found responsible for any loss, the most we will owe you is the amount you paid TermNest in the 12 months before the problem happened.</li>
+</ul>
+<h2 id="terms-indemnity">18. Protecting TermNest (indemnification)</h2>
+<p>You agree to <strong>indemnify and hold TermNest harmless</strong>. This means that if someone makes a claim against TermNest because of your listings, your subleases, or the way you act, you will cover the cost. That includes claims, damages, losses, and legal costs such as lawyers’ fees.</p>
+<h2 id="terms-arbitration">19. Disputes: arbitration and no class actions</h2>
+<p><strong>Please read this section carefully. It affects your legal rights.</strong></p>
+<ul>
+<li><strong>Talk to us first.</strong> If you have a problem with TermNest, email <a href="mailto:hello@termnest.app">hello@termnest.app</a>. We’ll try to fix it with you within 30 days.</li>
+<li><strong>Arbitration instead of court.</strong> If we can’t fix it, you and TermNest agree to settle the dispute through binding <strong>individual arbitration</strong>. A neutral arbitrator decides the case instead of a judge or jury. The arbitration will be run by the American Arbitration Association under its Consumer Arbitration Rules, and can happen online, by phone, or in Miami-Dade County, Florida.</li>
+<li><strong>Small claims court is still OK.</strong> Either side can take a dispute to small claims court instead, if it qualifies.</li>
+<li><strong>No class actions.</strong> You and TermNest can each bring claims only for yourselves, not as part of a class action, class arbitration, or any group or representative case.</li>
+<li><strong>You can opt out.</strong> If you don’t want this section to apply to you, email <a href="mailto:hello@termnest.app">hello@termnest.app</a> within 30 days of creating your account and say you want to opt out of arbitration. Opting out won’t affect anything else.</li>
+</ul>
+<p>If the no-class-actions rule can’t be enforced for a particular claim, that claim will go to court instead of arbitration.</p>
+<h2 id="terms-law">20. Florida law</h2>
+<p>These terms are governed by the laws of the State of Florida, without regard to its conflict of law rules. Any dispute that doesn’t go to arbitration (for example, a small claims case, or if you opted out) will be handled in the state or federal courts in Miami-Dade County, Florida.</p>
+<h2 id="terms-changes">21. Changes to these terms</h2>
+<p>We may update these terms from time to time. When we do, we’ll change the date at the top. If a change is important, we’ll tell you in the app or by email before it takes effect. If you keep using TermNest after a change, you agree to the new terms.</p>
+<h2 id="terms-general">22. Other legal terms</h2>
+<ul>
+<li><strong>If one part doesn’t hold up (severability).</strong> If a court or arbitrator decides that any part of these terms can’t be enforced, that part will be changed only as much as needed, and the rest of the terms still apply.</li>
+<li><strong>The whole agreement (entire agreement).</strong> These terms, our <a href="#privacy">Privacy Policy</a>, and any extra terms we show you for a specific feature, like Boost, are the entire agreement between you and TermNest about using TermNest. They replace any earlier agreements or promises about it.</li>
+<li><strong>No waiver.</strong> If we don’t enforce part of these terms right away, we can still enforce it later.</li>
+</ul>
+<h2 id="terms-contact">23. Contact us</h2>
+<p>Questions about these terms? Email <a href="mailto:hello@termnest.app">hello@termnest.app</a>.</p>
+    </article>
+  </div>
+</section>
+
+<section id="privacy" data-page="privacy" aria-labelledby="privacyH">
+  <div class="wrap legal-layout">
+    <div class="legal-head">
+      <span class="eyebrow">Legal</span>
+      <h1 class="sec-h" id="privacyH" tabindex="-1">Privacy Policy</h1>
+      <p class="legal-es" lang="es" data-i18n-skip>Esta política solo está disponible en inglés.</p>
+      <div lang="en" data-i18n-skip><div class="legal-sample"><strong>Sample terms for a student project prototype.</strong> TermNest is a class project, not a real company yet. These terms show how TermNest would work. They have not been reviewed by a lawyer and are not a binding legal agreement.</div></div>
+    </div>
+    <nav class="legal-toc" aria-labelledby="privacyTocH" data-i18n-skip lang="en"><h2 id="privacyTocH">On this page</h2><ol>
+<li><a href="#privacy-short">The short version</a></li>
+<li><a href="#privacy-collect">What we collect</a></li>
+<li><a href="#privacy-use">How we use it</a></li>
+<li><a href="#privacy-sell">We never sell your data</a></li>
+<li><a href="#privacy-share">When we share it</a></li>
+<li><a href="#privacy-security">Keeping it safe</a></li>
+<li><a href="#privacy-delete">Deleting your account and data</a></li>
+<li><a href="#privacy-age">Students only, 18 and older</a></li>
+<li><a href="#privacy-changes">Changes to this policy</a></li>
+<li><a href="#privacy-contact">Contact us</a></li>
+    </ol></nav>
+    <article class="legal" lang="en" data-i18n-skip>
+<p class="legal-date">Last updated: November 16, 2026</p>
+<p>This policy explains what information TermNest collects, how we use it, and the choices you have. It works together with our <a href="#terms">Terms of Use</a>.</p>
+<h2 id="privacy-short">1. The short version</h2>
+<ul>
+<li>We collect what we need to run TermNest and keep students safe.</li>
+<li><strong>We never sell your data.</strong></li>
+<li>We only share it with storage or moving partners if you choose one of their perks.</li>
+<li>You can delete your account and your data at any time.</li>
+</ul>
+<h2 id="privacy-collect">2. What we collect</h2>
+<ul>
+<li><strong>Your name and .edu email</strong>, to create your account and confirm that you’re a student.</li>
+<li><strong>Your profile</strong>, like your school, year, and anything you choose to add about yourself.</li>
+<li><strong>Roommate preferences</strong>, like your sleep schedule, cleanliness, and guests, if you choose to answer them.</li>
+<li><strong>Messages</strong> you send and receive in TermNest.</li>
+<li><strong>Listing details and photos</strong> you post.</li>
+<li><strong>Payment information</strong>, like your card. This is collected and stored by a third-party payment processor, not by TermNest. We only see basic details, like the last 4 digits of your card, so you can tell your cards apart.</li>
+</ul>
+<h2 id="privacy-use">3. How we use it</h2>
+<ul>
+<li>To create your account and verify that you’re a student.</li>
+<li>To show your listings and profile to other verified students.</li>
+<li>To suggest roommate matches based on your preferences.</li>
+<li>To deliver your messages and booking updates.</li>
+<li>To charge fees and hold rent until move-in, through our payment processor.</li>
+<li>To keep TermNest safe, for example by finding fake listings and scams.</li>
+<li>To answer your questions and improve TermNest.</li>
+</ul>
+<h2 id="privacy-sell">4. We never sell your data</h2>
+<p>TermNest does not sell, rent, or trade your personal information. Not to advertisers, not to landlords, not to anyone.</p>
+<h2 id="privacy-share">5. When we share it</h2>
+<p>We only share your information in these cases:</p>
+<ul>
+<li><strong>With other students,</strong> when you use TermNest. Students can see your listings, your public profile, and the messages you send them. Your email and phone number are not shown.</li>
+<li><strong>With our payment processor,</strong> so it can charge fees and hold rent.</li>
+<li><strong>With storage and moving partners, only if you choose one of their perks.</strong> We share just what they need to help you, like your name, email, and move dates. If you don’t choose a perk, they get nothing.</li>
+<li><strong>If the law requires it,</strong> or to protect someone’s safety.</li>
+</ul>
+<h2 id="privacy-security">6. Keeping it safe</h2>
+<p>We use reasonable security measures to protect your information. No system is perfectly secure, so please use a strong password and never share your login.</p>
+<h2 id="privacy-delete">7. Deleting your account and data</h2>
+<p>You can ask us to delete your account and your data at any time:</p>
+<ul>
+<li>In the app, go to <strong>Profile → Help &amp; safety → Chat with support</strong> and ask to delete your account.</li>
+<li>Or email <a href="mailto:hello@termnest.app">hello@termnest.app</a> from your school email.</li>
+</ul>
+<p>We’ll delete your account, profile, preferences, messages, and listings within 30 days. We may keep a small amount of information when the law requires it, like records of payments, or to finish an open sublease or fee.</p>
+<h2 id="privacy-age">8. Students only, 18 and older</h2>
+<p>TermNest is only for students who are 18 or older. We don’t knowingly collect information from anyone younger. If we learn that we have, we’ll delete it.</p>
+<h2 id="privacy-changes">9. Changes to this policy</h2>
+<p>If we change this policy, we’ll update the date at the top. If a change is important, we’ll tell you in the app or by email first.</p>
+<h2 id="privacy-contact">10. Contact us</h2>
+<p>Questions about your privacy? Email <a href="mailto:hello@termnest.app">hello@termnest.app</a>.</p>
+    </article>
+  </div>
+</section>
+<!-- LEGAL:END -->
+
 <section id="try" data-page="home" class="on-green" aria-labelledby="tryH">
   <div class="wrap try-grid">
     <div>
@@ -1197,12 +1727,14 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </div>
       <div>
         <h2>Pages</h2>
-        <ul>
+        <ul class="foot-pages">
           <li><a href="#home">Home</a></li>
           <li><a href="#browse">Browse sublets</a></li>
+          <li><a href="#neighborhoods">Neighborhoods</a></li>
           <li><a href="#need">I need a place</a></li>
           <li><a href="#subleasing">I’m subleasing my place</a></li>
           <li><a href="#swap">Term Swap</a></li>
+          <li><a href="#about">About us</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#safety">Safety</a></li>
           <li><a href="#pricing">Pricing and FAQ</a></li>
@@ -1219,6 +1751,10 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <p style="margin-top:8px">Coral Gables, FL 33146<br>Mon–Fri, 9 AM – 6 PM ET</p>
       </div>
     </div>
+    <ul class="foot-legal" aria-label="Legal">
+      <li><a href="#terms">Terms of Use</a></li>
+      <li><a href="#privacy">Privacy Policy</a></li>
+    </ul>
     <p class="fine">© 2026 TermNest. TermNest is an independent student project and is not affiliated with or endorsed by the University of Miami.</p>
   </div>
 </footer>
@@ -1244,6 +1780,56 @@ window.I18N = (() => {
     "Contact": "Contacto",
     "TermNest home": "Inicio de TermNest",
     "Main": "Principal",
+    "Sublet your place": "Subarrendar",
+    "Why TermNest": "Por qué TermNest",
+    "Pricing": "Precios",
+    "How finding a room works": "Cómo funciona buscar habitación",
+    "See rooms near campus, no account needed": "Habitaciones cerca del campus, sin crear cuenta",
+    "How to sublet your room while you’re away": "Cómo subarrendar tu habitación mientras no estás",
+    "Can I sublet? Quiz": "Test: ¿puedo subarrendar?",
+    "3 questions, plus a landlord request to copy": "3 preguntas y una solicitud para tu propietario lista para copiar",
+    "Trade rooms with a student from another city": "Intercambia habitación con un estudiante de otra ciudad",
+    "What the app does for you": "Lo que la app hace por ti",
+    "How we protect students and their rent": "Cómo protegemos a los estudiantes y su alquiler",
+    "About us": "Quiénes somos",
+    "About us · TermNest": "Quiénes somos · TermNest",
+    "Our story and the students behind TermNest": "Nuestra historia y los estudiantes detrás de TermNest",
+    "Made by UM students, for UM students": "Hecho por estudiantes de UM, para estudiantes de UM",
+    "If you’ve ever tried to sublet at UM, you know how it goes. You post in a Facebook group or a giant group chat and scroll through a hundred messages. Half the rooms are already gone, the dates never quite match your semester, and someone always wants a deposit over Zelle before you’ve even seen the place.": "Si alguna vez intentaste subarrendar en UM, ya sabes cómo es. Publicas en un grupo de Facebook o en un chat enorme y te toca leer cien mensajes. La mitad de las habitaciones ya no están, las fechas nunca coinciden del todo con tu semestre y siempre hay alguien que quiere un depósito por Zelle antes de que hayas visto el lugar.",
+    "That’s where students get scammed by listings that aren’t real. It’s where people sign a sublease and only later find out their landlord never said yes. And honestly, most of us had no idea whether we were even allowed to sublet in the first place.": "Ahí es donde estafan a estudiantes con anuncios que no son reales. Ahí es donde alguien firma un subarriendo y después se entera de que su propietario nunca dio permiso. Y la verdad, la mayoría ni siquiera sabíamos si podíamos subarrendar.",
+    "So we built TermNest. We’re UM students, and we wanted a safe, simple way to sublet that actually fits the school calendar: spring, summer, fall and full-year terms, with real move-in and move-out dates. Everyone on it is a verified UM student, your rent is held until move-in day, and getting your landlord’s OK is part of the process, not an afterthought.": "Por eso creamos TermNest. Somos estudiantes de UM y queríamos una forma segura y sencilla de subarrendar que de verdad siga el calendario escolar: primavera, verano, otoño y año completo, con fechas reales de entrada y salida. Todos son estudiantes verificados de UM, tu alquiler queda retenido hasta el día de la mudanza y pedirle permiso a tu propietario es parte del proceso, no algo que se deja para después.",
+    "What we kept seeing in group chats": "Lo que veíamos una y otra vez en los chats",
+    "Fake listings": "Anuncios falsos",
+    "and deposits sent to strangers": "y depósitos enviados a desconocidos",
+    "Dates that don’t line up": "Fechas que no coinciden",
+    "with the semester": "con el semestre",
+    "No one knows": "Nadie sabe",
+    "if their lease even allows subletting": "si su contrato siquiera permite subarrendar",
+    "TermNest:": "TermNest:",
+    "verified students, real term dates, and landlord approval built in.": "estudiantes verificados, fechas reales por semestre y el permiso del propietario incluido.",
+    "Our mission": "Nuestra misión",
+    "Make subletting at UM safe and simple, every term.": "Que subarrendar en UM sea seguro y sencillo, cada semestre.",
+    "Safety first": "La seguridad primero",
+    "Every student is verified with a school email, rent is held until move-in, and we’ll never ask you to pay outside the app.": "Cada estudiante se verifica con su correo de la universidad, el alquiler queda retenido hasta la mudanza y nunca te pediremos pagar fuera de la app.",
+    "Built for students": "Hecho para estudiantes",
+    "Search by semester, not random dates. We built TermNest around the UM calendar, because that’s how we live.": "Busca por semestre, no por fechas al azar. Creamos TermNest alrededor del calendario de UM, porque así vivimos.",
+    "Fair for everyone": "Justo para todos",
+    "Students pay a fair price, subleasers stop paying rent on an empty room, and landlords get asked first, in writing.": "Los estudiantes pagan un precio justo, quienes subarriendan dejan de pagar por una habitación vacía y a los propietarios se les pide permiso primero, por escrito.",
+    "The team": "El equipo",
+    "Meet the founders": "Conoce a los fundadores",
+    "The UM students behind TermNest.": "Los estudiantes de UM detrás de TermNest.",
+    "Got a question, an idea, or want to help?": "¿Tienes una pregunta, una idea o quieres ayudar?",
+    "We’d love to hear from you.": "Nos encantaría saber de ti.",
+    "Contact us": "Escríbenos",
+    "Neighborhoods": "Barrios",
+    "Neighborhoods · TermNest": "Barrios · TermNest",
+    "Compare areas by commute and rent": "Compara zonas por traslado y alquiler",
+    "Where to live near UM": "Dónde vivir cerca de UM",
+    "Five areas where UM students sublet, compared by commute and rent. The numbers come from the sublets listed on TermNest right now.": "Cinco zonas donde subarriendan los estudiantes de UM, comparadas por traslado y alquiler. Los números salen de los subarriendos publicados ahora en TermNest.",
+    "New to the area?": "¿No conoces la zona?",
+    "Compare the neighborhoods": "Compara los barrios",
+    "Sample photo": "Foto de muestra",
+    "Sample photo: sunny bedroom with a queen bed, a desk under a big window looking out at towers and the water, and hanging plants": "Foto de muestra: habitación soleada con cama queen, un escritorio bajo una ventana grande con vista a torres y al agua, y plantas colgantes",
     "For University of Miami students": "Para estudiantes de la Universidad de Miami",
     "Sublet your room. Find your next one.": "Subarrienda tu habitación. Encuentra la próxima.",
     "Leaving for a semester or the summer? Post your room. Need a short-term place near campus? Find one from a verified UM student.": "¿Te vas por un semestre o por el verano? Publica tu habitación. ¿Necesitas un lugar por poco tiempo cerca del campus? Encuéntralo con un estudiante verificado de UM.",
@@ -1297,7 +1883,7 @@ window.I18N = (() => {
     "Chat with verified students. Or use": "Chatea con estudiantes verificados. O usa",
     "to trade rooms with a student coming to Miami.": "para intercambiar habitación con un estudiante que viene a Miami.",
     "Sign the sublease agreement": "Firma el contrato de subarriendo",
-    "You and your subletter sign inside the app. The $15 listing fee is charged only now.": "Tú y tu subarrendatario firman dentro de la app. Recién en ese momento se cobra la tarifa de publicación de $15.",
+    "You and your subletter sign inside the app. The $15 success fee is charged only now.": "Tú y tu subarrendatario firman dentro de la app. Recién en ese momento se cobra la comisión de éxito de $15.",
     "Get paid at move-in": "Cobra el día de la mudanza",
     "The first month’s rent is released to you after your subletter confirms move-in.": "El alquiler del primer mes se te libera cuando tu subarrendatario confirma que se mudó.",
     "Only verified students can book": "Solo estudiantes verificados pueden reservar",
@@ -1341,7 +1927,7 @@ window.I18N = (() => {
     "Full year · 8": "Año completo · 8",
     "You could save": "Podrías ahorrar",
     "Rent while you’re away": "Alquiler mientras no estás",
-    "TermNest listing fee": "Tarifa de publicación de TermNest",
+    "TermNest success fee": "Comisión de éxito de TermNest",
     "You keep": "Te quedas con",
     "The $15 fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.": "La tarifa de $15 se cobra solo cuando alguien firma el subarriendo. Si nadie firma, no pagas nada. Este cálculo supone que tu subarrendatario paga el alquiler completo de cada mes que estés fuera.",
     "Enter your rent as a number between $1 and $20,000.": "Ingresa tu alquiler como un número entre $1 y $20,000.",
@@ -1534,12 +2120,12 @@ window.I18N = (() => {
     "Simple pricing. No surprises.": "Precios simples. Sin sorpresas.",
     "Looking is always free. Hosts pay only when the sublease actually happens.": "Buscar siempre es gratis. Los anfitriones pagan solo cuando el subarriendo se concreta.",
     "For students looking": "Para quien busca",
-    "Find a place": "Encontrar un lugar",
+    "Find a place": "Buscar lugar",
     "Always free": "Siempre gratis",
     "Search, save and message": "Busca, guarda y envía mensajes",
     "Roommate match and date coverage": "Compatibilidad de convivencia y cobertura de fechas",
     "For students posting": "Para quien publica",
-    "Listing fee": "Tarifa de publicación",
+    "Success fee": "Comisión de éxito",
     "one time": "pago único",
     "Only after a subletter signs": "Solo cuando alguien firma el subarriendo",
     "Posting your room is free": "Publicar tu habitación es gratis",
@@ -1558,7 +2144,7 @@ window.I18N = (() => {
     "University of Miami students with a school email. You confirm a code sent to that email before you can post or message.": "Los estudiantes de la Universidad de Miami con correo universitario. Antes de publicar o enviar mensajes, confirmas un código que llega a ese correo.",
     "How does “rent held until move-in” work?": "¿Cómo funciona eso de “alquiler retenido hasta la mudanza”?",
     "When you reserve, you pay the first month in the app. TermNest holds it. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.": "Al reservar, pagas el primer mes en la app y TermNest lo retiene. Cuando te mudas y confirmas que la habitación es como en el anuncio, el dinero le llega al anfitrión. Si no es como en el anuncio, recibes un reembolso total.",
-    "When do I pay the $15 listing fee?": "¿Cuándo pago la tarifa de publicación de $15?",
+    "When do I pay the $15 success fee?": "¿Cuándo pago la comisión de éxito de $15?",
     "Only after a subletter signs the sublease agreement for your room. Posting is free, and if nobody signs, you pay nothing.": "Solo cuando alguien firma el contrato de subarriendo de tu habitación. Publicar es gratis y, si nadie firma, no pagas nada.",
     "What does the $5 Boost do?": "¿Para qué sirve el Boost de $5?",
     "Boost moves your listing higher in search results and adds a Boost tag. It’s optional and charged when you turn it on.": "Boost sube tu anuncio en los resultados de búsqueda y le agrega la etiqueta Boost. Es opcional y se cobra al activarlo.",
@@ -1608,7 +2194,12 @@ window.I18N = (() => {
     "Features · TermNest": "Funciones · TermNest",
     "Safety · TermNest": "Seguridad · TermNest",
     "Pricing and FAQ · TermNest": "Precios y preguntas · TermNest",
-    "Contact · TermNest": "Contacto · TermNest"
+    "Contact · TermNest": "Contacto · TermNest",
+    "Terms of Use · TermNest": "Términos de uso · TermNest",
+    "Privacy Policy · TermNest": "Política de privacidad · TermNest",
+    "Terms of Use": "Términos de uso",
+    "Privacy Policy": "Política de privacidad",
+    "Legal": "Legal"
   };
   let lang = 'en';
   try {
@@ -1678,7 +2269,7 @@ links.addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && links.classList.contains('open')) { btn.setAttribute('aria-expanded','false'); links.classList.remove('open'); btn.focus(); }
 });
-// Savings calculator: rent × months away − $15 listing fee
+// Savings calculator: rent × months away − $15 success fee
 (() => {
   const FEE = 15;
   const rent = document.getElementById('rent'), months = document.getElementById('months');
@@ -1965,9 +2556,9 @@ window.TNBrowse = (() => {
   function cardHTML(listing) {
     const l = loc(listing);
     return `<li class="card">
-      <div class="photo">${photoImg(l.photos[0], '(min-width:1000px) 400px, (min-width:640px) 50vw, 100vw')}${sampleTag()}</div>
+      <div class="photo">${photoImg(l.photos[0], '(min-width:1240px) 300px, (min-width:960px) 33vw, (min-width:640px) 50vw, 100vw')}${sampleTag()}
+        <span class="term-tag">${es() ? TIMING_ES[timing(l)] : timing(l) + ' move-in'}</span></div>
       <span class="pill">${ic('verified',16)}${t('Verified student')}</span>
-      <span class="term-tag">${es() ? TIMING_ES[timing(l)] : timing(l) + ' move-in'}</span>
       <div class="card-body">
         ${l.boosted ? `<p class="boost-tag">${ic('bolt',16)} ${es() ? 'Con Boost' : 'Boosted'}</p>` : ''}
         <h2><a class="card-link" href="#listing-${l.id}">${esc(l.title)}</a></h2>
@@ -2127,7 +2718,9 @@ window.TNBrowse = (() => {
   document.getElementById('dlgKeep').addEventListener('click', closeDlg);
   dlg.addEventListener('click', e => { if (e.target === dlg) closeDlg(); });     // click on the dark backdrop
   dlg.addEventListener('close', () => { if (opener) opener.focus(); });
-  return { show, photoImg, sampleTag, esc, currentTitle: () => current && loc(current).title };
+  // Neighborhoods page: open Browse with only one area showing (other filters cleared)
+  function setArea(a) { form.reset(); areaSel.value = a; render(); }
+  return { show, photoImg, sampleTag, esc, currentTitle: () => current && loc(current).title, listings: LISTINGS, commute, setArea };
 })();
 
 // Term Swap page: students from other cities who need Miami. Same data as the Term Swap screen in app/index.html.
@@ -2630,18 +3223,188 @@ Approved by: ______________________   Date: ____________`;
   document.addEventListener('tn:lang', draw);
 })();
 
+// About us: founder cards. FILL IN EACH FOUNDER HERE.
+// Text can be plain ('Marketing') or a pair for both languages (['Marketing lead', 'Líder de marketing']).
+// photo: a file like 'images/founder-name.jpg', or '' to show their initials in a TermNest-green circle.
+// A founder with no name shows as a dashed placeholder card.
+(() => {
+  const FOUNDERS = [
+    { name:'Lela Lane',
+      role:['Co-founder & CEO / Head of Product', 'Equipo fundador · CEO y Dirección de Producto'],
+      year:['Sophomore', 'Segundo año'], major:['Business (Real Estate and AI)', 'Negocios (Bienes raíces e IA)'],
+      hometown:'', fun:'', photo:'',
+      why:['I’m studying real estate and AI, and I saw how outdated subletting still is for students. TermNest uses technology to make renting simple, safe, and fair for everyone.',
+           'Estudio bienes raíces e inteligencia artificial, y vi lo anticuado que sigue siendo subarrendar para los estudiantes. TermNest usa la tecnología para que alquilar sea simple, seguro y justo para todos.'] },
+    { name:'Max Spiryda',
+      role:['Co-founder & Chief Financial Officer', 'Equipo fundador · CFO (Finanzas)'],
+      year:['Sophomore', 'Segundo año'], major:['Accounting', 'Contabilidad'],
+      hometown:'', fun:'', photo:'',
+      why:['I’ve watched friends pay rent on an empty room all summer because they couldn’t find someone they trusted. TermNest turns that empty room back into money in their pocket.',
+           'He visto a amigos pagar alquiler por una habitación vacía todo el verano porque no encontraban a alguien de confianza. TermNest convierte esa habitación vacía otra vez en dinero en su bolsillo.'] },
+    { name:'Olivia Poppas',
+      role:['Co-founder & Chief Operating Officer', 'Equipo fundador · COO (Operaciones)'],
+      year:['Sophomore', 'Segundo año'], major:['Finance and Legal Studies', 'Finanzas y Estudios Jurídicos'],
+      hometown:'', fun:'', photo:'',
+      why:['Most students don’t realize subletting without landlord approval can break their lease. TermNest makes doing it the right way simple, so nobody gets into trouble or gets scammed.',
+           'La mayoría de los estudiantes no sabe que subarrendar sin la aprobación del propietario puede romper su contrato. TermNest hace que hacerlo bien sea simple, para que nadie se meta en problemas ni sufra una estafa.'] },
+    { name:'Jaiden Grocher',
+      role:['Co-founder & Chief Marketing Officer', 'Equipo fundador · CMO (Marketing)'],
+      year:['Sophomore', 'Segundo año'], major:['Management', 'Administración de Empresas'],
+      hometown:'', fun:'', photo:'',
+      why:['Students study abroad, take internships, and travel more than ever. TermNest makes it easy to leave for a semester without your housing holding you back.',
+           'Los estudiantes estudian en el extranjero, hacen prácticas y viajan más que nunca. TermNest hace que sea fácil irte un semestre sin que tu vivienda te frene.'] },
+  ];
+  const box = document.getElementById('founders');
+  if (!box) return;
+  const esc = window.TNBrowse.esc;
+  const es = () => I18N.es();
+  const L = v => Array.isArray(v) ? v[es() ? 1 : 0] : (v || '');
+  const initials = n => n.split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  const pic = (f, name) => f.photo
+    ? `<span class="founder-pic"><img src="${esc(f.photo)}" alt="${esc(es() ? 'Foto de ' + name : 'Photo of ' + name)}" data-initials="${esc(initials(name))}" loading="lazy"></span>`
+    : `<span class="founder-pic initials" aria-hidden="true">${esc(name ? initials(name) : '?')}</span>`;
+  function card(f, i) {
+    const name = L(f.name);
+    if (!name) {   // not filled in yet
+      return `<li class="founder placeholder">${pic({}, '')}
+        <h3>${es() ? 'Fundador/a' : 'Founder'} ${i + 1}</h3>
+        <span class="role">${es() ? 'Cargo' : 'Role'}</span>
+        <p class="meta-line">${es() ? 'Año, carrera · de [ciudad]' : 'Year, major · from [hometown]'}</p>
+        <blockquote>${es() ? 'Por qué TermNest le importa.' : 'Why TermNest matters to them.'}</blockquote>
+        <p class="fun"><strong>${es() ? 'Dato curioso:' : 'Fun fact:'}</strong> …</p></li>`;
+    }
+    const meta = [L(f.year), L(f.major)].filter(Boolean).join(', ');
+    const from = L(f.hometown) ? `${es() ? 'de' : 'from'} ${esc(L(f.hometown))}` : '';
+    return `<li class="founder">${pic(f, name)}
+      <h3>${esc(name)}</h3>
+      ${L(f.role) ? `<span class="role">${esc(L(f.role))}</span>` : ''}
+      <p class="meta-line">${esc(meta)}${meta && from ? ' · ' : ''}${from}</p>
+      ${L(f.why) ? `<blockquote>“${esc(L(f.why))}”</blockquote>` : ''}
+      ${L(f.fun) ? `<p class="fun"><strong>${es() ? 'Dato curioso:' : 'Fun fact:'}</strong> ${esc(L(f.fun))}</p>` : ''}</li>`;
+  }
+  function draw() {
+    box.innerHTML = FOUNDERS.map(card).join('');
+    // If a photo file is missing, fall back to the initials circle
+    box.querySelectorAll('.founder-pic img').forEach(img => img.addEventListener('error', () => {
+      const s = img.parentElement; s.classList.add('initials'); s.setAttribute('aria-hidden', 'true'); s.textContent = img.dataset.initials;
+    }));
+  }
+  document.addEventListener('tn:lang', draw);
+  draw();
+})();
+
+// Neighborhoods page: a comparison table, then one section per area. Distance, bike time, rent and the
+// number of sublets are worked out from the current listings, so they stay right when listings change.
+// Text is [English, Spanish]; the page redraws itself when the language changes.
+(() => {
+  const box = document.getElementById('hoods');
+  if (!box) return;
+  const { listings, commute, photoImg, sampleTag, setArea } = window.TNBrowse;
+  const L = p => I18N.es() ? p[1] : p[0];
+  const HOODS = [
+    { area:'Coral Gables',
+      tag:['The city UM calls home. Tree-lined streets, Mediterranean-style buildings, and Miracle Mile for food and shopping.',
+           'La ciudad donde está UM. Calles arboladas, edificios de estilo mediterráneo y Miracle Mile para comer y hacer compras.'],
+      go:['Many rooms are a walk or a short bike ride from class. University Metrorail station is right across US-1 from campus.',
+          'Muchas habitaciones están a una caminata o un paseo corto en bici de clase. La estación University del Metrorail está justo frente al campus, al otro lado de US-1.'],
+      good:[['Walking or biking to class','Ir a clase a pie o en bici'],['Quiet streets for studying','Calles tranquilas para estudiar'],['Getting home easily after late classes','Volver a casa fácil después de clases nocturnas']],
+      mind:['Rooms closest to campus go fast, so start looking early.','Las habitaciones más cerca del campus se van rápido, así que empieza a buscar con tiempo.'] },
+    { area:'Red Road',
+      tag:['Quiet streets of single-family houses close to campus. Rooms are often in houses shared by several students.',
+           'Calles tranquilas de casas cerca del campus. Muchas habitaciones están en casas que comparten varios estudiantes.'],
+      go:['Most rooms are a short bike ride or a quick drive from campus, and many houses come with parking.',
+          'La mayoría de las habitaciones está a un paseo corto en bici o a pocos minutos en auto del campus, y muchas casas tienen estacionamiento.'],
+      good:[['Lower rent, especially for shared rooms','Alquiler más bajo, sobre todo en habitaciones compartidas'],['Houses with a yard and a big kitchen','Casas con patio y cocina grande'],['Living with other UM students','Vivir con otros estudiantes de UM']],
+      mind:['There are fewer shops within walking distance, so a bike or car helps.','Hay pocas tiendas a las que puedas ir caminando, así que una bici o un auto ayudan.'] },
+    { area:'South Miami',
+      tag:['A small city right next to campus, with a lively downtown along Sunset Drive.',
+           'Una ciudad pequeña junto al campus, con un centro animado sobre Sunset Drive.'],
+      go:['South Miami Metrorail station is one stop from University station, and many rooms are an easy bike ride away.',
+          'La estación South Miami del Metrorail está a una parada de la estación University, y muchas habitaciones quedan a un paseo fácil en bici.'],
+      good:[['Restaurants and shops on Sunset Drive','Restaurantes y tiendas en Sunset Drive'],['Getting around on the Metrorail','Moverte en Metrorail'],['Fair prices close to campus','Precios justos cerca del campus']],
+      mind:['US-1 traffic is heavy at rush hour, so leave extra time if you drive.','Hay mucho tráfico en US-1 en horas pico, así que sal con tiempo si vas en auto.'] },
+    { area:'Coconut Grove',
+      tag:['A leafy, walkable neighborhood by Biscayne Bay, with cafes, parks and a marina.',
+           'Un barrio arbolado y fácil de caminar junto a la bahía de Biscayne, con cafés, parques y una marina.'],
+      go:['Coconut Grove Metrorail station is two stops from University station. By bike or car, it’s a short trip along US-1 or local streets.',
+          'La estación Coconut Grove del Metrorail está a dos paradas de la estación University. En bici o en auto es un trayecto corto por US-1 o por calles del barrio.'],
+      good:[['A summer term near the water','Un verano cerca del agua'],['Cafes and places to study off campus','Cafés y lugares para estudiar fuera del campus'],['A neighborhood feel with lots of trees','Ambiente de barrio con muchos árboles']],
+      mind:['It’s farther from campus, so plan your commute before you book.','Queda más lejos del campus, así que planea cómo vas a llegar antes de reservar.'] },
+    { area:'Brickell',
+      tag:['Miami’s high-rise financial district, with city views and the most nightlife.',
+           'El distrito financiero de Miami, lleno de rascacielos, con vista a la ciudad y la mayor vida nocturna.'],
+      go:['About 20 to 25 minutes to campus on the Metrorail, from Brickell station to University station.',
+          'Unos 20 a 25 minutos al campus en Metrorail, de la estación Brickell a la estación University.'],
+      good:[['Summer internships downtown','Pasantías de verano en el centro'],['Buildings with a pool and gym','Edificios con piscina y gimnasio'],['City life and nightlife','Vida de ciudad y vida nocturna']],
+      mind:['It’s the most expensive area and the farthest from campus.','Es la zona más cara y la más lejana del campus.'] },
+  ];
+  const slug = a => 'hood-' + a.toLowerCase().replace(/\s+/g, '-');
+  const usd = n => '$' + n.toLocaleString('en-US');
+  const range = (a, b, f = String) => a === b ? f(a) : `${f(a)}–${f(b)}`;
+  const bike = d => commute(d).find(c => c.icon === 'bike').min;
+  // Each area's numbers, and one listing photo per area (no photo used twice)
+  const used = new Set();
+  const stats = HOODS.map(h => {
+    const ls = listings.filter(l => l.area === h.area);
+    const d = ls.map(l => l.dist), p = ls.map(l => l.price);
+    const pick = ls.map(l => l.photos[0]).find(k => !used.has(k)) || ls[0].photos[0];
+    used.add(pick);
+    return { ...h, n: ls.length, dMin: Math.min(...d), dMax: Math.max(...d), pMin: Math.min(...p), pMax: Math.max(...p), photo: pick };
+  });
+  const miles = s => range(s.dMin, s.dMax, v => v.toFixed(1)) + ' mi';
+  const mins = s => range(bike(s.dMin), bike(s.dMax)) + ' min';
+  const rent = s => range(s.pMin, s.pMax, usd);
+  const subs = s => I18N.es() ? `${s.n} ${s.n === 1 ? 'subarriendo' : 'subarriendos'}` : `${s.n} sublet${s.n === 1 ? '' : 's'}`;
+  const COLS = [['Neighborhood','Barrio'],['From campus','Del campus'],['By bike','En bici'],['Rent a month','Alquiler al mes'],['On TermNest now','En TermNest ahora']];
+  const tick = '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+  function draw() {
+    const table = `<div class="hood-table-wrap"><table class="hood-table">
+      <caption>${L(['At a glance','De un vistazo'])}</caption>
+      <thead><tr>${COLS.map(c => `<th scope="col">${L(c)}</th>`).join('')}</tr></thead>
+      <tbody>${stats.map(s => `<tr><th scope="row"><a href="#${slug(s.area)}">${s.area}</a></th><td>${miles(s)}</td><td>${mins(s)}</td><td>${rent(s)}</td><td>${subs(s)}</td></tr>`).join('')}</tbody>
+    </table>
+    <p class="f-hint">${L(['Distances are to the Coral Gables campus. Bike times are estimates.','Las distancias son hasta el campus de Coral Gables. Los tiempos en bici son aproximados.'])}</p></div>`;
+    const sections = stats.map(s => `<article class="hood" id="${slug(s.area)}" aria-labelledby="${slug(s.area)}-h">
+      <div class="photo">${photoImg(s.photo, '(min-width:1024px) 520px, 100vw')}${sampleTag()}</div>
+      <div class="hood-body">
+        <h2 id="${slug(s.area)}-h" tabindex="-1">${s.area}</h2>
+        <p class="hood-tag">${L(s.tag)}</p>
+        <ul class="hood-stats">
+          <li><span>${L(COLS[1])}</span><strong>${miles(s)}</strong></li>
+          <li><span>${L(COLS[2])}</span><strong>${mins(s)}</strong></li>
+          <li><span>${L(COLS[3])}</span><strong>${rent(s)}</strong></li>
+          <li><span>${L(COLS[4])}</span><strong>${subs(s)}</strong></li>
+        </ul>
+        <p><strong>${L(['Getting to campus:','Cómo llegar al campus:'])}</strong> ${L(s.go)}</p>
+        <div class="hood-cols">
+          <div><h3>${L(['Good for','Ideal para'])}</h3><ul class="checks">${s.good.map(g => `<li>${tick}<span>${L(g)}</span></li>`).join('')}</ul></div>
+          <div><h3>${L(['Keep in mind','Ten en cuenta'])}</h3><p>${L(s.mind)}</p></div>
+        </div>
+        <a class="btn btn-primary" href="#browse" data-area="${s.area}">${I18N.es() ? `Ver ${subs(s)} en ${s.area}` : `See ${subs(s)} in ${s.area}`}</a>
+      </div>
+    </article>`).join('');
+    box.innerHTML = table + `<div class="hoods">${sections}</div>`;
+  }
+  // "See sublets in …" opens Browse filtered to that area (the page router then shows Browse)
+  box.addEventListener('click', e => { const a = e.target.closest('a[data-area]'); if (a) setArea(a.dataset.area); });
+  document.addEventListener('tn:lang', draw);
+  draw();
+})();
+
 // Pages: show one page's sections at a time. Every in-page link (#id) goes through go(),
 // so links work even where the browser ignores #hash jumps. Without JS, every section shows.
 (() => {
   const sections = [...document.querySelectorAll('main section[data-page]')];
   const PAGES = { home:'TermNest · Student subleases at the University of Miami', browse:'Browse sublets · TermNest', need:'I need a place · TermNest', subleasing:'I’m subleasing my place · TermNest',
-    swap:'Term Swap · TermNest', features:'Features · TermNest', safety:'Safety · TermNest', pricing:'Pricing and FAQ · TermNest', contact:'Contact · TermNest' };
+    neighborhoods:'Neighborhoods · TermNest', about:'About us · TermNest', swap:'Term Swap · TermNest', features:'Features · TermNest', safety:'Safety · TermNest', pricing:'Pricing and FAQ · TermNest', contact:'Contact · TermNest',
+    terms:'Terms of Use · TermNest', privacy:'Privacy Policy · TermNest' };
   const navLinks = [...document.querySelectorAll('.nav-links a, .site-footer a[href^="#"]')];
   let current = null;
   function setCurrentNav(page) {
     document.querySelectorAll('.nav-links a').forEach(a => {
       if (a.getAttribute('href') === '#' + page) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
+    document.querySelectorAll('.nav-group').forEach(g => g.querySelector('.nav-dd').classList.toggle('has-current', !!g.querySelector('[aria-current="page"]')));
   }
   function pageOf(id) {
     if (PAGES[id]) return id;
@@ -2694,24 +3457,32 @@ Approved by: ______________________   Date: ____________`;
   go(location.hash.slice(1) || 'home');
 })();
 
-// Menu: show the full row of links only when it fits beside the logo with room to spare (and never below 1,440px).
-// Otherwise fold it into the Menu button. Re-checked on resize and when the language changes, since Spanish labels are longer.
+// Desktop menu dropdowns (1,024px and up). Click or Enter opens one; Escape, a click elsewhere, or tabbing away closes it.
+// Down/Up arrows move through the pages in an open dropdown. On phones the Menu button shows everything instead.
 (() => {
-  const header = document.querySelector('.site-header'), row = header.querySelector('.nav-row');
-  const logo = row.querySelector('.logo'), links = document.getElementById('navLinks'), btn = header.querySelector('.menu-btn');
-  function fit() {
-    const wasOpen = links.classList.contains('open');
-    header.classList.remove('compact');
-    const cs = getComputedStyle(row), room = row.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const fits = window.innerWidth >= 1440 && logo.offsetWidth + links.scrollWidth + 40 <= room;   // at least 40px between logo and links
-    header.classList.toggle('compact', !fits);
-    if (fits && wasOpen) { links.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
-  }
-  let raf = 0;
-  window.addEventListener('resize', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); });
-  document.addEventListener('tn:lang', fit);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-  fit();
+  const groups = [...document.querySelectorAll('.nav-group')];
+  const menuBtn = document.querySelector('.menu-btn'), links = document.getElementById('navLinks');
+  const btnOf = g => g.querySelector('.nav-dd'), itemsOf = g => [...g.querySelectorAll('.nav-sub a')];
+  const isOpen = g => btnOf(g).getAttribute('aria-expanded') === 'true';
+  function setOpen(g, open) { btnOf(g).setAttribute('aria-expanded', String(open)); }
+  function closeAll(except) { groups.forEach(g => { if (g !== except) setOpen(g, false); }); }
+  groups.forEach(g => {
+    const b = btnOf(g);
+    b.addEventListener('click', () => { const open = !isOpen(g); closeAll(g); setOpen(g, open); });
+    g.addEventListener('keydown', e => {
+      const items = itemsOf(g), i = items.indexOf(document.activeElement);
+      if (e.key === 'Escape' && isOpen(g)) { e.stopPropagation(); setOpen(g, false); b.focus(); }
+      else if (e.key === 'ArrowDown' && (e.target === b || i > -1)) { e.preventDefault(); closeAll(g); setOpen(g, true); items[(i + 1) % items.length].focus(); }
+      else if (e.key === 'ArrowUp' && i > -1) { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    });
+    g.addEventListener('focusout', e => { if (e.relatedTarget && !g.contains(e.relatedTarget)) setOpen(g, false); });
+    g.addEventListener('click', e => { if (e.target.closest('.nav-sub a')) setOpen(g, false); });
+  });
+  document.addEventListener('click', e => { if (!e.target.closest('.nav-group')) closeAll(); });
+  // Crossing the 1,024px line closes whatever was open, so nothing is left hanging in the other layout.
+  matchMedia('(min-width:1024px)').addEventListener('change', () => {
+    closeAll(); links.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false');
+  });
 })();
 
 I18N.start();   // switch to Spanish now if that was the saved choice
