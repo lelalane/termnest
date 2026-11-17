@@ -281,15 +281,13 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .boost-tag{display:inline-flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:2px 8px;margin-bottom:8px;transform:rotate(-2deg)}
 .bldg{display:flex;align-items:flex-start;gap:6px;font-weight:700;font-size:.95rem;margin:2px 0 4px;color:var(--ink)}
 .bldg svg{flex:none;margin-top:2px;color:var(--green)}
-/* Tags on listings: Boosted, Approved Building, fair price (same as the app) */
+/* Tags on listings: Boosted, fair price (same as the app) */
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
 .tag-row .boost-tag{margin:0}
-.fair-tag,.approved-tag{display:inline-flex;align-items:center;gap:4px;font-size:.82rem;font-weight:700;border:2px solid var(--ink);border-radius:6px;padding:2px 8px;line-height:1.3}
+.fair-tag{display:inline-flex;align-items:center;gap:4px;font-size:.82rem;font-weight:700;border:2px solid var(--ink);border-radius:6px;padding:2px 8px;line-height:1.3}
 .fair-tag.great{background:var(--green);color:#fff}
 .fair-tag.fair{background:var(--green-50);color:var(--green)}
 .fair-tag.high{background:#fff;color:var(--ink)}
-.approved-tag{background:#fff;color:var(--green);border-color:var(--green)}
-.approved-note{font-size:.95rem;color:var(--ink-2);margin:0 0 12px}
 .card h2{font-size:1.25rem;line-height:1.2;margin-bottom:6px}
 .card-link{color:var(--ink);text-decoration:none;font-weight:700}
 .card-link::after{content:"";position:absolute;inset:0;border-radius:12px}
@@ -553,8 +551,7 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 
 /* ---------- pricing ---------- */
 .price-grid{display:grid;gap:22px;margin-top:36px}
-@media (min-width:860px){.price-grid{grid-template-columns:repeat(2,1fr)}}
-@media (min-width:1240px){.price-grid{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:860px){.price-grid{grid-template-columns:repeat(3,1fr)}}
 .perks{margin-top:40px}
 .perks-h{font-size:1.5rem;margin-bottom:6px}
 .perks-lead{color:var(--ink-2);max-width:44rem}
@@ -1371,18 +1368,6 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <li>Optional and non-refundable</li>
         </ul>
       </div>
-      <div class="price-card">
-        <span class="who">For landlords and property managers</span>
-        <h3>Approved Building</h3>
-        <p class="amount">$79 <small>a month</small></p>
-        <span class="when">Per building</span>
-        <ul>
-          <li>TermNest Approved Building status</li>
-          <li>Approved Building badge on listings in your building</li>
-          <li>Dashboard for sublets in your building</li>
-          <li>Students never pay for it</li>
-        </ul>
-      </div>
     </div>
     <div class="perks" aria-labelledby="perksH">
       <h2 class="perks-h" id="perksH">Partner perks</h2>
@@ -1564,7 +1549,6 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
 <li><strong>Signing up is free.</strong> So is browsing, messaging, and posting a listing.</li>
 <li><strong>$15 success fee.</strong> If you’re subleasing your place, you owe TermNest a $15 success fee when you sign a sublease with someone you met on TermNest. We charge it to the card you have on file when the sublease is signed. If nobody signs, you don’t pay it.</li>
 <li><strong>$5 Boost.</strong> Boost puts your listing at the top of search results. It costs $5, paid up front when you add it. Boost is <strong>non-refundable</strong>, even if nobody books your room.</li>
-<li><strong>$79 Approved Building plan.</strong> Landlords and property managers can pay $79 per month for each building to get “TermNest Approved Building” status, a badge on listings in that building, and a dashboard.</li>
 </ul>
 <p>Payments are processed by a third-party payment company, not by TermNest. If we ever change our prices, we’ll tell you before the new price applies to you.</p>
 <h2 id="terms-held-rent">8. How held rent works</h2>
@@ -2245,20 +2229,12 @@ window.I18N = (() => {
     "Terms of Use": "Términos de uso",
     "Privacy Policy": "Política de privacidad",
     "Legal": "Legal",
-    "For landlords and property managers": "Para propietarios y administradores",
-    "Approved Building": "Edificio aprobado",
     "University Metrorail station": "Estación University del Metrorail",
     "South Miami Metrorail station": "Estación South Miami del Metrorail",
     "Brickell Metrorail station": "Estación Brickell del Metrorail",
     "Douglas Road Metrorail station": "Estación Douglas Road del Metrorail",
     "Biltmore Hotel": "Hotel Biltmore",
     "Sunset Drive and Red Road": "Sunset Drive y Red Road",
-    "a month": "al mes",
-    "Per building": "Por edificio",
-    "TermNest Approved Building status": "Estatus de Edificio aprobado por TermNest",
-    "Approved Building badge on listings in your building": "Insignia de Edificio aprobado en los anuncios de tu edificio",
-    "Dashboard for sublets in your building": "Panel para los subarriendos de tu edificio",
-    "Students never pay for it": "Los estudiantes nunca lo pagan",
     "Partner perks": "Beneficios de socios",
     "Free for students. Moving out for the term or settling in? Get discounts from our partners. TermNest earns a commission from partners, never from students.": "Gratis para estudiantes. ¿Te vas por el semestre o te estás instalando? Obtén descuentos de nuestros socios. TermNest gana una comisión de los socios, nunca de los estudiantes.",
     "Storage for your things while you’re away": "Almacenamiento para tus cosas mientras no estás",
@@ -2374,7 +2350,7 @@ window.TNBrowse = (() => {
     {id:1,building:'Sabal Arch Residences',street:'Ponce de Leon Blvd',title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
      desc:'Bright corner bedroom in a 3-bedroom apartment, a short walk to campus and the Metrorail. Comes with a desk, full bed and closet. My two roommates are UM juniors and quiet during the week.',
      host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['bedroom1','livingroom2','kitchen1','bathroom1']},
-    {id:2,approved:true,building:'Sunline Studios',street:'University Metrorail station',title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
+    {id:2,building:'Sunline Studios',street:'University Metrorail station',title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
      desc:'Whole studio to yourself with a kitchenette and in-building laundry. Two minutes to University station. Great for grad students who want quiet.',
      host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['studio1','bathroom1','laundry1']},
     {id:3,building:'Kingfisher Court Cottages',street:'Main Highway',title:'Summer room in the Grove',area:'Coconut Grove',dist:3.6,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
@@ -2383,7 +2359,7 @@ window.TNBrowse = (() => {
     {id:4,boosted:true,building:'Cypress Lantern House',street:'Red Road',title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
      desc:'Room in a house shared with three UM students. Shared backyard, parking spot included, and bikeable to campus in under 10 minutes.',
      host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['study-bedroom1','kitchen1','laundry1']},
-    {id:5,approved:true,building:'Harbor Lumen Tower',street:'Brickell Metrorail station',title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+    {id:5,building:'Harbor Lumen Tower',street:'Brickell Metrorail station',title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Room with a city view, building pool and gym. Ideal for a summer internship downtown. About 20 minutes to campus on the Metrorail.',
      host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['brickell-bedroom1','balcony1','pool1','kitchen1']},
     {id:6,building:'Corbel House',street:'Biltmore Hotel',title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
@@ -2410,13 +2386,13 @@ window.TNBrowse = (() => {
     {id:13,building:'Bayline Lattice Flats',street:'South Bayshore Drive',title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:4.2,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
      desc:'Private room with a peek of the bay, a queen bed and a ceiling fan. Walk to cafes and the marina. My roommate is a grad student with a friendly dog.',
      host:{name:'Grace L.',initials:'GL',about:'UM senior · Summer internship in Chicago'},photos:['grove-bedroom1','balcony1','kitchen1']},
-    {id:14,approved:true,building:'Vantage Reef Tower',street:'Brickell City Centre',title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
+    {id:14,building:'Vantage Reef Tower',street:'Brickell City Centre',title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
      desc:'Whole studio on a high floor with a pool, gym and front desk. Steps from Brickell City Centre and the Metromover. About 25 minutes to campus on the Metrorail.',
      host:{name:'Mateo G.',initials:'MG',about:'UM grad student · Summer fellowship in D.C.'},photos:['studio3','pool1','balcony1','laundry1']},
     {id:15,building:'Thornbury Townhomes',street:'Douglas Road Metrorail station',title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.1,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
      desc:'Unfurnished private room in a two-story townhouse with a patio. The two roommates are social, have friends over often and keep things relaxed. Smoking is OK on the patio.',
      host:{name:'Zoe M.',initials:'ZM',about:'UM junior · Fall semester in Sydney'},photos:['unfurnished-bedroom1-closet','kitchen1','livingroom1']},
-    {id:16,approved:true,building:'Ferro Bay Residences',street:'Brickell Avenue',title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+    {id:16,building:'Ferro Bay Residences',street:'Brickell Avenue',title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Furnished room with a city view and its own bathroom. The building has a pool and a study lounge. My roommate is a very tidy night owl who works downtown.',
      host:{name:'Ethan B.',initials:'EB',about:'UM senior · Fall co-op in New York'},photos:['bedroom2','bathroom1','pool1','livingroom1']},
     {id:17,building:'Firebush Garden Flats',street:'Sunset Drive and Red Road',title:'Garden room on Red Road',area:'Red Road',dist:1,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
@@ -2636,10 +2612,9 @@ window.TNBrowse = (() => {
   }
   const FAIR = {great:'Great price', fair:'Fair price', high:'Above average'};
   const fairTag = l => { const k = fairPrice(l); return `<span class="fair-tag ${k}" title="${t('Compared with similar rooms nearby')}">${t(FAIR[k])}<span class="sr-only"> (${t('Compared with similar rooms nearby')})</span></span>`; };
-  const approvedTag = () => `<span class="approved-tag">${ic('home',14)} ${t('Approved Building')}</span>`;
   // Made-up building name and a real nearby street or landmark (same in the app)
   const bldg = l => `<p class="bldg">${ic('home',16)}<span>${esc(l.building)} · ${esc(t(l.street))}</span></p>`;
-  const tagRow = l => `<p class="tag-row">${l.boosted ? `<span class="boost-tag">${ic('bolt',16)} ${es() ? 'Con Boost' : 'Boosted'}</span>` : ''}${l.approved ? approvedTag() : ''}${fairTag(l)}</p>`;
+  const tagRow = l => `<p class="tag-row">${l.boosted ? `<span class="boost-tag">${ic('bolt',16)} ${es() ? 'Con Boost' : 'Boosted'}</span>` : ''}${fairTag(l)}</p>`;
   function cardHTML(listing) {
     const l = loc(listing);
     return `<li class="card">
@@ -2750,11 +2725,7 @@ window.TNBrowse = (() => {
           <h1 class="d-title" id="detailH" tabindex="-1">${esc(l.title)}</h1>
           ${bldg(l)}
           <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${distText(l.dist)}</p>
-          ${tagRow(l)}
-          ${l.approved ? `<p class="approved-note">${es()
-            ? 'Edificio aprobado por TermNest: el propietario de este edificio trabaja con TermNest.'
-            : 'TermNest Approved Building: the landlord of this building works with TermNest.'}</p>` : ''}
-          <div class="action-card">
+          ${tagRow(l)}          <div class="action-card">
             <p class="price-lg"><strong>${money(l.price)}</strong> ${t('/ month')}</p>
             <div class="date-box">
               <div class="cols">
