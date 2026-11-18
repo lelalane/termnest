@@ -82,6 +82,33 @@ h2,h3{font-weight:700}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;border-radius:12px;font-size:1rem;font-weight:700;
   border:2px solid var(--ink);padding:0 18px;text-align:center;box-shadow:var(--shadow);transition:transform .08s,box-shadow .08s}
 .btn+.btn{margin-top:14px}
+.btn:disabled{background:#E3E6E4;color:#474C49;box-shadow:none;cursor:not-allowed;border-style:dashed}
+.opt.agree .link{display:inline;min-height:0;padding:0}
+/* About TermNest screen */
+.about-lead{line-height:1.5;margin:14px 0 4px}
+.about-founders{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.af{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:12px}
+.af-pic{width:60px;height:60px;border-radius:50%;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--orange);overflow:hidden;flex:none;display:grid;place-items:center;background:var(--green);color:#fff;font-family:var(--head);font-weight:800;font-size:1.25rem}
+.af-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.af strong{display:block;font-size:1.05rem}
+.af-role{display:inline-block;font-size:.78rem;font-weight:700;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:1px 7px;margin:4px 0 2px;line-height:1.35}
+.af p{margin:2px 0 0;font-size:.88rem;color:var(--ink-2);line-height:1.4}
+.af .af-why{font-style:italic;margin-top:6px}
+.about-app .summary dd a{color:var(--green-text);font-weight:700}
+.about-links{display:grid;gap:12px;margin-top:20px}
+.about-links .btn+.btn{margin-top:0}
+.about-links a.btn{text-decoration:none;color:var(--ink)}
+/* Terms of Use and Privacy Policy screens */
+.legal{line-height:1.55;padding-top:14px}
+.legal h2{font-size:1.15rem;line-height:1.25;margin:26px 0 8px}
+.legal p,.legal ul{margin:0 0 10px}
+.legal ul{padding-left:22px}
+.legal li{margin-bottom:6px}
+.legal .link{display:inline;min-height:0;padding:0}
+.legal-sample{background:var(--orange-50);border:2px solid var(--ink);border-left:8px solid var(--orange);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.92rem}
+.legal-sample strong{display:block}
+.legal-date{color:var(--ink-2);font-size:.9rem}
+.legal-links{text-align:center;margin:-10px 0 8px;font-size:.9rem;color:var(--ink-2)}
 .btn-primary{background:var(--green);color:#fff}
 .btn-primary:hover{background:var(--green-dark)}
 .btn-accent{background:var(--orange);color:var(--ink)}
@@ -351,7 +378,41 @@ input[type=range]{width:100%;height:44px;accent-color:var(--green)}
 .pref-nudge.info{background:#fff;font-weight:400;color:var(--ink-2)}
 .pref-nudge svg:first-child{color:var(--green);flex:none}
 
+/* ---------- demo controls (gray, small: visibly not part of the real app) ---------- */
+.demo-btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:2px dashed #6B716E;border-radius:8px;background:#ECEEEC;color:#2E3330;font-size:.82rem;font-weight:700;box-shadow:none}
+.demo-btn::before{content:"⚙";font-size:.9rem}
+.demo-btn:hover{background:#E1E4E1}
+.demo-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;padding:10px 12px;border:2px dashed #6B716E;border-radius:10px;background:#F2F3F2}
+.demo-bar span{font-size:.8rem;font-weight:700;color:#2E3330;text-transform:uppercase;letter-spacing:.06em}
+
+/* ---------- in-app notification ---------- */
+.notif{position:absolute;top:58px;left:10px;right:10px;z-index:85;display:flex;gap:10px;align-items:center;padding:10px 10px 10px 12px;background:#fff;border:2px solid var(--ink);border-left:8px solid var(--orange);border-radius:14px;box-shadow:var(--shadow);transform:translateY(-140%);transition:transform .25s ease}
+.notif.show{transform:none}
+.notif .n-ic{width:40px;height:40px;flex:none;border-radius:10px;background:var(--green);color:#fff;display:grid;place-items:center}
+.notif .grow{flex:1;min-width:0}
+.notif strong{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--green-text)}
+.notif p{font-weight:700;line-height:1.3}
+.notif .n-x{width:44px;height:44px;flex:none;border:0;background:none;display:grid;place-items:center;color:var(--ink)}
+
+/* ---------- move-in photo check ---------- */
+.photo-check{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.photo-check li{display:flex;align-items:center;gap:12px;border:2px dashed var(--ink);border-radius:12px;padding:10px;background:#fff}
+.photo-check li.done{border-style:solid;background:var(--green-50)}
+.pc-thumb{width:48px;height:48px;flex:none;border-radius:10px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--bg)}
+.photo-check li.done .pc-thumb{background:var(--green);color:#fff}
+.photo-check .grow{flex:1;min-width:0}
+.photo-check strong{display:block;font-family:var(--head)}
+.photo-check .grow span{font-size:.85rem;color:var(--ink-2)}
+.photo-check .pc-btn{width:auto;min-height:44px;padding:0 12px;font-size:.88rem;box-shadow:var(--shadow-sm)}
+.pc-count{font-weight:700;margin:12px 0 4px}
+#sheetBody .pc-count+.error+.btn{margin-top:12px}
+
 /* ---------- landlord approval ---------- */
+.status.awaiting{background:var(--orange);color:var(--ink)}
+.status.awaiting::before{background:var(--ink)}
+.ll-preview{white-space:pre-wrap;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:12px;font-size:.92rem;line-height:1.45;max-height:260px;overflow-y:auto}
+.ll-status{display:inline-block;margin-top:6px;font-size:.85rem;font-weight:700;padding:3px 9px;border-radius:6px;border:2px dashed var(--ink);background:var(--orange-50);color:var(--ink)}
+.ll-status.ok{border-style:solid;background:var(--green);color:#fff}
 .step-of{font-size:.85rem;font-weight:700;color:var(--green-text);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 .ll-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;position:relative}
 .ll-steps li{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:.85rem;font-weight:700;color:var(--ink-2);position:relative}
@@ -493,6 +554,10 @@ input[type=range]{width:100%;height:44px;accent-color:var(--green)}
 .swap-card .btn{min-height:52px;box-shadow:var(--shadow-sm)}
 .swap-card .req-status{margin-bottom:12px;font-size:.9rem}
 .sheet-photo{height:150px;border:2px solid var(--ink);border-radius:12px}
+.sw-terms{border:0;margin:0 0 18px;padding:0;min-width:0}
+.sw-terms legend{font-weight:700;padding:0;margin-bottom:8px}
+.sw-terms legend .help{display:block;font-weight:400;margin-top:2px}
+.sw-photo{height:150px;border:2px solid var(--ink);border-radius:10px;margin-bottom:12px}
 
 /* ---------- trust level ---------- */
 .trust{margin:18px 20px 0 16px;background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:16px}
@@ -535,6 +600,15 @@ input[type=range]{width:100%;height:44px;accent-color:var(--green)}
 /* ---------- review & boost ---------- */
 .boost-tag{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;font-weight:700;background:var(--orange);color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:2px 8px;margin-bottom:8px;transform:rotate(-2deg)}
 .boost-tag.inline{margin:0 0 0 4px;vertical-align:middle}
+.bldg{display:flex;align-items:flex-start;gap:6px;font-weight:700;font-size:.9rem;margin:2px 0 4px;color:var(--ink);line-height:1.35}
+.bldg svg{flex:none;margin-top:1px;color:var(--green-text)}
+/* Tags on listings: Boosted, fair price (same as the website) */
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.tag-row .boost-tag{margin:0}
+.fair-tag{display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:700;border:2px solid var(--ink);border-radius:6px;padding:2px 8px;line-height:1.3}
+.fair-tag.great{background:var(--green);color:#fff}
+.fair-tag.fair{background:var(--green-50);color:var(--green-text)}
+.fair-tag.high{background:#fff;color:var(--ink)}
 .card.preview{margin-right:4px}
 .summary.plain div:last-child{border-top:0;background:#fff}
 .summary.plain div:last-child dt{font-weight:400;color:var(--ink-2)}
@@ -692,6 +766,7 @@ input[type=range]{width:100%;height:44px;accent-color:var(--green)}
       </nav>
       <div id="sheetRoot" hidden></div>
       <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="notif" id="notif" role="status" aria-live="polite" hidden></div>
       <div class="home-ind" aria-hidden="true"></div>
     </div>
   </div>
@@ -776,58 +851,58 @@ const state = {
   swap:{city:'', from:'2027-01-10', to:'2027-05-12', searched:false}, swapSent:new Set(),
   view:'list', mapSel:null,
   listings:[
-    {id:1,title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
+    {id:1,building:'Sabal Arch Residences',street:'Ponce de Leon Blvd',title:'Sunny room near Ponce',area:'Coral Gables',dist:0.4,price:1150,moveIn:'2027-01-08',moveOut:'2027-05-14',type:'Private room',roommates:2,furnished:true,utilities:true,tone:0,
      desc:'Bright corner bedroom in a 3-bedroom apartment, a short walk to campus and the Metrorail. Comes with a desk, full bed and closet. My two roommates are UM juniors and quiet during the week.',
      host:{name:'Maya R.',initials:'MR',about:'UM junior · Studying abroad in Madrid this spring'},photos:['bedroom1','livingroom2','kitchen1','bathroom1']},
-    {id:2,title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
+    {id:2,building:'Sunline Studios',street:'University Metrorail station',title:'Studio by the Metrorail',area:'South Miami',dist:0.9,price:1380,moveIn:'2027-01-05',moveOut:'2027-05-20',type:'Entire place',roommates:0,furnished:true,utilities:false,tone:2,
      desc:'Whole studio to yourself with a kitchenette and in-building laundry. Two minutes to University station. Great for grad students who want quiet.',
      host:{name:'Diego M.',initials:'DM',about:'UM grad student · Spring internship in New York'},photos:['studio1','bathroom1','laundry1']},
-    {id:3,title:'Summer room in the Grove',area:'Coconut Grove',dist:3.1,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+    {id:3,building:'Kingfisher Court Cottages',street:'Main Highway',title:'Summer room in the Grove',area:'Coconut Grove',dist:3.6,price:990,moveIn:'2027-05-16',moveOut:'2027-08-14',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Leafy, walkable neighborhood with cafes and the bay nearby. Room has a window AC, queen bed and a big desk. One roommate who is a UM senior staying for summer research.',
      host:{name:'Priya K.',initials:'PK',about:'UM sophomore · Home for the summer'},photos:['bedroom8','kitchen1','bathroom1']},
-    {id:4,boosted:true,title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
+    {id:4,boosted:true,building:'Cypress Lantern House',street:'Red Road',title:'Furnished room on Red Road',area:'Red Road',dist:1.2,price:1050,moveIn:'2027-01-03',moveOut:'2027-07-31',type:'Private room',roommates:3,furnished:true,utilities:true,tone:3,
      desc:'Room in a house shared with three UM students. Shared backyard, parking spot included, and bikeable to campus in under 10 minutes.',
      host:{name:'Sam T.',initials:'ST',about:'UM senior · Co-op in Atlanta'},photos:['study-bedroom1','kitchen1','laundry1']},
-    {id:5,title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+    {id:5,building:'Harbor Lumen Tower',street:'Brickell Metrorail station',title:'High-rise room in Brickell',area:'Brickell',dist:7.5,price:1600,moveIn:'2027-06-01',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Room with a city view, building pool and gym. Ideal for a summer internship downtown. About 20 minutes to campus on the Metrorail.',
      host:{name:'Alex C.',initials:'AC',about:'UM junior · Summer abroad in Seoul'},photos:['brickell-bedroom1','balcony1','pool1','kitchen1']},
-    {id:6,title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
+    {id:6,building:'Corbel House',street:'Biltmore Hotel',title:'Quiet room in a grad household',area:'Coral Gables',dist:1.8,price:1200,moveIn:'2027-01-12',moveOut:'2027-05-12',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:2,
      desc:'Shared room in a calm household of graduate students. Lots of natural light and a study nook. Bring your own bed or ask about borrowing one.',
      host:{name:'Jordan L.',initials:'JL',about:'UM PhD student · Fieldwork in Peru'},photos:['unfurnished-bedroom1','livingroom2','kitchen1']},
-    {id:7,title:'Fall room off Sunset Drive',area:'South Miami',dist:1.4,price:1100,moveIn:'2027-08-16',moveOut:'2027-12-18',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
+    {id:7,building:'Tamarind Lane Flats',street:'Sunset Drive',title:'Fall room off Sunset Drive',area:'South Miami',dist:1.4,price:1100,moveIn:'2027-08-16',moveOut:'2027-12-18',type:'Private room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Furnished room in a 2-bedroom condo with a small balcony and covered parking. Close to shops on Sunset Drive and a quick bike ride to campus. My roommate is a UM senior who studies late.',
      host:{name:'Lena V.',initials:'LV',about:'UM junior · Fall semester in London'},photos:['bedroom7','balcony1','livingroom1','kitchen1']},
-    {id:8,title:'Full-year room by Miracle Mile',area:'Coral Gables',dist:1.6,price:1250,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Private room',roommates:2,furnished:true,utilities:false,tone:3,
+    {id:8,building:'Portico Lane Apartments',street:'Miracle Mile',title:'Full-year room by Miracle Mile',area:'Coral Gables',dist:2.7,price:1250,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Private room',roommates:2,furnished:true,utilities:false,tone:3,
      desc:'Room for the whole school year in a quiet 3-bedroom apartment near Miracle Mile. Big closet, desk and blackout curtains. Two roommates who are UM grad students and keep a tidy home.',
      host:{name:'Omar H.',initials:'OH',about:'UM junior · Year abroad in Tokyo'},photos:['bedroom8-bed','livingroom2','kitchen1','laundry1']},
-    {id:9,title:'Shared room steps from campus',area:'Coral Gables',dist:0.3,price:800,moveIn:'2027-01-03',moveOut:'2027-05-15',type:'Shared room',roommates:1,furnished:true,utilities:true,tone:1,
+    {id:9,building:'Copperleaf Commons',street:'San Amaro Drive',title:'Shared room steps from campus',area:'Coral Gables',dist:0.3,price:800,moveIn:'2027-01-03',moveOut:'2027-05-15',type:'Shared room',roommates:1,furnished:true,utilities:true,tone:1,
      desc:'Share a big double room in an apartment right across from campus. Two beds, two desks and a walk-in closet. My roommate is a UM junior who is up late and out a lot.',
      host:{name:'Nia W.',initials:'NW',about:'UM sophomore · Spring internship in D.C.'},photos:['study-bedroom1-desk','kitchen1','bathroom1']},
-    {id:10,title:'Budget summer room near Red Road',area:'Red Road',dist:0.8,price:785,moveIn:'2027-05-15',moveOut:'2027-08-15',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:0,
+    {id:10,building:'Mango Row Duplexes',street:'Miller Drive',title:'Budget summer room near Red Road',area:'Red Road',dist:0.8,price:785,moveIn:'2027-05-15',moveOut:'2027-08-15',type:'Shared room',roommates:2,furnished:false,utilities:true,tone:0,
      desc:'Shared room in a lively house with two UM students who stay for summer classes. Bring your own bed. Big kitchen, backyard and a short bike ride to campus.',
      host:{name:'Carlos D.',initials:'CD',about:'UM junior · Summer research in Boston'},photos:['unfurnished-bedroom1-window','kitchen1','laundry1']},
-    {id:11,title:'Fall shared room by the Metrorail',area:'South Miami',dist:0.7,price:795,moveIn:'2027-08-14',moveOut:'2027-12-20',type:'Shared room',roommates:1,furnished:true,utilities:false,tone:2,
+    {id:11,building:'Ninebark Lofts',street:'South Miami Metrorail station',title:'Fall shared room by the Metrorail',area:'South Miami',dist:1.3,price:795,moveIn:'2027-08-14',moveOut:'2027-12-20',type:'Shared room',roommates:1,furnished:true,utilities:false,tone:2,
      desc:'Shared room in a quiet, tidy apartment a few minutes from South Miami station. Furnished with a twin bed and desk. My roommate is an early riser who studies at home.',
      host:{name:'Hannah S.',initials:'HS',about:'UM junior · Fall abroad in Florence'},photos:['bedroom2-bed','livingroom2','kitchen1']},
-    {id:12,title:'Full-year shared room near Red Road',area:'Red Road',dist:0.9,price:800,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Shared room',roommates:2,furnished:true,utilities:true,tone:3,
+    {id:12,building:'Seagrape Walk',street:'Red Road',title:'Full-year shared room near Red Road',area:'Red Road',dist:0.9,price:800,moveIn:'2027-08-14',moveOut:'2028-05-20',type:'Shared room',roommates:2,furnished:true,utilities:true,tone:3,
      desc:'Shared room for the whole school year in a friendly house off Red Road. Utilities and Wi-Fi are included. The household has a cat and likes a movie night now and then.',
      host:{name:'Kofi A.',initials:'KA',about:'UM senior · Year-long co-op in Seattle'},photos:['bedroom7-bed','livingroom1','kitchen1']},
-    {id:13,title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:2.8,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
+    {id:13,building:'Bayline Lattice Flats',street:'South Bayshore Drive',title:'Bayview room in Coconut Grove',area:'Coconut Grove',dist:4.2,price:1450,moveIn:'2027-05-20',moveOut:'2027-08-10',type:'Private room',roommates:1,furnished:true,utilities:true,tone:2,
      desc:'Private room with a peek of the bay, a queen bed and a ceiling fan. Walk to cafes and the marina. My roommate is a grad student with a friendly dog.',
      host:{name:'Grace L.',initials:'GL',about:'UM senior · Summer internship in Chicago'},photos:['grove-bedroom1','balcony1','kitchen1']},
-    {id:14,title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
+    {id:14,building:'Vantage Reef Tower',street:'Brickell City Centre',title:'Brickell studio for the summer',area:'Brickell',dist:7.2,price:1900,moveIn:'2027-05-28',moveOut:'2027-08-20',type:'Entire place',roommates:0,furnished:true,utilities:true,tone:1,
      desc:'Whole studio on a high floor with a pool, gym and front desk. Steps from Brickell City Centre and the Metromover. About 25 minutes to campus on the Metrorail.',
      host:{name:'Mateo G.',initials:'MG',about:'UM grad student · Summer fellowship in D.C.'},photos:['studio3','pool1','balcony1','laundry1']},
-    {id:15,title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.4,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
+    {id:15,building:'Thornbury Townhomes',street:'Douglas Road Metrorail station',title:'Fall room in a Grove townhouse',area:'Coconut Grove',dist:3.1,price:1050,moveIn:'2027-08-20',moveOut:'2027-12-15',type:'Private room',roommates:2,furnished:false,utilities:true,tone:3,
      desc:'Unfurnished private room in a two-story townhouse with a patio. The two roommates are social, have friends over often and keep things relaxed. Smoking is OK on the patio.',
      host:{name:'Zoe M.',initials:'ZM',about:'UM junior · Fall semester in Sydney'},photos:['unfurnished-bedroom1-closet','kitchen1','livingroom1']},
-    {id:16,title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
+    {id:16,building:'Ferro Bay Residences',street:'Brickell Avenue',title:'Brickell high-rise room for fall',area:'Brickell',dist:7.8,price:1700,moveIn:'2027-08-15',moveOut:'2027-12-19',type:'Private room',roommates:1,furnished:true,utilities:true,tone:0,
      desc:'Furnished room with a city view and its own bathroom. The building has a pool and a study lounge. My roommate is a very tidy night owl who works downtown.',
      host:{name:'Ethan B.',initials:'EB',about:'UM senior · Fall co-op in New York'},photos:['bedroom2','bathroom1','pool1','livingroom1']},
-    {id:17,title:'Garden room on Red Road',area:'Red Road',dist:1.0,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
+    {id:17,building:'Firebush Garden Flats',street:'Sunset Drive and Red Road',title:'Garden room on Red Road',area:'Red Road',dist:1,price:950,moveIn:'2027-01-07',moveOut:'2027-05-10',type:'Private room',roommates:3,furnished:false,utilities:false,tone:2,
      desc:'Private room that opens onto a garden in a house with three UM students. Unfurnished, so bring your own things. Early risers who often have friends over for dinner.',
      host:{name:'Ava P.',initials:'AP',about:'UM sophomore · Spring abroad in Barcelona'},photos:['unfurnished-bedroom1-light','kitchen1','laundry1']},
-    {id:18,title:'Year-long room in South Miami',area:'South Miami',dist:1.3,price:1150,moveIn:'2027-08-12',moveOut:'2028-05-15',type:'Private room',roommates:1,furnished:false,utilities:true,tone:1,
+    {id:18,building:'Wrenfield Apartments',street:'Sunset Place',title:'Year-long room in South Miami',area:'South Miami',dist:1.3,price:1150,moveIn:'2027-08-12',moveOut:'2028-05-15',type:'Private room',roommates:1,furnished:false,utilities:true,tone:1,
      desc:'Unfurnished private room for the full school year in a calm two-bedroom near Sunset Place. My roommate is a quiet law student who studies at home.',
      host:{name:'Rahul N.',initials:'RN',about:'UM junior · Year abroad in Singapore'},photos:['unfurnished-bedroom1-door','livingroom2','kitchen1','bathroom1']}
   ],
@@ -836,8 +911,8 @@ const state = {
       {me:false,text:'Hi! Thanks for your interest in my room near Ponce.',time:'Mon 4:12 PM'},
       {me:true,text:'Hi Maya! I start a co-op in Miami in January. Is the room free Jan 8 through May 14?',time:'Mon 4:20 PM'},
       {me:false,text:'Yes, those exact dates. I fly to Madrid on Jan 7.',time:'Mon 4:31 PM'},
-      {me:true,text:'Great. And the rent is held in TermNest until I move in?',time:'Mon 4:33 PM'},
-      {me:false,text:'Yep! It’s released to me only after you check in on move-in day. Want to do a video tour this week?',time:'9:02 AM'}]},
+      {me:true,text:'Great. And the rent is held by the payment processor until I move in?',time:'Mon 4:33 PM'},
+      {me:false,text:'Yep! It’s released to me only after you confirm move-in on move-in day. Want to do a video tour this week?',time:'9:02 AM'}]},
     {id:'t2',name:'Diego M.',initials:'DM',listingId:2,unread:false,msgs:[
       {me:true,text:'Is laundry in the building?',time:'Sun 1:05 PM'},
       {me:false,text:'Yes, on the first floor. Card-operated, about $2 a load.',time:'Sun 1:40 PM'}]},
@@ -1027,7 +1102,41 @@ function matchBtn(l, big){
     : `<button class="match ${cls}" data-action="match" data-id="${l.id}" aria-label="${label}">${ic('people',18)}<strong>${m.pct}%</strong> match</button>`;
 }
 const T = id => state.threads.find(t => t.id === id);
+// The 4 rent steps, the same on the website. Landlord approval happens inside "Lease signed".
 const BOOK_STEPS = ['Reserved','Lease signed','Moved in','Payment released'];
+// Internal booking.step: 1 reserved (waiting on landlord), 2 landlord approved, 3 lease signed, 4 moved in, 5 payment released
+const stepsDone = s => s<=2 ? 1 : s-1;
+const bookingStatus = b => ({1:'Awaiting landlord approval',2:'Landlord approved',3:'Lease signed',4:'Moved in',5:'Payment released'})[b.step];
+const MOVEIN_SPOTS = ['Bedroom','Bathroom','Kitchen'];
+function moveInBody(id){
+  const l=L(id), b=state.bookings[id], first=esc(l.host.name.split(' ')[0]);
+  const n=MOVEIN_SPOTS.filter((_,i)=>b.photos?.[i]).length;
+  return `<p style="line-height:1.5;margin-bottom:14px">Take a photo of each area so there’s a record of the room’s condition, then confirm it matches the listing.</p>
+    <ul class="photo-check">${MOVEIN_SPOTS.map((s,i)=>{ const d=!!b.photos?.[i];
+      return `<li class="${d?'done':''}"><span class="pc-thumb" aria-hidden="true">${ic(d?'check':'camera',24)}</span>
+        <div class="grow"><strong>${s}</strong><span>${d?'Photo added':'Not taken yet'}</span></div>
+        <button class="btn btn-ghost pc-btn ${d?'done':''}" data-action="movePhoto" data-id="${id}" data-i="${i}">${d?'Retake':'Take photo'}<span class="sr-only"> of ${s}</span></button></li>`; }).join('')}</ul>
+    <p class="pc-count" aria-live="polite">${n} of ${MOVEIN_SPOTS.length} photos added</p>
+    <p class="error" id="mvErr"></p>
+    <button class="btn btn-primary" data-action="confirmMoveIn" data-id="${id}">Room matches · confirm move-in</button>
+    <button class="btn btn-accent" data-action="reportProblem">Something’s wrong</button>
+    <button class="btn btn-ghost" data-action="closeSheet">Not moved in yet</button>
+    <p class="help" style="margin-top:10px">When you confirm, our payment processor releases ${money(l.price)} to ${first}. If something’s wrong, report it instead of confirming.</p>`;
+}
+// In-app notification banner (slides in under the status bar)
+let notifTimer, notifFrame;
+function notify(text){
+  const n=document.getElementById('notif');
+  n.innerHTML=`<span class="n-ic" aria-hidden="true">${ic('bell',22)}</span><div class="grow"><strong>TermNest</strong><p>${esc(text)}</p></div>
+    <button class="n-x" data-action="dismissNotif" aria-label="Dismiss notification">${ic('close',20)}</button>`;
+  n.hidden=false; cancelAnimationFrame(notifFrame); notifFrame=requestAnimationFrame(()=>n.classList.add('show'));
+  clearTimeout(notifTimer); notifTimer=setTimeout(hideNotif,5000);
+}
+function hideNotif(){
+  const n=document.getElementById('notif');
+  cancelAnimationFrame(notifFrame); clearTimeout(notifTimer);   // a pending "show" must not reappear after hiding
+  n.classList.remove('show'); setTimeout(()=>{ if(!n.classList.contains('show')) n.hidden=true; },250);
+}
 const TAB_SCREENS = ['home','saved','post','messages','profile','myListings','postSuccess'];
 const TAB_FOR = {home:'home',saved:'saved',post:'post',postSuccess:'post',messages:'messages',chat:'messages',profile:'profile',myListings:'profile'};
 
@@ -1085,6 +1194,11 @@ const PHOTOS = {
   'bedroom7-bed':{label:'Bedroom',big:1024,alt:'Dim bedroom with a queen bed in dark green bedding and a folded blanket, a tall black dresser, a small lamp on the nightstand, and a window facing an apartment building'},
   'bedroom8-bed':{label:'Bedroom',big:1024,alt:'Warm bedroom with a queen bed in white bedding and a knit throw, a lamp on a wooden nightstand, a painting of a Mediterranean-style house, an arched window onto trees, and a cane chair at a desk'},
   'study-bedroom1-desk':{label:'Bedroom',big:1024,alt:'Bedroom with a full bed in gray bedding, a large bean bag chair, a window with blinds, and a desk with a lamp, computer monitor and black office chair'},
+  // Plain indoor crops (no windows, palms or Miami details), used for Term Swap students' rooms in other cities
+  'study-bedroom1-shelf':{label:'Bedroom',big:720,alt:'Bedroom corner with a tall black bookshelf full of books, a woven basket and a small globe, next to a full bed in gray bedding with a knit throw'},
+  'bedroom8-plain':{label:'Bedroom',big:776,alt:'Bedroom with a queen bed in white bedding and a knit throw, an upholstered headboard, a lamp on a wooden nightstand, a cane chair at a wooden desk and a white door'},
+  'grove-bedroom1-plain':{label:'Bedroom',big:768,alt:'Light bedroom with a rattan headboard and nightstand, a white lamp, woven wall hangings, a round rattan mirror and a bookshelf with plants'},
+  'studio1-lounge':{label:'Studio',big:741,alt:'Studio living area with a gray sofa and a cream throw, a round wooden coffee table with a plant and a candle on a jute rug, and the foot of a bed behind'},
   'study-bedroom1':{label:'Bedroom',alt:'Cozy bedroom with a full bed in gray bedding, a tall bookshelf, a bean bag chair, and a desk with a computer monitor and office chair by a window with blinds'},
   'studio1':{label:'Studio',alt:'Studio apartment with a queen bed by a window with a city view, a gray sofa, a round coffee table, and a kitchen with stainless appliances and a counter with two stools'},
   'studio3':{label:'Studio',alt:'High-rise studio with a fold-away wall bed, built-in shelves, a sofa, a round coffee table, and a small table with two chairs by floor-to-ceiling windows facing downtown towers'},
@@ -1121,24 +1235,45 @@ function draftPhotos(d){
   if (!d.furnished) keys[0] = 'unfurnished-bedroom1';
   return keys;
 }
-const SWAP_PHOTOS = ['bedroom1','bedroom7','grove-bedroom1','bedroom8'];
 
 function saveBtn(l, cls='save-btn'){
   return `<button class="${cls}" data-action="toggleSave" data-id="${l.id}" aria-pressed="${state.saved.has(l.id)}" aria-label="Save ${esc(l.title)}">${ic('heart',26)}</button>`;
 }
-function cardHTML(l){
+// Fair price tag: compares a listing with similar rooms nearby (same room type in the same area, or the
+// same room type anywhere if it's the only one in its area). Same rule and labels as the website.
+// Only the sample listings are used as comparisons, so tags match the website exactly.
+function fairPrice(l){
+  const base=state.listings.filter(x=>!x.mine && x.id!==l.id);
+  let comps=base.filter(x=>x.type===l.type && x.area===l.area);
+  if(!comps.length) comps=base.filter(x=>x.type===l.type);
+  if(!comps.length) return 'fair';
+  const r=l.price/(comps.reduce((a,x)=>a+x.price,0)/comps.length);
+  return r<0.9?'great':r>1.1?'high':'fair';
+}
+const FAIR={great:'Great price',fair:'Fair price',high:'Above average'};
+const fairTag=l=>{ const k=fairPrice(l); return `<span class="fair-tag ${k}" title="Compared with similar rooms nearby">${FAIR[k]}<span class="sr-only"> (compared with similar rooms nearby)</span></span>`; };
+// Made-up building name and a real nearby street or landmark (same on the website). New listings have none.
+const bldg=l=>l.building?`<p class="bldg">${ic('home',16)}<span>${esc(l.building)} · ${esc(l.street)}</span></p>`:'';
+const tagRow=l=>`<p class="tag-row">${l.boosted?`<span class="boost-tag">${ic('bolt',16)} Boosted</span>`:''}${fairTag(l)}</p>`;
+// The success fee (and Boost, if paid) for one of your own listings. Shown on the dashboard and in My listings.
+function feeNote(l){
+  return `<p class="fee-note">${l.feeCharged?'Charged after lease signing':'Due after a subletter signs'}: ${money(LISTING_FEE)} success fee${l.boosted?`<br>Boost: ${money(BOOST_FEE)} paid`:''}</p>`;
+}
+function cardHTML(l, extra=''){
   return `<li class="card">
     ${photoBox(l.photos[0])}
     <span class="pill" aria-hidden="true">${ic('verified',16)}Verified student</span>
     <div class="card-body">
-      ${l.boosted?`<p class="boost-tag">${ic('bolt',16)} Boosted</p>`:''}
+      ${tagRow(l)}
       <h3><button class="card-link" data-action="open" data-id="${l.id}">${esc(l.title)}</button></h3>
+      ${bldg(l)}
       <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
       ${commuteLine(l)}
       ${matchBtn(l)}
       <dl class="mini-dates"><div><dt>Move-in</dt><dd>${fmt(l.moveIn)}</dd></div><div><dt>Move-out</dt><dd>${fmt(l.moveOut)}</dd></div></dl>
       ${coverageHTML(l)}
       <p class="price"><strong>${money(l.price)}</strong> / month <span class="sr-only">. Host is a verified student.</span></p>
+      ${extra}
     </div>
     ${saveBtn(l)}
   </li>`;
@@ -1181,11 +1316,63 @@ const screens = {
         <input id="fEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@miami.edu" aria-describedby="fEmailHelp fEmailErr" value="${esc(state.user.email)}">
         <p class="help" id="fEmailHelp">Must end in .edu. We use it to confirm you’re a student.</p>
         <p class="error" id="fEmailErr"></p></div>
-      <button class="btn btn-primary" type="submit">Send verification code ${ic('arrow')}</button>
+      ${login?'':`<label class="opt agree"><input type="checkbox" id="fAgree" name="agreeTerms" ${state.agreeTerms?'checked':''}>
+        <span>I agree to the <button type="button" class="link" data-action="legal" data-to="terms">Terms of Use</button> and <button type="button" class="link" data-action="legal" data-to="privacy">Privacy Policy</button></span></label>`}
+      <button class="btn btn-primary" type="submit" id="signupBtn" ${!login&&!state.agreeTerms?'disabled aria-describedby="signupNeed"':''}>Send verification code ${ic('arrow')}</button>
+      ${login?'':`<p class="help" id="signupNeed" style="text-align:center" ${state.agreeTerms?'hidden':''}>Check the box above to continue.</p>`}
       <p class="switch-mode">${login?'New to TermNest?':'Already have an account?'} <button type="button" class="link" data-action="toggleMode">${login?'Create an account':'Log in'}</button></p>
+      <p class="switch-mode"><a class="link" style="display:inline-flex;align-items:center" href="https://www.youtube.com/watch?v=Xhr_VKl_WPo" target="_blank" rel="noopener noreferrer">Watch our founder video<span class="sr-only"> (opens in a new tab)</span></a></p>
       <div class="endspace"></div>
     </form>`;
   },
+  // About TermNest: the same founders, prices, partner perks, contact info and UM disclaimer as the website
+  about(){
+    const F=[
+      ['Lela Lane','Co-founder & CEO / Head of Product','Business (Real Estate and AI)','I’m studying real estate and AI, and I saw how outdated subletting still is for students. TermNest uses technology to make renting simple, safe, and fair for everyone.','founder-lela.jpg'],
+      ['Max Spiryda','Co-founder & Chief Financial Officer','Accounting','I’ve watched friends pay rent on an empty room all summer because they couldn’t find someone they trusted. TermNest turns that empty room back into money in their pocket.','founder-max.jpg'],
+      ['Olivia Poppas','Co-founder & Chief Operating Officer','Finance and Legal Studies','Most students don’t realize subletting without landlord approval can break their lease. TermNest makes doing it the right way simple, so nobody gets into trouble or gets scammed.','founder-olivia.jpg'],
+      ['Jaiden Grocher','Co-founder & Chief Marketing Officer','Management','Students study abroad, take internships, and travel more than ever. TermNest makes it easy to leave for a semester without your housing holding you back.','founder-jaiden.jpg']];
+    const ini=n=>n.split(' ').map(w=>w[0]).join('');
+    const row=(t,small,v)=>`<div><dt>${t}${small?` <small>${small}</small>`:''}</dt><dd>${v}</dd></div>`;
+    return `${topbar('About TermNest',true)}
+      <div class="pad about-app">
+        <p class="about-lead">Made by UM students, for UM students. A safe, simple way to sublet, built around the school calendar.</p>
+        <h2 class="section-h">Meet the founders</h2>
+        <ul class="about-founders">${F.map(([n,role,major,why,photo])=>`<li class="af">
+          <span class="af-pic" ${photo?'':'aria-hidden="true"'}>${photo?`<img src="${IMG_DIR}${photo}" alt="Photo of ${n}" loading="lazy">`:ini(n)}</span>
+          <div><strong>${n}</strong><span class="af-role">${role}</span><p>Sophomore, ${major}</p><p class="af-why">“${why}”</p></div></li>`).join('')}</ul>
+        <h2 class="section-h">Pricing</h2>
+        <dl class="summary plain">
+          ${row('Students looking','search, message, book','Free')}
+          ${row('Success fee','only after a sublease is signed with someone you met on TermNest',money(LISTING_FEE))}
+          ${row('Boost','optional, paid upfront, non-refundable, top of search',money(BOOST_FEE))}        </dl>
+        <h2 class="section-h">Partner perks</h2>
+        <p class="help" style="margin:-4px 0 10px">Free for students. TermNest earns a commission from partners, never from students.</p>
+        <dl class="summary plain">
+          ${row('Nestbox Storage','storage','15% off')}
+          ${row('Easy Haul Moving','moving','15% off')}
+          ${row('Roomful Furniture Rental','furniture rental','15% off')}
+        </dl>
+        <p class="help">Sample partner names for this prototype.</p>
+        <h2 class="section-h">Contact</h2>
+        <dl class="summary plain">
+          ${row('Email','','<a href="mailto:hello@termnest.app">hello@termnest.app</a>')}
+          ${row('Phone','','<a href="tel:+13055550123">(305) 555-0123</a>')}
+          ${row('Where','','Coral Gables, FL 33146')}
+          ${row('Hours','','Mon–Fri, 9 AM – 6 PM ET')}
+        </dl>
+        <p class="help">In the app, the fastest way is Profile → Help &amp; safety → Chat with support. A team member replies within 1 hour.</p>
+        <div class="about-links">
+          <button class="btn btn-ghost" data-action="legal" data-to="terms">${ic('list')} Terms of Use</button>
+          <button class="btn btn-ghost" data-action="legal" data-to="privacy">${ic('lock')} Privacy Policy</button>
+          <a class="btn btn-ghost" href="../index.html" target="_blank" rel="noopener">Open the TermNest website<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <p class="fine">© 2026 TermNest. TermNest is an independent student project and is not affiliated with or endorsed by the University of Miami.</p>
+        <div class="endspace"></div>
+      </div>`;
+  },
+  terms(){ return `${topbar(LEGAL.terms.title,true)}<div class="pad legal">${LEGAL.terms.html}<div class="endspace"></div></div>`; },
+  privacy(){ return `${topbar(LEGAL.privacy.title,true)}<div class="pad legal">${LEGAL.privacy.html}<div class="endspace"></div></div>`; },
   verify(){
     return `${topbar('',true,'Back to sign up').replace('<h1></h1>','')}
     <div class="pad form">
@@ -1212,7 +1399,7 @@ const screens = {
       <p style="color:var(--ink-2);line-height:1.45;margin-bottom:22px">We’ll set up your home screen to match. You can switch any time in Profile.</p>
       <ul class="role-list">
         ${opt('renter','search',"I’m looking for a place",'Find a verified student’s room for a semester or summer.')}
-        ${opt('host','home',"I’m subleasing my place",'Post your room while you’re away. Rent is held safely until move-in.')}
+        ${opt('host','home',"I’m subleasing my place",'Post your room while you’re away. Rent is held by our payment processor until move-in day.')}
       </ul>
       <div class="endspace"></div></div>`;
   },
@@ -1227,6 +1414,9 @@ const screens = {
             <select id="swCity" name="city" aria-describedby="err-city"><option value="">Choose a city</option>
               ${SWAP_CITIES.map(c=>`<option ${s.city===c?'selected':''}>${c}</option>`).join('')}</select>
             <p class="error" id="err-city"></p></div>
+          <fieldset class="field sw-terms"><legend>Which term? <span class="help">Fills in UM’s 2027 term dates. You can change them.</span></legend>
+            <div class="pills">${Object.keys(SWAP_TERMS).map(t=>`<label class="pill-opt"><input type="radio" name="swTerm" value="${t}" ${SWAP_TERMS[t][0]===s.from&&SWAP_TERMS[t][1]===s.to?'checked':''}><span>${t}</span></label>`).join('')}</div>
+          </fieldset>
           <div class="field"><label for="swFrom">Leaving Miami</label>
             <input type="date" id="swFrom" name="from" value="${s.from}" aria-describedby="err-from"><p class="error" id="err-from"></p></div>
           <div class="field"><label for="swTo">Coming back</label>
@@ -1286,8 +1476,8 @@ const screens = {
         <div class="row2" style="margin-top:14px">
           <button class="btn btn-ghost" data-action="llResend">Resend</button>
           <button class="btn btn-ghost" data-action="llChange">Change landlord</button></div>
-        <button class="btn btn-accent" data-action="llApprove" style="margin-top:14px">Demo: landlord approves</button>
-        <p class="help" style="margin-top:8px">Prototype only. In the real app, your landlord approves from a link in the email.</p>`
+        <button class="demo-btn" data-action="llApprove" style="margin-top:14px">Demo: landlord approves</button>
+        <p class="help" style="margin-top:8px">Prototype only. In the real app, your landlord approves through a secure TermNest link and this updates on its own.</p>`
       : `
         <div class="ll-card approved">${ic('check',28)}<div><strong>Approved by ${esc(ll.name)}</strong>
           <span>${fmt(ll.on)}</span><span>Your subletter can sign the agreement as soon as you accept them.</span></div></div>`;
@@ -1304,7 +1494,10 @@ const screens = {
       ${id?'':`<div class="action-bar"><button class="btn btn-primary" data-action="toReview">Continue to review ${ic('arrow')}</button></div>`}`;
   },
   agreement({id, as}){
-    const l=L(id), a=state.agreements[id], ll=l.landlord||{status:'approved'};
+    const l=L(id), a=state.agreements[id], bk=state.bookings[id];
+    // A student's reservation needs the landlord's approval of that booking before the lease can be signed
+    const ll = (as==='subtenant' && bk) ? (bk.step>=2 ? {status:'approved',name:'the landlord',on:bk.llOn} : {status:'requested'})
+                                        : (l.landlord||{status:'approved'});
     const otherKey = as==='sublessor'?'subtenant':'sublessor', me=a[as], other=a[otherKey];
     const otherFirst=esc(other.name.split(' ')[0]), both=a.sublessor.signed&&a.subtenant.signed, llOk=ll.status==='approved';
     const banner = both ? ['done','check','Signed by both','Both signatures are on file with TermNest.']
@@ -1318,7 +1511,7 @@ const screens = {
     const terms=[
       ['The room', `${esc(l.type)} at “${esc(l.title)},” ${esc(l.area)}, Miami.`],
       ['Dates', `Move-in ${fmtLong(l.moveIn)}. Move-out ${fmtLong(l.moveOut)} (${weeks(l.moveIn,l.moveOut)} weeks).`],
-      ['Rent', `${money(l.price)} per month, paid through TermNest. The first month is held by TermNest and released to the sublessor after the subtenant confirms move-in.`],
+      ['Rent', `${money(l.price)} per month, paid in the TermNest app. A third-party payment processor holds the first month until move-in day and releases it to the sublessor when the subtenant confirms move-in.`],
       ['Deposit', 'None.'],
       ['Utilities', l.utilities?'Included in rent.':'Split with the household.'],
       ['Original lease', 'The subtenant follows the rules of the original lease. The sublessor stays responsible to the landlord.'],
@@ -1327,7 +1520,7 @@ const screens = {
     let action='';
     if(both) action = `<button class="btn btn-ghost" data-action="emailCopy">${ic('mail')} Email me a copy</button>`;
     else if(me.signed) action = `<button class="btn btn-ghost" data-action="remindSign">${ic('bell')} Send ${otherFirst} a reminder</button>
-        <button class="btn btn-accent" data-action="otherSigns">Demo: ${otherFirst} signs now</button>
+        <button class="demo-btn" data-action="otherSigns" style="margin-top:12px">Demo: ${otherFirst} signs now</button>
         <p class="help" style="margin-top:8px">Prototype only, so you can see the finished agreement.</p>`;
     else if(!llOk) action = as==='sublessor'
         ? `<button class="btn btn-primary" data-action="go" data-to="landlord" data-id="${l.id}">Check landlord approval</button>`
@@ -1349,7 +1542,7 @@ const screens = {
             <div><dt>Subtenant</dt><dd>${esc(a.subtenant.name)}</dd></div>
           </dl>
           <ol class="agr-terms">${terms.map(([h,t])=>`<li><strong>${h}.</strong> ${t}</li>`).join('')}</ol>
-          <p class="agr-ll ${llOk?'ok':'no'}">${ic(llOk?'check':'lock',18)} Landlord approval: ${llOk?`approved by ${esc(ll.name)} on ${fmt(ll.on)}`:llLabel(ll.status).toLowerCase()}</p>
+          <p class="agr-ll ${llOk?'ok':'no'}">${ic(llOk?'check':'lock',18)} Landlord approval: ${llOk?`approved by ${esc(ll.name)} on ${fmt(ll.on)}`:(as==='subtenant'&&bk?'awaiting landlord approval':llLabel(ll.status).toLowerCase())}</p>
           <h3 class="section-h">Signatures</h3>
           <div class="sigs">${sig('sublessor','Sublessor')}${sig('subtenant','Subtenant')}</div>
         </article>
@@ -1373,17 +1566,17 @@ const screens = {
         </dl>
         <h2 class="section-h">Where your money goes</h2>
         <ol class="flow">
-          <li><span class="flow-ic">${ic('dollar',26)}</span><strong>You pay today</strong><span>${money(l.price)} goes to TermNest, not to ${first}.</span></li>
-          <li><span class="flow-ic">${ic('shield',26)}</span><strong>TermNest holds it</strong><span>Your rent is held safely until move-in on ${fmtShort(l.moveIn)}.</span></li>
-          <li><span class="flow-ic">${ic('home',26)}</span><strong>You move in</strong><span>Check the room matches the listing, then confirm in the app.</span></li>
-          <li><span class="flow-ic">${ic('check',26)}</span><strong>${first} gets paid</strong><span>The money is released only after you confirm.</span></li>
+          <li><span class="flow-ic">${ic('dollar',26)}</span><strong>Reserved</strong><span>You pay ${money(l.price)} today. It goes to our payment processor, not to ${first}.</span></li>
+          <li><span class="flow-ic">${ic('shield',26)}</span><strong>Lease signed</strong><span>${first}’s landlord approves the sublease through TermNest, and you see the approval here. Landlords never contact you directly. Then you both sign. Your rent stays held until move-in on ${fmtShort(l.moveIn)}.</span></li>
+          <li><span class="flow-ic">${ic('home',26)}</span><strong>Moved in</strong><span>Take move-in photos, check the room matches the listing, then confirm in the app.</span></li>
+          <li><span class="flow-ic">${ic('check',26)}</span><strong>Payment released</strong><span>The processor pays ${first} only after you confirm.</span></li>
         </ol>
         <div class="protect">${ic('shield',28)}<div><strong>Full refund if something’s wrong</strong>If ${first} cancels, or the room isn’t as listed, report it within 24 hours of move-in and you get your money back.</div></div>
         <fieldset style="margin-top:6px"><legend class="section-h" style="padding:0">Payment method</legend>
           ${methods.map((m,i)=>`<label class="opt"><input type="radio" name="method" value="${m}" ${i===0?'checked':''}>${m}</label>`).join('')}
           <p class="help">Sample payment methods. No real payment is made in this prototype.</p>
         </fieldset>
-        <label class="opt agree"><input type="checkbox" name="agree" aria-describedby="err-agree">I understand TermNest holds my rent until I move in and confirm the room.</label>
+        <label class="opt agree"><input type="checkbox" name="agree" aria-describedby="err-agree">I understand a third-party payment processor holds my rent until I move in and confirm the room.</label>
         <p class="error" id="err-agree"></p>
         <div class="endspace"></div>
       </form>
@@ -1393,41 +1586,53 @@ const screens = {
       </div>`;
   },
   booking({id}){
+    // Internal steps: 1 reserved (waiting on landlord), 2 landlord approved, 3 lease signed, 5 moved in and paid.
+    // The tracker shows the 4 rent steps; landlord approval is part of "Lease signed".
     const l=L(id), b=state.bookings[id], step=b.step, first=esc(l.host.name.split(' ')[0]);
-    const info=[
-      `You paid ${money(l.price)} with ${esc(b.method)}. TermNest is holding it.`,
-      `Review and sign the sublease agreement with ${first}.`,
-      `On ${fmtShort(l.moveIn)}, check the room matches the listing and confirm in the app.`,
-      `${money(l.price)} is sent to ${first} after you confirm move-in.`];
+    const done=step===5, shown=stepsDone(step);
     const ag=state.agreements[id], iSigned=!!ag?.subtenant.signed;
-    if(step===1 && iSigned) info[1]=`You signed. Waiting for ${first} to sign the sublease agreement.`;
-    const next = step===1 ? ['signLease', iSigned?'View agreement':'Review and sign agreement'] : step===2 ? ['moveIn','I’ve moved in'] : null;
-    const head = [null,
-      ['Reserved!','Next: sign your lease'],
-      ['Lease signed',`Next: move in on ${fmtLong(l.moveIn)}`],
-      null,
-      ['All set!',`Payment released to ${first}. Enjoy your stay.`]][step];
+    const info=[
+      `You paid ${money(l.price)} with ${esc(b.method)}. Our payment processor holds it until move-in day.`,
+      step===1 ? `TermNest asks the landlord to approve this sublet. They see only that you’re a verified student and your dates, never your contact info. Landlords can’t be messaged; this status updates here automatically. Then you and ${first} sign the sublease agreement.`
+      : step===2 ? (iSigned ? `Landlord approved ${fmt(b.llOn)}. You signed. Waiting for ${first} to sign the sublease agreement.`
+                            : `Landlord approved ${fmt(b.llOn)}. Review and sign the sublease agreement with ${first}.`)
+      : `Landlord approved ${fmt(b.llOn)}. You and ${first} signed the sublease agreement.`,
+      step>=4 ? `Moved in ${fmt(b.movedOn)}. ${MOVEIN_SPOTS.length} move-in photos saved as your record of the room.`
+              : `On ${fmtShort(l.moveIn)}, take a photo of each area and confirm the room matches the listing.`,
+      step>=5 ? `${money(l.price)} released to ${first} on ${fmt(b.paidOn)}.`
+              : `Released to ${first} when you confirm move-in. If you don’t confirm or report a problem, it’s released automatically 24 hours after move-in.`];
+    // [action, label, isDemo]: demo actions render as small gray buttons, separate from the real app
+    const next = step===1 ? ['llApproveBooking','Demo: landlord approves',true]
+               : step===2 ? ['signLease', iSigned?'View agreement':'Review and sign agreement']
+               : step===3 ? ['moveIn','I’ve moved in · start photo check'] : null;
+    const head = {1:['Reserved!','Next: your landlord approves, then you both sign the lease'],
+      2:['Landlord approved','Next: sign your lease'],
+      3:['Lease signed',`Next: move in on ${fmtLong(l.moveIn)}`],
+      5:['All set!',`Payment released to ${first}. Enjoy your stay.`]}[step];
     return `${topbar('Your booking',true,'Back')}
       <div class="pad">
-        <div class="status-hero"><span class="status ${step===4?'booked':''}">${BOOK_STEPS[step-1]}</span>
+        <div class="status-hero"><span class="status ${step===1?'awaiting':''} ${done?'booked':''}">${bookingStatus(b)}</span>
           <h2>${head[0]}</h2><p>${head[1]}</p></div>
-        <div class="held">${ic(step===4?'check':'shield',32)}<div>
-          <strong>${money(l.price)} ${step===4?`paid to ${first}`:'held by TermNest'}</strong>
-          <span>${step===4?'Released after you confirmed move-in.':`Released to ${first} only after you move in.`}</span></div></div>
+        <div class="held">${ic(done?'check':'shield',32)}<div>
+          <strong>${money(l.price)} ${done?`paid to ${first}`:'held by our payment processor'}</strong>
+          <span>${done?'Released after you confirmed move-in.':`Released to ${first} only after you move in.`}</span></div></div>
         <h2 class="section-h">Booking status</h2>
         <ol class="tracker">
-          ${BOOK_STEPS.map((s,i)=>{ const n=i+1, st=n<=step?'done':n===step+1?'current':'todo';
+          ${BOOK_STEPS.map((s,i)=>{ const n=i+1, st=n<=shown?'done':n===shown+1?'current':'todo';
             return `<li class="${st}" ${st==='current'?'aria-current="step"':''}>
               <span class="mark" aria-hidden="true">${st==='done'?ic('check',22):n}</span>
-              <div><strong>${s} <span class="tag">${st==='done'?'Done':st==='current'?'Up next':'Later'}</span></strong>
+              <div><strong>${s} <span class="tag">${st==='done'?'Done':n===2&&step===1?'Awaiting':st==='current'?'Up next':'Later'}</span></strong>
+              ${n===2?`<p class="ll-status ${step>=2?'ok':''}">${step>=2?'Landlord approved':'Awaiting landlord approval'}</p>`:''}
               <p>${info[i]}</p>
-              ${st==='current'&&next?`<button class="btn btn-primary" data-action="${next[0]}" data-id="${l.id}">${next[1]}</button>
-                ${n===3?'<p class="help">Prototype: you can try this step now.</p>':''}`:''}</div></li>`; }).join('')}
+              ${st==='current'&&next?`<button class="${next[2]?'demo-btn':'btn btn-primary'}" data-action="${next[0]}" data-id="${l.id}">${next[1]}</button>
+                ${step===1?'<p class="help">Prototype only. In the real app the landlord approves through TermNest and this updates on its own.</p>':''}
+                ${step===3?'<p class="help">Prototype: you can try this step now.</p>':''}`:''}</div></li>`; }).join('')}
         </ol>
         <button class="pay-listing as-btn" data-action="open" data-id="${l.id}"><span class="thumb" aria-hidden="true">${thumbImg(l)}</span>
           <span class="grow"><strong>${esc(l.title)}</strong><span>${fmtShort(l.moveIn)} – ${fmt(l.moveOut)} · View listing</span></span>${ic('next')}</button>
         <button class="btn btn-ghost" data-action="messageHost" data-id="${l.id}">${ic('chat')} Message ${first}</button>
         <button class="btn btn-ghost" data-action="tab" data-tab="home">Back to search</button>
+        <div class="demo-bar"><span>Demo controls</span><button class="demo-btn" data-action="demoReset">Demo: reset</button></div>
         <div class="endspace"></div>
       </div>`;
   },
@@ -1502,8 +1707,9 @@ const screens = {
       <div class="detail-body">
         <span class="verified">${ic('verified',18)} Verified student · .edu</span>
         <h1>${esc(l.title)}</h1>
+        ${bldg(l)}
         <p class="meta">${ic('pin',18)} ${esc(l.area)} · ${l.dist} mi to campus</p>
-        <p class="price-lg"><strong>${money(l.price)}</strong> / month</p>
+        ${tagRow(l)}        <p class="price-lg"><strong>${money(l.price)}</strong> / month</p>
         ${matchBtn(l,true)}
         <div class="date-box">
           <div class="cols">
@@ -1518,7 +1724,7 @@ const screens = {
           ${commute(l.dist).map(x=>`<li>${ic(x.icon,28)}<strong>${fmtMin(x.min)}</strong><span>${x.label==='Walk'?'Walking':x.label==='Bike'?'Biking':'Driving'}</span></li>`).join('')}
         </ul>
         <p class="help" style="margin:8px 0 18px">Estimates for ${l.dist} mi. Driving includes typical traffic, not parking.</p>
-        <div class="protect">${ic('shield',28)}<div><strong>Rent held until move-in</strong>Your payment stays safe in TermNest and is released to ${esc(l.host.name.split(' ')[0])} only after you check in.</div></div>
+        <div class="protect">${ic('shield',28)}<div><strong>Rent held until move-in</strong>Our third-party payment processor holds your payment until move-in day and releases it to ${esc(l.host.name.split(' ')[0])} only after you confirm move-in.</div></div>
         <h2 class="section-h">About this room</h2>
         <p class="desc">${esc(l.desc)}</p>
         <ul class="facts">
@@ -1546,7 +1752,7 @@ const screens = {
     const items = state.listings.filter(l => state.saved.has(l.id));
     return `${topbar('Saved rooms')}
       <div class="pad">${items.length
-        ? `<p class="result-count">${items.length} saved room${items.length>1?'s':''}</p><ul class="cards">${items.map(cardHTML).join('')}</ul>`
+        ? `<p class="result-count">${items.length} saved room${items.length>1?'s':''}</p><ul class="cards">${items.map(l=>cardHTML(l)).join('')}</ul>`
         : emptyState('heart','No saved rooms yet','Tap the heart on any listing to keep it here for later.','Browse rooms','tab','data-tab="home"')}
       <div class="endspace"></div></div>`;
   },
@@ -1617,7 +1823,7 @@ const screens = {
           <textarea id="pDesc" name="desc" placeholder="Roommates, nearby spots, what’s included…">${esc(d.desc||'')}</textarea></div>
         <div class="protect" style="margin-bottom:18px">${ic('verified',28)}<div><strong>Verified student badge</strong>Your listing shows this badge because you signed up with ${esc(state.user.email)}.</div></div>
         <button class="btn btn-primary" type="submit">Review listing ${ic('arrow')}</button>
-        <p class="help" style="text-align:center;margin-top:12px">Next you’ll review the $15 listing fee, charged only after a subletter signs.</p>
+        <p class="help" style="text-align:center;margin-top:12px">Next you’ll review the $15 success fee, charged only after a subletter signs.</p>
         <div class="endspace"></div>
       </form>`;
   },
@@ -1664,10 +1870,13 @@ const screens = {
         <h2 class="section-h">Fees</h2>
         <dl class="summary fees">
           <div><dt>Boost <small>paid today</small></dt><dd>${d.boost?money(BOOST_FEE):'Not added'}</dd></div>
-          <div><dt>Listing fee <small>after a subletter signs</small></dt><dd>${money(LISTING_FEE)}</dd></div>
+          <div><dt>Success fee <small>after a subletter signs</small></dt><dd>${money(LISTING_FEE)}</dd></div>
           <div><dt>Due today</dt><dd>${money(today)}</dd></div>
         </dl>
-        <div class="protect">${ic('shield',28)}<div><strong>The listing fee is only charged if it works</strong>The ${money(LISTING_FEE)} listing fee is charged only after a subletter signs your lease. If nobody books, you don’t pay it.${d.boost?` The ${money(BOOST_FEE)} Boost is paid today and isn’t refunded if nobody books.`:''}</div></div>
+        <div class="protect">${ic('shield',28)}<div><strong>The success fee is only charged if it works</strong>The ${money(LISTING_FEE)} success fee is charged only after a subletter signs your lease. If nobody books, you don’t pay it.${d.boost?` The ${money(BOOST_FEE)} Boost is paid today and isn’t refunded if nobody books.`:''}</div></div>
+        <label class="opt agree" style="margin-top:18px"><input type="checkbox" id="feeAgree" name="feeAgree" ${d.feeAgree?'checked':''} aria-describedby="err-feeAgree">I agree to pay TermNest’s ${money(LISTING_FEE)} success fee if I sign a sublease with someone I met on TermNest, including if the deal is finished outside the app.</label>
+        <p class="error" id="err-feeAgree"></p>
+        <p class="help">Required to publish. See the <button type="button" class="link" data-action="legal" data-to="terms" style="min-height:0;padding:0">Terms of Use</button>.</p>
         <div class="endspace"></div>
       </div>
       <div class="action-bar">
@@ -1680,7 +1889,7 @@ const screens = {
     return `<div class="success"><div class="big-ic">${ic('check',56)}</div>
       <h1>Your room is live!</h1>
       <p><strong>${esc(l.title)}</strong> is now visible to verified students looking for ${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}${l.boosted?', at the top of search':''}. We’ll message you when someone requests to book.</p>
-      <p class="fee-note">${l.boosted?`Boost paid: ${money(BOOST_FEE)} with ${esc(l.boostMethod)}.<br>`:''}The ${money(LISTING_FEE)} listing fee is charged only after a subletter signs.</p>
+      <p class="fee-note">${l.boosted?`Boost paid: ${money(BOOST_FEE)} with ${esc(l.boostMethod)}.<br>`:''}The ${money(LISTING_FEE)} success fee is charged only after a subletter signs.</p>
       <button class="btn btn-primary" data-action="open" data-id="${l.id}">View your listing</button>
       ${state.role==='host'
         ? `<button class="btn btn-ghost" data-action="tab" data-tab="home">Go to your dashboard</button>`
@@ -1703,7 +1912,7 @@ const screens = {
       <h2 class="menu-h" id="mh-stays">Your rooms</h2>
       <ul class="menu" aria-labelledby="mh-stays">
         ${Object.keys(state.bookings).map(id=>{ const l=L(id), b=state.bookings[id];
-            return item('openBooking',`data-id="${id}"`,'calendar','My booking',`${esc(l.title)} · ${BOOK_STEPS[b.step-1]}`); }).join('')}
+            return item('openBooking',`data-id="${id}"`,'calendar','My booking',`${esc(l.title)} · ${bookingStatus(b)}`); }).join('')}
         ${item('tab','data-tab="saved"','heart','Saved rooms',`${state.saved.size} saved`)}
         ${item('go','data-to="myListings"','list','My listings',`${state.myListings.length} posted`)}
         ${item('go','data-to="swap"','swap','Term Swap','Trade rooms with a student coming to Miami')}
@@ -1724,6 +1933,9 @@ const screens = {
       <ul class="menu" aria-labelledby="mh-help">
         ${item('info','data-key="protection"','shield','Rent protection & payments','How your money is held')}
         ${item('info','data-key="help"','help','Help & safety','Tips and support')}
+        ${item('go','data-to="about"','people','About TermNest','Founders, pricing, partner perks and contact')}
+        ${item('legal','data-to="terms"','list','Terms of Use','Rules, fees and your responsibilities')}
+        ${item('legal','data-to="privacy"','lock','Privacy Policy','What we collect and how to delete it')}
         ${item('logout','','logout','Log out','','danger')}
       </ul>
       <p class="fine">TermNest prototype · sample data only</p>
@@ -1732,7 +1944,7 @@ const screens = {
   myListings(){
     const items=state.myListings.map(L);
     return `${topbar('My listings',true,'Back to profile')}
-      <div class="pad">${items.length?`<ul class="cards">${items.map(cardHTML).join('')}</ul>`
+      <div class="pad">${items.length?`<ul class="cards">${items.map(l=>cardHTML(l, feeNote(l))).join('')}</ul>`
         : emptyState('list','No listings yet','Leaving for a semester or summer? Post your room in about two minutes.','Post a room','tab','data-tab="post"')}
       <div class="endspace"></div></div>`;
   }
@@ -1801,7 +2013,7 @@ function hostCard(l){
     <h3 class="hc-h">Booking requests</h3>
     ${s.requests.length ? s.requests.map((r,i)=>reqHTML(l,r,i)).join('')
       : `<p class="help" style="margin:0">No requests yet. We’ll notify you when a student asks to book.</p>`}
-    <p class="fee-note">${l.feeCharged?'Charged after lease signing':'Due after a subletter signs'}: ${money(LISTING_FEE)} listing fee${l.boosted?`<br>Boost: ${money(BOOST_FEE)} paid`:''}</p>
+    ${feeNote(l)}
     <div class="row2" style="margin-top:12px">
       <button class="btn btn-ghost" data-action="open" data-id="${l.id}">View listing</button>
       <button class="btn btn-ghost" data-action="share">${ic('share')} Share</button>
@@ -1830,32 +2042,32 @@ function reqHTML(l,r,i){
 }
 // Landlord approval being edited: a published listing's (when the screen has an id) or the draft's
 function currentLL(){ return state.params.id ? L(state.params.id).landlord : state.draft.landlord; }
+// The request is sent by TermNest, not by the student: it never includes the student's contact info,
+// and the landlord can only approve or decline through TermNest (no replies, no messaging).
 function llRequestText(ll){
   const src=state.params.id?L(state.params.id):state.draft, u=state.user;
   return `Hi ${ll.name},
 
-I’m ${u.name}, a current tenant and University of Miami student. I’ll be away from ${fmtLong(src.moveIn)} to ${fmtLong(src.moveOut)} and would like your approval to sublet my ${String(src.type).toLowerCase()} in ${src.area} during that time.
+Your tenant ${u.name} has asked TermNest to request your approval to sublet their ${String(src.type).toLowerCase()} in ${src.area} from ${fmtLong(src.moveIn)} to ${fmtLong(src.moveOut)}.
 
 • The subtenant will be a student verified with a school email through TermNest.
-• Rent stays the same, and I remain responsible for my lease.
-• The first month’s rent is held by TermNest until move-in.
+• Rent stays the same, and your tenant remains responsible for the lease.
+• The first month’s rent is held by a third-party payment processor until move-in day.
 
-You can approve with one tap using the link below, or reply to this email with any questions.
+Approve or decline using the secure TermNest link below. This is an automated notice; replies aren’t monitored.
 
-Thank you,
-${u.name}
-${u.email}`;
+TermNest`;
 }
-// Called after anyone signs: when both have signed, move the booking forward and charge the listing fee
+// Called after anyone signs: when both have signed, move the booking forward and charge the success fee
 function finishSigning(id){
   const a=state.agreements[id], l=L(id), both=a.sublessor.signed&&a.subtenant.signed;
   if(both){
-    if(state.bookings[id] && state.bookings[id].step<2) state.bookings[id].step=2;
+    if(state.bookings[id] && state.bookings[id].step===2) state.bookings[id].step=3;   // lease signed (after landlord approval)
     if(l.mine) l.feeCharged=true;
   }
   render(); document.getElementById('agrBanner')?.focus({preventScroll:true});
   toast(!both ? 'You signed. Waiting for the other person.'
-    : l.mine ? `Signed by both · ${money(LISTING_FEE)} listing fee charged` : 'Signed by both. Next: move in!');
+    : l.mine ? `Signed by both · ${money(LISTING_FEE)} success fee charged` : 'Signed by both. Next: move in!');
 }
 function seedHostListing(){
   if(state.seeded) return; state.seeded=true;
@@ -1878,6 +2090,10 @@ function setRole(role, switching){
   state.role=role;
   if(role==='host') seedHostListing();
   go('home',{}, {reset:true});
+  if(state.swap.fromSite && !switching){   // came from the website's Term Swap page: show those swaps first
+    state.swap.fromSite=false; go('swap');
+    return toast(`Swaps for ${state.swap.city.split(',')[0]}, as picked on the website`);
+  }
   toast(switching ? (role==='host'?'Switched to subleasing':'Switched to finding a place')
                   : (role==='host'?'Here’s your sublease dashboard':'Here are rooms near campus'));
 }
@@ -1891,7 +2107,7 @@ function trust(){
   const badges=[
     {key:'verified',name:'Verified Student',icon:'verified',earned:true,how:`Confirm your school email (${esc(state.user.email)}).`,done:1,total:1,unit:'steps'},
     {key:'fast',name:'Fast Replier',icon:'bolt',earned:fast>=3,how:'Reply to 3 messages within an hour.',done:fast,total:3,unit:'fast replies',cta:['tab','data-tab="messages"','Go to messages']},
-    {key:'sublet',name:'First Sublet Completed',icon:'home',earned:maxStep>=4,how:'Finish a sublet: reserve, sign the lease, move in and confirm.',done:maxStep,total:4,unit:'booking steps',cta:findCta}
+    {key:'sublet',name:'First Sublet Completed',icon:'home',earned:maxStep>=5,how:'Finish a sublet: reserve, get landlord approval, sign the lease, move in and confirm.',done:maxStep?stepsDone(maxStep):0,total:4,unit:'booking steps',cta:findCta}
   ];
   const n=badges.filter(b=>b.earned).length;
   return {badges, n, level:['','Verified','Trusted','Super Nester'][n], next:badges.find(b=>!b.earned)};
@@ -1922,7 +2138,7 @@ function referHTML(){
   return `<section class="refer" aria-labelledby="referH">
     <span class="refer-coin" aria-hidden="true"></span>
     <h2 id="referH">Refer a friend, get $10 off</h2>
-    <p>When a friend signs up with their school email and reserves or posts a room, you both get $10 off your next rent payment or listing fee.</p>
+    <p>When a friend signs up with their school email and reserves or posts a room, you both get $10 off your next rent payment or success fee.</p>
     <div class="code-box"><span class="code-lbl">Your code</span><strong class="code">${code}</strong></div>
     <div class="row2">
       <button class="btn btn-accent" data-action="copyCode">Copy code</button>
@@ -1932,30 +2148,152 @@ function referHTML(){
   </section>`;
 }
 /* ---------- Term Swap ----------
-   Sample students from other cities who need a place in Miami. Only cities listed here have results. */
-const SWAP_CITIES = ['New York, NY','Washington, DC','Boston, MA','Chicago, IL','Atlanta, GA','Los Angeles, CA','San Francisco, CA'];
+   Sample students from other cities who need a place in Miami. Same data as the Term Swap page on the website
+   (index.html). Every city has at least one student for each term: Spring, Summer and Fall 2027. */
+const SWAP_CITIES = ['New York, NY','Washington, DC','Chicago, IL','Boston, MA','Los Angeles, CA','San Francisco, CA','Atlanta, GA','Austin, TX',
+  'London, UK','Madrid, Spain','Barcelona, Spain'];
+const SWAP_TERMS = {Spring:['2027-01-08','2027-05-14'], Summer:['2027-05-16','2027-08-14'], Fall:['2027-08-16','2027-12-18']};   // UM term dates
 const SWAPS = {
   'New York, NY':[
-    {id:'s1',name:'Jordan K.',initials:'JK',school:'NYU',domain:'nyu.edu',about:'Junior · Spring internship in Brickell',
-     from:'2027-01-08',to:'2027-05-15',place:'Private room in Greenwich Village',type:'Private room',roommates:2,value:1650,near:'0.3 mi to NYU',tone:0,
-     desc:'Sunny room in a walk-up with two NYU seniors. Steps from Washington Square Park and the subway. Desk, full bed and a radiator that actually works.'},
-    {id:'s2',name:'Sam R.',initials:'SR',school:'Columbia',domain:'columbia.edu',about:'Grad student · Marine science research at UM',
-     from:'2027-01-15',to:'2027-05-10',place:'Studio in Morningside Heights',type:'Entire place',roommates:0,value:1900,near:'0.4 mi to Columbia',tone:2,
+    {id:'w1',name:'Jordan K.',initials:'JK',school:'NYU',domain:'nyu.edu',about:'Junior · Spring internship in Brickell',
+     from:'2027-01-08',to:'2027-05-15',place:'Private room in Greenwich Village',area:'Greenwich Village',type:'Private room',roommates:2,value:1650,near:'0.3 mi to NYU',photo:'bedroom7',
+     desc:'Room in a walk-up with two NYU seniors. Steps from Washington Square Park and the subway. Desk, full bed and a radiator that actually works.'},
+    {id:'w2',name:'Sam R.',initials:'SR',school:'Columbia',domain:'columbia.edu',about:'Grad student · Marine science research at UM',
+     from:'2027-01-15',to:'2027-05-10',place:'Studio in Morningside Heights',area:'Morningside Heights',type:'Entire place',roommates:0,value:1900,near:'0.4 mi to Columbia',photo:'studio1-lounge',
      desc:'Small, quiet studio with a kitchenette and laundry in the building. Ten minutes’ walk to Columbia and Riverside Park.'},
-    {id:'s3',name:'Taylor B.',initials:'TB',school:'The New School',domain:'newschool.edu',about:'Senior · Design co-op in Wynwood',
-     from:'2027-02-01',to:'2027-06-01',place:'Shared room in Williamsburg, Brooklyn',type:'Shared room',roommates:1,value:1100,near:'25 min to campus by subway',tone:3,
-     desc:'Shared bedroom in a creative household with a big living room. Close to the L train, cafes and the waterfront.'}
+    {id:'w3',name:'Taylor B.',initials:'TB',school:'The New School',domain:'newschool.edu',about:'Senior · Design co-op in Wynwood',
+     from:'2027-01-25',to:'2027-05-14',place:'Shared room in Williamsburg, Brooklyn',area:'Williamsburg',type:'Shared room',roommates:1,value:1100,near:'25 min to campus by subway',photo:'study-bedroom1-shelf',
+     desc:'Shared bedroom in a creative household with a big living room. Close to the L train, cafes and the waterfront.'},
+    {id:'w6',name:'Ava L.',initials:'AL',school:'NYU',domain:'nyu.edu',about:'Sophomore · Summer research at UM’s marine school',
+     from:'2027-05-20',to:'2027-08-12',place:'Private room in the East Village',area:'East Village',type:'Private room',roommates:2,value:1500,near:'0.6 mi to NYU',photo:'bedroom7-bed',
+     desc:'Quiet back bedroom in a three-bedroom apartment. Blackout curtains, a queen bed and two roommates who are around all summer.'},
+    {id:'w7',name:'Marcus T.',initials:'MT',school:'Columbia',domain:'columbia.edu',about:'Junior · Fall exchange semester at UM',
+     from:'2027-08-18',to:'2027-12-15',place:'Studio on the Upper West Side',area:'Upper West Side',type:'Entire place',roommates:0,value:2000,near:'15 min to Columbia by subway',photo:'studio1-lounge',
+     desc:'Studio with a full kitchen, a queen bed and a comfy sofa. Two blocks from Central Park.'}
   ],
   'Washington, DC':[
-    {id:'s4',name:'Malik J.',initials:'MJ',school:'Georgetown',domain:'georgetown.edu',about:'Junior · Exchange semester at UM',
-     from:'2027-01-06',to:'2027-05-08',place:'Private room in Georgetown',type:'Private room',roommates:3,value:1450,near:'0.5 mi to Georgetown',tone:1,
+    {id:'w4',name:'Malik J.',initials:'MJ',school:'Georgetown',domain:'georgetown.edu',about:'Junior · Exchange semester at UM',
+     from:'2027-01-06',to:'2027-05-08',place:'Private room in Georgetown',area:'Georgetown',type:'Private room',roommates:3,value:1450,near:'0.5 mi to Georgetown',photo:'bedroom8-plain',
      desc:'Room in a rowhouse with three Georgetown students. Quiet street, shared kitchen and a small backyard.'},
-    {id:'s5',name:'Chloe D.',initials:'CD',school:'George Washington',domain:'gwu.edu',about:'Sophomore · Spring internship in Coral Gables',
-     from:'2027-01-20',to:'2027-04-30',place:'Room in Foggy Bottom',type:'Private room',roommates:1,value:1500,near:'0.2 mi to GWU',tone:0,
-     desc:'Bright room in a two-bedroom apartment near the Metro. One roommate who studies at home and keeps things tidy.'}
+    {id:'w5',name:'Chloe D.',initials:'CD',school:'George Washington',domain:'gwu.edu',about:'Sophomore · Spring internship in Coral Gables',
+     from:'2027-01-20',to:'2027-04-30',place:'Room in Foggy Bottom',area:'Foggy Bottom',type:'Private room',roommates:1,value:1500,near:'0.2 mi to GWU',photo:'grove-bedroom1-plain',
+     desc:'Bright room in a two-bedroom apartment near the Metro. One roommate who studies at home and keeps things tidy.'},
+    {id:'w8',name:'Nate P.',initials:'NP',school:'American University',domain:'american.edu',about:'Junior · Summer internship in downtown Miami',
+     from:'2027-05-18',to:'2027-08-10',place:'Private room in Tenleytown',area:'Tenleytown',type:'Private room',roommates:2,value:1300,near:'0.4 mi to American University',photo:'study-bedroom1-shelf',
+     desc:'Room with a full bed and a big bookshelf in a townhouse near the Red Line. Two roommates who are in DC all summer.'},
+    {id:'w9',name:'Grace O.',initials:'GO',school:'Howard',domain:'howard.edu',about:'Senior · Fall semester at UM’s business school',
+     from:'2027-08-17',to:'2027-12-17',place:'Private room in Shaw',area:'Shaw',type:'Private room',roommates:1,value:1250,near:'0.6 mi to Howard',photo:'bedroom7',
+     desc:'Cozy room in a two-bedroom condo close to restaurants and the Green Line. One roommate who works from home.'}
+  ],
+  'Chicago, IL':[
+    {id:'w10',name:'Elena R.',initials:'ER',school:'University of Chicago',domain:'uchicago.edu',about:'Junior · Spring exchange semester at UM',
+     from:'2027-01-05',to:'2027-05-12',place:'Private room in Hyde Park',area:'Hyde Park',type:'Private room',roommates:2,value:1100,near:'0.3 mi to UChicago',photo:'study-bedroom1-shelf',
+     desc:'Room in a vintage three-flat with two grad students. Radiator heat, a big closet and a short walk to the lake.'},
+    {id:'w11',name:'Ben W.',initials:'BW',school:'Northwestern',domain:'northwestern.edu',about:'Sophomore · Summer research at UM',
+     from:'2027-05-21',to:'2027-08-14',place:'Private room in Evanston',area:'Evanston',type:'Private room',roommates:1,value:1200,near:'0.5 mi to Northwestern',photo:'bedroom7-bed',
+     desc:'Quiet room in a two-bedroom apartment near the beach and the Purple Line. One roommate staying for the summer.'},
+    {id:'w12',name:'Kayla M.',initials:'KM',school:'DePaul',domain:'depaul.edu',about:'Senior · Fall internship in Brickell',
+     from:'2027-08-20',to:'2027-12-16',place:'Studio in Lincoln Park',area:'Lincoln Park',type:'Entire place',roommates:0,value:1450,near:'0.4 mi to DePaul',photo:'studio1-lounge',
+     desc:'Studio with a sofa, a queen bed and a small kitchen. Laundry and a gym in the building.'}
+  ],
+  'Boston, MA':[
+    {id:'w13',name:'Liam C.',initials:'LC',school:'Boston University',domain:'bu.edu',about:'Junior · Spring co-op in Coral Gables',
+     from:'2027-01-10',to:'2027-05-14',place:'Private room in Fenway',area:'Fenway',type:'Private room',roommates:2,value:1600,near:'0.5 mi to BU',photo:'bedroom7',
+     desc:'Room in a brownstone apartment a few blocks from Fenway Park and the Green Line. Two roommates who are BU seniors.'},
+    {id:'w14',name:'Hana S.',initials:'HS',school:'Northeastern',domain:'northeastern.edu',about:'Sophomore · Summer co-op at a Miami hospital',
+     from:'2027-05-17',to:'2027-08-13',place:'Shared room in Mission Hill',area:'Mission Hill',type:'Shared room',roommates:1,value:1050,near:'0.4 mi to Northeastern',photo:'study-bedroom1-shelf',
+     desc:'Shared room in a friendly apartment near the hospitals and the E train. Your roommate is a nursing student.'},
+    {id:'w15',name:'Owen F.',initials:'OF',school:'Harvard',domain:'harvard.edu',about:'Grad student · Fall research at UM',
+     from:'2027-08-23',to:'2027-12-18',place:'Room with a skyline view in Cambridge',area:'Cambridge',type:'Private room',roommates:1,value:1800,near:'0.7 mi to Harvard',photo:'bedroom8-plain',
+     desc:'Quiet room in a high-rise across the Charles River from Boston. Gym and study room in the building.'}
+  ],
+  'Los Angeles, CA':[
+    {id:'w16',name:'Sofia V.',initials:'SV',school:'UCLA',domain:'ucla.edu',about:'Junior · Spring exchange semester at UM',
+     from:'2027-01-07',to:'2027-05-13',place:'Private room in Westwood',area:'Westwood',type:'Private room',roommates:2,value:1550,near:'0.4 mi to UCLA',photo:'bedroom8-plain',
+     desc:'Big room in a Spanish-style house with two UCLA students. Queen bed, a desk and a shared patio.'},
+    {id:'w17',name:'Ethan K.',initials:'EK',school:'USC',domain:'usc.edu',about:'Sophomore · Summer film internship in Miami',
+     from:'2027-05-24',to:'2027-08-16',place:'Private room near USC',area:'University Park',type:'Private room',roommates:3,value:1000,near:'0.3 mi to USC',photo:'grove-bedroom1-plain',
+     desc:'Light, plant-filled room in a house with three USC students. Walk to campus and the Expo Line.'},
+    {id:'w18',name:'Mia T.',initials:'MT',school:'UCLA',domain:'ucla.edu',about:'Senior · Fall internship in Wynwood',
+     from:'2027-08-21',to:'2027-12-17',place:'Studio in Santa Monica',area:'Santa Monica',type:'Entire place',roommates:0,value:1900,near:'20 min to UCLA by bus',photo:'studio1-lounge',
+     desc:'Studio with a full kitchen ten minutes from the beach. Bike storage and laundry in the building.'}
+  ],
+  'San Francisco, CA':[
+    {id:'w19',name:'Leo H.',initials:'LH',school:'UCSF',domain:'ucsf.edu',about:'Grad student · Spring rotation at a Miami hospital',
+     from:'2027-01-11',to:'2027-05-14',place:'Private room in the Inner Sunset',area:'Inner Sunset',type:'Private room',roommates:2,value:1700,near:'0.3 mi to UCSF',photo:'study-bedroom1-shelf',
+     desc:'Quiet room in a flat near Golden Gate Park and the N train. Two roommates who are med students.'},
+    {id:'w20',name:'Ruby N.',initials:'RN',school:'San Francisco State',domain:'sfsu.edu',about:'Junior · Summer internship in Coral Gables',
+     from:'2027-05-19',to:'2027-08-12',place:'Private room in the Mission District',area:'Mission District',type:'Private room',roommates:1,value:1400,near:'25 min to SF State by train',photo:'bedroom7-bed',
+     desc:'Room with a queen bed in a two-bedroom apartment. Lots of cafes and taquerias nearby.'},
+    {id:'w21',name:'Daniel A.',initials:'DA',school:'University of San Francisco',domain:'usfca.edu',about:'Senior · Fall exchange semester at UM',
+     from:'2027-08-16',to:'2027-12-14',place:'Private room in Hayes Valley',area:'Hayes Valley',type:'Private room',roommates:1,value:1650,near:'0.8 mi to USF',photo:'bedroom8-plain',
+     desc:'Room with a desk in a bright two-bedroom flat. One roommate who is a USF grad student.'}
+  ],
+  'Atlanta, GA':[
+    {id:'w22',name:'Imani B.',initials:'IB',school:'Emory',domain:'emory.edu',about:'Junior · Spring semester at UM’s nursing school',
+     from:'2027-01-09',to:'2027-05-11',place:'Private room in Druid Hills',area:'Druid Hills',type:'Private room',roommates:2,value:1050,near:'0.5 mi to Emory',photo:'grove-bedroom1-plain',
+     desc:'Light room with a rattan bed and lots of plants in a house with two Emory students. Front porch too.'},
+    {id:'w23',name:'Chris L.',initials:'CL',school:'Georgia Tech',domain:'gatech.edu',about:'Senior · Summer engineering co-op in Doral',
+     from:'2027-05-16',to:'2027-08-13',place:'Studio in Midtown',area:'Midtown',type:'Entire place',roommates:0,value:1300,near:'0.6 mi to Georgia Tech',photo:'studio1-lounge',
+     desc:'Studio with a full kitchen, a sofa and a queen bed. Walk to Piedmont Park and the MARTA.'},
+    {id:'w24',name:'Zara K.',initials:'ZK',school:'Spelman',domain:'spelman.edu',about:'Sophomore · Fall exchange semester at UM',
+     from:'2027-08-18',to:'2027-12-16',place:'Private room in the West End',area:'West End',type:'Private room',roommates:2,value:900,near:'0.4 mi to Spelman',photo:'bedroom7-bed',
+     desc:'Calm room in a townhouse near the BeltLine and the MARTA. Two roommates who are Spelman juniors.'}
+  ],
+  'Austin, TX':[
+    {id:'w25',name:'Jake M.',initials:'JM',school:'UT Austin',domain:'utexas.edu',about:'Junior · Spring internship in Brickell',
+     from:'2027-01-12',to:'2027-05-14',place:'Private room in West Campus',area:'West Campus',type:'Private room',roommates:3,value:1100,near:'0.3 mi to UT',photo:'study-bedroom1-shelf',
+     desc:'Room in a four-bedroom apartment. Full bed, a big bookshelf and three UT roommates.'},
+    {id:'w26',name:'Lucia G.',initials:'LG',school:'UT Austin',domain:'utexas.edu',about:'Grad student · Summer research at UM',
+     from:'2027-05-22',to:'2027-08-14',place:'Private room in Hyde Park, Austin',area:'Hyde Park',type:'Private room',roommates:1,value:1000,near:'1 mi to UT',photo:'grove-bedroom1-plain',
+     desc:'Light, plant-filled room in a bungalow with one roommate. Shady yard and an easy bike ride to campus.'},
+    {id:'w27',name:'Ryan D.',initials:'RD',school:'St. Edward’s',domain:'stedwards.edu',about:'Senior · Fall marketing internship in Wynwood',
+     from:'2027-08-19',to:'2027-12-15',place:'Studio near South Congress',area:'South Congress',type:'Entire place',roommates:0,value:1350,near:'0.8 mi to St. Edward’s',photo:'studio1-lounge',
+     desc:'Cozy studio with a sofa and a queen bed. Walk to food trucks and music on South Congress.'}
+  ],
+  'London, UK':[
+    {id:'w28',name:'Olivia H.',initials:'OH',school:'NYU London',domain:'nyu.edu',about:'Second year · Spring exchange at UM',
+     from:'2027-01-09',to:'2027-05-14',place:'Private room in Bloomsbury',area:'Bloomsbury',type:'Private room',roommates:2,value:1800,near:'0.2 mi to NYU London',photo:'bedroom8-plain',
+     desc:'Room in a Georgian flat near Russell Square and the Tube. Two flatmates who are NYU London students.'},
+    {id:'w29',name:'Arjun P.',initials:'AP',school:'Hult International Business School',domain:'hult.edu',about:'Master’s student · Summer research at UM',
+     from:'2027-05-18',to:'2027-08-14',place:'Studio near the South Bank',area:'South Bank',type:'Entire place',roommates:0,value:1700,near:'Walk to Waterloo station',photo:'studio1-lounge',
+     desc:'Studio with a sofa, a queen bed and a small kitchen. Walk to the river and Waterloo station.'},
+    {id:'w30',name:'Emily W.',initials:'EW',school:'Boston University London',domain:'bu.edu',about:'Third year · Fall exchange at UM',
+     from:'2027-08-20',to:'2027-12-17',place:'Private room in Holborn',area:'Holborn',type:'Private room',roommates:1,value:1650,near:'Near Covent Garden',photo:'bedroom7-bed',
+     desc:'Quiet room in a two-bedroom flat close to campus and Covent Garden. One flatmate who studies law.'}
+  ],
+  'Madrid, Spain':[
+    {id:'w31',name:'Lucía M.',initials:'LM',school:'Universidad Pontificia Comillas',domain:'comillas.edu',about:'Third year · Spring exchange at UM',
+     from:'2027-01-11',to:'2027-05-14',place:'Private room in Moncloa',area:'Moncloa',type:'Private room',roommates:2,value:850,near:'0.5 mi to Comillas',photo:'grove-bedroom1-plain',
+     desc:'Big, bright room with a rattan bed and lots of plants in a flat with two students. Near the metro and the Parque del Oeste.'},
+    {id:'w32',name:'Pablo R.',initials:'PR',school:'IE University',domain:'ie.edu',about:'Master’s student · Summer internship in Brickell',
+     from:'2027-05-20',to:'2027-08-13',place:'Private room in Chamberí',area:'Chamberí',type:'Private room',roommates:1,value:1000,near:'0.5 mi to IE',photo:'bedroom8-plain',
+     desc:'Elegant room in an older building with high ceilings. One flatmate and a quiet street full of cafes.'},
+    {id:'w33',name:'Carmen S.',initials:'CS',school:'Saint Louis University Madrid',domain:'slu.edu',about:'Second year · Fall exchange at UM',
+     from:'2027-08-23',to:'2027-12-17',place:'Private room in Malasaña',area:'Malasaña',type:'Private room',roommates:2,value:800,near:'Metro to SLU Madrid',photo:'study-bedroom1-shelf',
+     desc:'Cozy room with a full bed and a big bookshelf in a lively neighborhood. Two flatmates who are also students.'}
+  ],
+  'Barcelona, Spain':[
+    {id:'w34',name:'Marc V.',initials:'MV',school:'Universitat de Barcelona',domain:'ub.edu',about:'Third year · Spring exchange at UM',
+     from:'2027-01-08',to:'2027-05-12',place:'Private room in Eixample',area:'Eixample',type:'Private room',roommates:2,value:900,near:'0.3 mi to UB',photo:'grove-bedroom1-plain',
+     desc:'Bright room with a rattan bed and lots of plants in a classic Eixample flat. Two flatmates who study at UB.'},
+    {id:'w35',name:'Laia F.',initials:'LF',school:'Pompeu Fabra',domain:'upf.edu',about:'Second year · Summer research at UM',
+     from:'2027-05-17',to:'2027-08-12',place:'Private room in Gràcia',area:'Gràcia',type:'Private room',roommates:1,value:950,near:'20 min to UPF by metro',photo:'bedroom8-plain',
+     desc:'Room with a big bed and a desk in a flat over a quiet square. One flatmate and lots of small cafes nearby.'},
+    {id:'w36',name:'Jordi C.',initials:'JC',school:'ESADE',domain:'esade.edu',about:'Master’s student · Fall exchange at UM',
+     from:'2027-08-19',to:'2027-12-16',place:'Private room in Sant Gervasi',area:'Sant Gervasi',type:'Private room',roommates:1,value:1100,near:'0.6 mi to ESADE',photo:'bedroom7-bed',
+     desc:'Calm room with a big bed in a quiet, uphill neighborhood. One flatmate who works in tech.'}
   ]
 };
 const findSwap = id => Object.values(SWAPS).flat().find(m=>m.id===id);
+// Opened from the website's Term Swap page (app/index.html?swapCity=Boston%2C%20MA&swapTerm=Fall):
+// the Term Swap search starts with that city and term, and opens once you've signed up.
+(() => {
+  try {
+    const q = new URLSearchParams(location.search), city = q.get('swapCity'), term = SWAP_TERMS[q.get('swapTerm')];
+    if (SWAPS[city] && term) state.swap = {city, from:term[0], to:term[1], searched:true, fromSite:true};
+  } catch (e) {}
+})();
 function overlapWith(m){
   const s=state.swap, a=s.from>m.from?s.from:m.from, b=s.to<m.to?s.to:m.to;
   const days=Math.max(0,(toDate(b)-toDate(a))/864e5), total=Math.max(1,(toDate(s.to)-toDate(s.from))/864e5);
@@ -1967,6 +2305,7 @@ function overlapWith(m){
 function swapCard(m){
   const o=overlapWith(m), sent=state.swapSent.has(m.id), first=esc(m.name.split(' ')[0]);
   return `<li class="swap-card">
+    ${photoBox(m.photo,'sw-photo')}
     <div class="sw-top"><span class="avatar">${esc(m.initials)}</span>
       <div class="grow"><strong>${esc(m.name)}</strong><p>${esc(m.school)} · ${esc(m.about)}</p>
       <span class="verified sm">${ic('verified',14)} ${esc(m.domain)} verified</span></div></div>
@@ -2021,7 +2360,7 @@ function renderResults(){
   if(state.mapSel && !list.some(l=>l.id===state.mapSel)) state.mapSel=null;   // selected pin got filtered out
   const empty=`<div class="empty" style="padding:20px 8px"><h2>No rooms match</h2><p>Try different dates, a higher price, or a longer distance.</p><button class="btn btn-ghost" data-action="resetFilters">Clear all filters</button></div>`;
   document.getElementById('results').innerHTML = !list.length ? empty
-    : state.view==='map' ? mapHTML(list) : `<ul class="cards">${list.map(cardHTML).join('')}</ul>`;
+    : state.view==='map' ? mapHTML(list) : `<ul class="cards">${list.map(l=>cardHTML(l)).join('')}</ul>`;
   const sortName={featured:'featured first',match:'best match first',price:'lowest price first',dist:'closest to campus first'}[state.sort];
   document.getElementById('resultCount').textContent = state.view==='map'
     ? `${list.length} room${list.length===1?'':'s'} on the map`
@@ -2063,7 +2402,7 @@ function render(scroll=0){
   if(scroll) app.scrollTop=scroll;
   const h=app.querySelector('h1');
   if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
-  document.title = 'TermNest · ' + ({welcome:'Welcome',verify:'Verify email',role:'Get started',prefs:'My preferences',swap:'Term Swap',landlord:'Landlord approval',agreement:'Sublease agreement',postReview:'Review listing',pay:'Reserve and pay',booking:'Your booking',home:state.role==='host'?'Your sublease':'Search',detail:'Listing',saved:'Saved',messages:'Messages',chat:'Chat',post:'Post a listing',postSuccess:'Posted',profile:'Profile',myListings:'My listings'}[name]);
+  document.title = 'TermNest · ' + ({welcome:'Welcome',verify:'Verify email',role:'Get started',prefs:'My preferences',swap:'Term Swap',landlord:'Landlord approval',agreement:'Sublease agreement',postReview:'Review listing',pay:'Reserve and pay',booking:'Your booking',home:state.role==='host'?'Your sublease':'Search',detail:'Listing',saved:'Saved',messages:'Messages',chat:'Chat',post:'Post a listing',postSuccess:'Posted',profile:'Profile',myListings:'My listings',about:'About TermNest',terms:'Terms of Use',privacy:'Privacy Policy'}[name]);
 }
 function updateBadge(){
   const n=state.threads.filter(t=>t.unread).length, tab=document.getElementById('msgTab');
@@ -2136,13 +2475,27 @@ function filterSheet(section){
   if(section!=='dates') document.getElementById('fs-'+section).scrollIntoView({block:'start'});
 }
 
+/* LEGAL:START Terms of Use and Privacy Policy. Made from the scratchpad's legal-src.js by inject-legal.js */
+const LEGAL = {
+ "terms": {
+  "title": "Terms of Use",
+  "html": "<div class=\"legal-sample\"><strong>Sample terms for a student project prototype.<\/strong> TermNest is a class project, not a real company yet. These terms show how TermNest would work. They have not been reviewed by a lawyer and are not a binding legal agreement.<\/div>\n<p class=\"legal-date\">Last updated: November 16, 2026<\/p>\n<p>These terms explain the rules for using TermNest, our website and app for student sublets. By creating an account or using TermNest, you agree to these terms and to our <button type=\"button\" class=\"link\" data-action=\"legal\" data-to=\"privacy\">Privacy Policy<\/button>. If you don’t agree, please don’t use TermNest. <strong>Please note:<\/strong> section 19 says most disputes will be settled by individual arbitration instead of in court, and that you can’t bring a class action.<\/p>\n<h2 id=\"terms-who\">1. Who can use TermNest<\/h2>\n<p>To use TermNest, you must:<\/p>\n<ul>\n<li>Be at least 18 years old.<\/li>\n<li>Be a current college or university student.<\/li>\n<li>Sign up with your own school email address that ends in <strong>.edu<\/strong>.<\/li>\n<\/ul>\n<p>You may have only one account, and you can’t share it or give it to anyone else.<\/p>\n<h2 id=\"terms-security\">2. Keeping your account secure<\/h2>\n<p>You’re responsible for keeping your account safe.<\/p>\n<ul>\n<li>You log in with codes sent to your school email, so keep that email account secure too.<\/li>\n<li>Never share a verification code with anyone. TermNest will never ask you for one.<\/li>\n<li>Tell us right away if you think someone else has used your account.<\/li>\n<\/ul>\n<p>You’re responsible for what happens on your account, unless it happened because of a mistake by TermNest.<\/p>\n<h2 id=\"terms-marketplace\">3. TermNest is only a marketplace<\/h2>\n<p>TermNest helps students find each other to sublet rooms. That’s all we do.<\/p>\n<ul>\n<li>TermNest is <strong>not<\/strong> a landlord, property manager, real estate broker, or roommate service.<\/li>\n<li>TermNest is <strong>not<\/strong> a party to any sublease. A sublease is an agreement only between the students who sign it.<\/li>\n<li>We don’t own, inspect, or manage any listed room, and we don’t promise that any listing, user, or sublease is safe, accurate, or legal.<\/li>\n<\/ul>\n<p>Before you sign anything, check the place, the person, and the agreement yourself.<\/p>\n<h2 id=\"terms-verification\">4. What we check, and what we don’t<\/h2>\n<p>When you sign up, TermNest checks one thing: that you can get into a school email address ending in <strong>.edu<\/strong>. That’s what the “Verified student” badge means.<\/p>\n<p>TermNest does <strong>not<\/strong>:<\/p>\n<ul>\n<li>Do background checks, criminal record checks, or credit checks.<\/li>\n<li>Check IDs or confirm that someone is who they say they are.<\/li>\n<li>Confirm that someone has the right to sublet the place they list.<\/li>\n<\/ul>\n<p>Use your own judgment. Ask for a video tour, ask questions, and keep all payments in TermNest.<\/p>\n<h2 id=\"terms-responsibilities\">5. Your responsibilities<\/h2>\n<p>If you post a listing or sign a sublease, you are responsible for:<\/p>\n<ul>\n<li><strong>Getting your landlord’s approval.<\/strong> Many leases don’t allow subletting without written permission. TermNest gives you a way to ask your landlord in the app, but getting that permission is still your responsibility.<\/li>\n<li><strong>Following your original lease.<\/strong> Subletting does not change your own lease. You still owe your landlord everything your lease says, including rent if your subletter doesn’t pay.<\/li>\n<li><strong>Keeping your listing accurate.<\/strong> Your photos, price, dates, and description must be true and up to date. Only list a place you have the right to sublet.<\/li>\n<li><strong>Following the law,<\/strong> including fair housing laws and any rules from your school, building, or city.<\/li>\n<\/ul>\n<h2 id=\"terms-fair-housing\">6. Fair housing<\/h2>\n<p>Everyone deserves a fair shot at a place to live. When you post a listing, message students, or choose a subletter, you may not treat anyone differently because of their race, color, religion, sex, sexual orientation, gender identity, national origin, disability, familial status (like having children or being pregnant), age, marital status, or any other trait protected by federal, Florida, or local law.<\/p>\n<p>This includes the words in your listing. For example, a listing can’t say who is or isn’t welcome based on any of these traits.<\/p>\n<p><strong>How roommate matching works:<\/strong> matches are based only on lifestyle habits you choose to share, like your sleep schedule, cleanliness, guests, noise, pets, smoking, and study style. Matching <strong>never<\/strong> uses race, religion, or any other protected trait, and TermNest doesn’t ask for them.<\/p>\n<h2 id=\"terms-fees\">7. Fees<\/h2>\n<ul>\n<li><strong>Signing up is free.<\/strong> So is browsing, messaging, and posting a listing.<\/li>\n<li><strong>$15 success fee.<\/strong> If you’re subleasing your place, you owe TermNest a $15 success fee when you sign a sublease with someone you met on TermNest. We charge it to the card you have on file when the sublease is signed. If nobody signs, you don’t pay it.<\/li>\n<li><strong>$5 Boost.<\/strong> Boost puts your listing at the top of search results. It costs $5, paid up front when you add it. Boost is <strong>non-refundable<\/strong>, even if nobody books your room.<\/li>\n<\/ul>\n<p>Payments are processed by a third-party payment company, not by TermNest. If we ever change our prices, we’ll tell you before the new price applies to you.<\/p>\n<h2 id=\"terms-held-rent\">8. How held rent works<\/h2>\n<p>When a subletter reserves a room, the rent is paid through a <strong>licensed third-party payment processor<\/strong>. The processor holds the money until move-in day. It’s released to the subleaser when the subletter confirms move-in in the app, or automatically 24 hours after move-in if no problem is reported.<\/p>\n<ul>\n<li>TermNest does not hold your money in its own bank account, and TermNest is not a bank.<\/li>\n<li>The payment processor’s own terms also apply to these payments.<\/li>\n<li>If something is wrong at move-in, report it in the app instead of confirming, within 24 hours of move-in. We’ll ask the processor to keep holding the payment while we help, and if the room isn’t as listed, you get a full refund.<\/li>\n<\/ul>\n<h2 id=\"terms-non-circumvention\">9. Don’t go around TermNest<\/h2>\n<p>If you meet someone on TermNest and then finish the deal somewhere else, like over text, email, or another app, you still owe the $15 success fee. This is true even if the sublease is signed outside the app.<\/p>\n<p>Keeping the deal in TermNest also keeps you safer. Rent is held until move-in, and you have a record of your messages and agreement.<\/p>\n<h2 id=\"terms-prohibited\">10. What’s not allowed<\/h2>\n<p>When using TermNest, you may not:<\/p>\n<ul>\n<li>Post fake, misleading, or duplicate listings, or list a place you don’t have the right to sublet.<\/li>\n<li>Scam anyone, including asking for deposits or rent outside TermNest through Zelle, Venmo, cash, gift cards, or wire transfers.<\/li>\n<li>Discriminate against anyone (see section 6, Fair housing).<\/li>\n<li>Upload photos you don’t have the right to use.<\/li>\n<li>Harass, threaten, or bully other users.<\/li>\n<li>Pretend to be someone else, or use someone else’s school email.<\/li>\n<li>Send spam, collect other users’ information, or try to break or hack TermNest.<\/li>\n<\/ul>\n<h2 id=\"terms-photos\">11. Your photos<\/h2>\n<ul>\n<li><strong>You own your photos.<\/strong> Uploading them to TermNest doesn’t change that.<\/li>\n<li><strong>You give TermNest permission to show them.<\/strong> When you upload a photo, you let TermNest display, resize, and crop it on our website and app to show your listing or profile. This permission is free and non-exclusive, so you can still use your photos anywhere else. It ends when you delete the photo or your account.<\/li>\n<li><strong>Only upload photos you have the right to use,<\/strong> like photos you took yourself. Don’t upload photos of other people without their permission.<\/li>\n<\/ul>\n<p><strong>Think a photo is being misused?<\/strong> If someone uploaded your photo without permission, or a photo doesn’t match the place, tell us. In the app, go to <strong>Profile → Help &amp; safety → Chat with support<\/strong>, or email <a href=\"mailto:hello@termnest.app\">hello@termnest.app<\/a>. We’ll review it and remove photos that break these rules.<\/p>\n<h2 id=\"terms-not-advice\">12. General information, not legal advice<\/h2>\n<p>The “Can I sublet?” quiz, the landlord approval request, and the sublease agreement template are <strong>general information<\/strong> to help you get started. They are <strong>not legal or real estate advice<\/strong>, and TermNest is not a law firm or real estate broker.<\/p>\n<p>Every lease is different. Read your own lease carefully. If you’re not sure about something, ask a lawyer or your school’s student legal services, if it has them.<\/p>\n<h2 id=\"terms-partners\">13. Partner services<\/h2>\n<p>TermNest may offer optional perks from partner companies, like storage, moving help, furniture rental, or renters insurance. Perks are free for students. Partners pay TermNest a commission; students never do. If you choose one:<\/p>\n<ul>\n<li>Your agreement for that service is with the partner, not with TermNest.<\/li>\n<li>The partner is responsible for its own services, prices, and terms.<\/li>\n<li>TermNest doesn’t guarantee partner services and isn’t responsible for problems with them.<\/li>\n<\/ul>\n<p>Our <button type=\"button\" class=\"link\" data-action=\"legal\" data-to=\"privacy\">Privacy Policy<\/button> explains what we share with partners, and only when you choose a perk.<\/p>\n<h2 id=\"terms-notifications\">14. Emails and notifications<\/h2>\n<p>By creating an account, you agree that TermNest can send you emails and app notifications about your account. These include verification codes, messages, booking and payment updates, receipts, safety alerts, and changes to these terms.<\/p>\n<p>You can turn off app notifications in <strong>Profile → Notifications<\/strong>. We’ll still send the emails we need to run your account. You can unsubscribe from any promotional emails at any time.<\/p>\n<h2 id=\"terms-removal\">15. Removing listings and suspending accounts<\/h2>\n<p>We may remove any listing, message, or photo, and we may suspend or close any account, if we believe it breaks these terms, puts someone at risk, or hurts TermNest. When we can, we’ll tell you why. You can close your account at any time. Fees you already owe are still due after your account is closed.<\/p>\n<h2 id=\"terms-as-is\">16. TermNest is provided “as is”<\/h2>\n<p>We work hard to make TermNest useful and safe, but we provide it <strong>“as is”<\/strong> and <strong>“as available.”<\/strong> We don’t promise that TermNest will always work, be free of errors, or be available at any given time. To the fullest extent the law allows, we make no promises about TermNest beyond what is written in these terms.<\/p>\n<h2 id=\"terms-liability\">17. Limits on our responsibility<\/h2>\n<p>To the fullest extent the law allows:<\/p>\n<ul>\n<li>TermNest is not responsible for anything that happens between users, including problems with a room, a sublease, rent, a deposit, damage, or someone’s behavior.<\/li>\n<li>TermNest is not responsible for indirect losses, like lost money, lost housing, or lost opportunities.<\/li>\n<li>If TermNest is found responsible for any loss, the most we will owe you is the amount you paid TermNest in the 12 months before the problem happened.<\/li>\n<\/ul>\n<h2 id=\"terms-indemnity\">18. Protecting TermNest (indemnification)<\/h2>\n<p>You agree to <strong>indemnify and hold TermNest harmless<\/strong>. This means that if someone makes a claim against TermNest because of your listings, your subleases, or the way you act, you will cover the cost. That includes claims, damages, losses, and legal costs such as lawyers’ fees.<\/p>\n<h2 id=\"terms-arbitration\">19. Disputes: arbitration and no class actions<\/h2>\n<p><strong>Please read this section carefully. It affects your legal rights.<\/strong><\/p>\n<ul>\n<li><strong>Talk to us first.<\/strong> If you have a problem with TermNest, email <a href=\"mailto:hello@termnest.app\">hello@termnest.app<\/a>. We’ll try to fix it with you within 30 days.<\/li>\n<li><strong>Arbitration instead of court.<\/strong> If we can’t fix it, you and TermNest agree to settle the dispute through binding <strong>individual arbitration<\/strong>. A neutral arbitrator decides the case instead of a judge or jury. The arbitration will be run by the American Arbitration Association under its Consumer Arbitration Rules, and can happen online, by phone, or in Miami-Dade County, Florida.<\/li>\n<li><strong>Small claims court is still OK.<\/strong> Either side can take a dispute to small claims court instead, if it qualifies.<\/li>\n<li><strong>No class actions.<\/strong> You and TermNest can each bring claims only for yourselves, not as part of a class action, class arbitration, or any group or representative case.<\/li>\n<li><strong>You can opt out.<\/strong> If you don’t want this section to apply to you, email <a href=\"mailto:hello@termnest.app\">hello@termnest.app<\/a> within 30 days of creating your account and say you want to opt out of arbitration. Opting out won’t affect anything else.<\/li>\n<\/ul>\n<p>If the no-class-actions rule can’t be enforced for a particular claim, that claim will go to court instead of arbitration.<\/p>\n<h2 id=\"terms-law\">20. Florida law<\/h2>\n<p>These terms are governed by the laws of the State of Florida, without regard to its conflict of law rules. Any dispute that doesn’t go to arbitration (for example, a small claims case, or if you opted out) will be handled in the state or federal courts in Miami-Dade County, Florida.<\/p>\n<h2 id=\"terms-changes\">21. Changes to these terms<\/h2>\n<p>We may update these terms from time to time. When we do, we’ll change the date at the top. If a change is important, we’ll tell you in the app or by email before it takes effect. If you keep using TermNest after a change, you agree to the new terms.<\/p>\n<h2 id=\"terms-general\">22. Other legal terms<\/h2>\n<ul>\n<li><strong>If one part doesn’t hold up (severability).<\/strong> If a court or arbitrator decides that any part of these terms can’t be enforced, that part will be changed only as much as needed, and the rest of the terms still apply.<\/li>\n<li><strong>The whole agreement (entire agreement).<\/strong> These terms, our <button type=\"button\" class=\"link\" data-action=\"legal\" data-to=\"privacy\">Privacy Policy<\/button>, and any extra terms we show you for a specific feature, like Boost, are the entire agreement between you and TermNest about using TermNest. They replace any earlier agreements or promises about it.<\/li>\n<li><strong>No waiver.<\/strong> If we don’t enforce part of these terms right away, we can still enforce it later.<\/li>\n<\/ul>\n<h2 id=\"terms-contact\">23. Contact us<\/h2>\n<p>Questions about these terms? Email <a href=\"mailto:hello@termnest.app\">hello@termnest.app<\/a>.<\/p>"
+ },
+ "privacy": {
+  "title": "Privacy Policy",
+  "html": "<div class=\"legal-sample\"><strong>Sample terms for a student project prototype.<\/strong> TermNest is a class project, not a real company yet. These terms show how TermNest would work. They have not been reviewed by a lawyer and are not a binding legal agreement.<\/div>\n<p class=\"legal-date\">Last updated: November 16, 2026<\/p>\n<p>This policy explains what information TermNest collects, how we use it, and the choices you have. It works together with our <button type=\"button\" class=\"link\" data-action=\"legal\" data-to=\"terms\">Terms of Use<\/button>.<\/p>\n<h2 id=\"privacy-short\">1. The short version<\/h2>\n<ul>\n<li>We collect what we need to run TermNest and keep students safe.<\/li>\n<li><strong>We never sell your data.<\/strong><\/li>\n<li>We only share it with storage, moving, furniture rental, or insurance partners if you choose one of their perks.<\/li>\n<li>You can delete your account and your data at any time.<\/li>\n<\/ul>\n<h2 id=\"privacy-collect\">2. What we collect<\/h2>\n<ul>\n<li><strong>Your name and .edu email<\/strong>, to create your account and confirm that you’re a student.<\/li>\n<li><strong>Your profile<\/strong>, like your school, year, and anything you choose to add about yourself.<\/li>\n<li><strong>Roommate preferences<\/strong>, like your sleep schedule, cleanliness, and guests, if you choose to answer them.<\/li>\n<li><strong>Messages<\/strong> you send and receive in TermNest.<\/li>\n<li><strong>Listing details and photos<\/strong> you post.<\/li>\n<li><strong>Payment information<\/strong>, like your card. This is collected and stored by a third-party payment processor, not by TermNest. We only see basic details, like the last 4 digits of your card, so you can tell your cards apart.<\/li>\n<\/ul>\n<h2 id=\"privacy-use\">3. How we use it<\/h2>\n<ul>\n<li>To create your account and verify that you’re a student.<\/li>\n<li>To show your listings and profile to other verified students.<\/li>\n<li>To suggest roommate matches based on your preferences.<\/li>\n<li>To deliver your messages and booking updates.<\/li>\n<li>To charge fees and hold rent until move-in, through our payment processor.<\/li>\n<li>To keep TermNest safe, for example by finding fake listings and scams.<\/li>\n<li>To answer your questions and improve TermNest.<\/li>\n<\/ul>\n<h2 id=\"privacy-sell\">4. We never sell your data<\/h2>\n<p>TermNest does not sell, rent, or trade your personal information. Not to advertisers, not to landlords, not to anyone.<\/p>\n<h2 id=\"privacy-share\">5. When we share it<\/h2>\n<p>We only share your information in these cases:<\/p>\n<ul>\n<li><strong>With other students,<\/strong> when you use TermNest. Students can see your listings, your public profile, and the messages you send them. Your email and phone number are not shown.<\/li>\n<li><strong>With our payment processor,<\/strong> so it can charge fees and hold rent.<\/li>\n<li><strong>With storage, moving, furniture rental, and insurance partners, only if you choose one of their perks.<\/strong> We share just what they need to help you, like your name, email, move dates, and the address of the room for renters insurance. If you don’t choose a perk, they get nothing.<\/li>\n<li><strong>If the law requires it,<\/strong> or to protect someone’s safety.<\/li>\n<\/ul>\n<h2 id=\"privacy-security\">6. Keeping it safe<\/h2>\n<p>We use reasonable security measures to protect your information. No system is perfectly secure, so please keep your school email secure and never share your verification codes.<\/p>\n<h2 id=\"privacy-delete\">7. Deleting your account and data<\/h2>\n<p>You can ask us to delete your account and your data at any time:<\/p>\n<ul>\n<li>In the app, go to <strong>Profile → Help &amp; safety → Chat with support<\/strong> and ask to delete your account.<\/li>\n<li>Or email <a href=\"mailto:hello@termnest.app\">hello@termnest.app<\/a> from your school email.<\/li>\n<\/ul>\n<p>We’ll delete your account, profile, preferences, messages, and listings within 30 days. We may keep a small amount of information when the law requires it, like records of payments, or to finish an open sublease or fee.<\/p>\n<h2 id=\"privacy-age\">8. Students only, 18 and older<\/h2>\n<p>TermNest is only for students who are 18 or older. We don’t knowingly collect information from anyone younger. If we learn that we have, we’ll delete it.<\/p>\n<h2 id=\"privacy-changes\">9. Changes to this policy<\/h2>\n<p>If we change this policy, we’ll update the date at the top. If a change is important, we’ll tell you in the app or by email first.<\/p>\n<h2 id=\"privacy-contact\">10. Contact us<\/h2>\n<p>Questions about your privacy? Email <a href=\"mailto:hello@termnest.app\">hello@termnest.app<\/a>.<\/p>"
+ }
+};
+/* LEGAL:END */
+
 const INFO = {
   protection:['Rent protection & payments',`
     <ol class="steps">
-      <li><strong>You request to book.</strong> Your first month’s rent is paid into TermNest, not to the host.</li>
-      <li><strong>We hold it safely</strong> until move-in day. The host can see it’s there.</li>
-      <li><strong>You move in and check in</strong> in the app within 24 hours. Then the rent is released to the host.</li>
-      <li><strong>Something wrong?</strong> Report it within 24 hours and we pause the payment while we help.</li>
+      <li><strong>Reserved.</strong> You pay your first month’s rent in the app. It goes to our third-party payment processor, not to the host.</li>
+      <li><strong>Lease signed.</strong> The landlord approves the sublease through TermNest, and you see the approval in the app. Landlords never contact you directly. Then you both sign the sublease. The processor holds the rent until move-in day, and the host can see it’s there.</li>
+      <li><strong>Moved in.</strong> On move-in day, take your move-in photos and confirm the room in the app.</li>
+      <li><strong>Payment released.</strong> When you confirm, the processor pays the host. If you don’t confirm or report a problem, it’s released automatically 24 hours after move-in.</li>
+      <li><strong>Something wrong?</strong> Report it instead of confirming, within 24 hours of move-in. The payment stays held while we help.</li>
     </ol>
     <div class="summary"><div><dt>Payment method</dt><dd>Not added yet</dd></div><div><dt>Rent currently held</dt><dd>$0</dd></div></div>
     <button class="btn btn-primary" data-action="closeSheet">Got it</button>`],
@@ -2150,7 +2503,8 @@ const INFO = {
     <ul class="steps">
       <li>Only pay inside TermNest. Never use Zelle, Venmo, cash or wire.</li>
       <li>Ask for a video tour before you book.</li>
-      <li>Every user has a verified .edu email. Report anyone who asks to move off the app.</li>
+      <li>Every user has a verified .edu email. TermNest verifies the email only and doesn’t do background checks.</li>
+      <li>Report anyone who asks to move off the app.</li>
     </ul>
     <button class="btn btn-primary" data-action="support">${ic('chat')} Chat with support</button>
     <button class="btn btn-ghost" data-action="closeSheet">Close</button>`]
@@ -2165,6 +2519,11 @@ const actions = {
   open:el=>go('detail',{id:+el.dataset.id, photo:0}),
   toggleMode:()=>{ state.mode = state.mode==='login'?'signup':'login'; render(); },
   resend:()=>toast(`New code sent to ${state.user.email}`),
+  legal:el=>{   // open the Terms of Use or Privacy Policy; keep anything typed on the sign up form
+    const n=document.getElementById('fName'), m=document.getElementById('fEmail');
+    if(n) state.user.name=n.value; if(m) state.user.email=m.value;
+    go(el.dataset.to);
+  },
   toggleSave:el=>{
     const id=+el.dataset.id, on=!state.saved.has(id);
     on?state.saved.add(id):state.saved.delete(id);
@@ -2196,7 +2555,7 @@ const actions = {
   swapDetails:el=>{
     const m=findSwap(el.dataset.id), first=esc(m.name.split(' ')[0]), sent=state.swapSent.has(m.id);
     openSheet(esc(m.place),`
-      ${photoBox(SWAP_PHOTOS[(m.tone||0)%4],'sheet-photo')}
+      ${photoBox(m.photo,'sheet-photo')}
       <p class="sheet-sub" style="margin-top:12px">${esc(state.swap.city)} · ${esc(m.near)}</p>
       <ul class="facts">
         <li>${ic('bed',20)}${esc(m.type)}</li>
@@ -2292,9 +2651,17 @@ const actions = {
     toast(state.draft.boost?`Boost added · ${money(BOOST_FEE)} due today`:'Boost removed · $0 due today');
   },
   publish:()=>{
-    const d=state.draft, b=d.boost;
+    const d=state.draft, b=d.boost, fee=document.getElementById('feeAgree');
+    if(!setErr(fee,'err-feeAgree',fee.checked?'':`Please agree to the ${money(LISTING_FEE)} success fee to publish your listing.`)){
+      fee.scrollIntoView({block:'center'}); return fee.focus();
+    }
     if(b) d.method=document.querySelector('[name=boostMethod]:checked')?.value||'Debit card ending 4242';
     publishDraft(); toast(b?`Paid ${money(BOOST_FEE)} · published and boosted!`:'Your listing is live');
+  },
+  llApproveBooking:el=>{
+    // Prototype stand-in for the landlord approving inside TermNest (no contact info shared, no messaging)
+    const b=state.bookings[el.dataset.id]; b.step=2; b.llOn=todayISO();
+    render(app.scrollTop); notify('Your landlord approved your sublease');
   },
   openBooking:el=>{ if(!sheetRoot.hidden) closeSheet(); go('booking',{id:+el.dataset.id}); },
   signLease:el=>{
@@ -2316,24 +2683,42 @@ const actions = {
   llChange:()=>{ currentLL().status='none'; render(); },
   llApprove:()=>{ const ll=currentLL(); ll.status='approved'; ll.on=todayISO(); render(); toast(`${ll.name} approved your sublease`); },
   sendLL:()=>{
-    const ll=currentLL(); ll.status='requested'; ll.on=todayISO(); ll.message=document.getElementById('llMsg').value;
+    const ll=currentLL(); ll.status='requested'; ll.on=todayISO();
     closeSheet(); render(); toast(`Approval request sent to ${ll.name}`);
   },
   moveIn:el=>{
-    const l=L(el.dataset.id), first=esc(l.host.name.split(' ')[0]);
-    openSheet('Confirm move-in',`
-      <p style="line-height:1.5;margin-bottom:16px">Does the room match the listing? When you confirm, TermNest releases ${money(l.price)} to ${first}.</p>
-      <button class="btn btn-primary" data-action="confirmMoveIn" data-id="${l.id}">Yes, release payment to ${first}</button>
-      <button class="btn btn-accent" data-action="reportProblem">Something’s wrong</button>
-      <button class="btn btn-ghost" data-action="closeSheet">Not moved in yet</button>`);
+    const id=+el.dataset.id; state.bookings[id].photos ||= [];
+    openSheet('Move-in photo check', moveInBody(id));
+  },
+  movePhoto:el=>{
+    // Simulated camera: marks this spot as photographed and keeps focus on the same button
+    const id=+el.dataset.id, i=+el.dataset.i, b=state.bookings[id];
+    b.photos[i]=true; document.getElementById('sheetBody').innerHTML=moveInBody(id);
+    document.querySelector(`[data-action="movePhoto"][data-i="${i}"]`)?.focus();
+    toast(`${MOVEIN_SPOTS[i]} photo added`);
   },
   confirmMoveIn:el=>{
-    const first=!trust().badges[2].earned;
-    const l=L(el.dataset.id); state.bookings[l.id].step=4; closeSheet(); render();
-    toast(`Payment released to ${l.host.name.split(' ')[0]}${first?' · Badge unlocked: First Sublet Completed!':''}`);
+    const id=+el.dataset.id, b=state.bookings[id], n=MOVEIN_SPOTS.filter((_,i)=>b.photos?.[i]).length;
+    if(n<MOVEIN_SPOTS.length){
+      const e=document.getElementById('mvErr'); e.textContent=`Add all ${MOVEIN_SPOTS.length} photos first (${n} of ${MOVEIN_SPOTS.length} done).`;
+      return document.querySelector('[data-action="movePhoto"]:not(.done)')?.focus();
+    }
+    const firstSublet=!trust().badges[2].earned;
+    b.step=5; b.movedOn=todayISO(); b.paidOn=todayISO(); closeSheet(); render();
+    toast(`Move-in confirmed. Payment released to ${L(id).host.name.split(' ')[0]}${firstSublet?' · Badge unlocked: First Sublet Completed!':''}`);
   },
+  demoReset:()=>{
+    // Put every piece of app data back to how it was on first load, then start at the Welcome screen
+    closeSheet(); hideNotif();
+    Object.keys(state).forEach(k=>delete state[k]);
+    Object.assign(state, structuredClone(INITIAL_STATE));
+    document.documentElement.classList.remove('lg');
+    updateBadge(); go('welcome',{}, {reset:true});
+    toast('Demo reset. Ready to record.');
+  },
+  dismissNotif:()=>hideNotif(),
   reportProblem:()=>setSheet('Payment paused',`
-      <p style="line-height:1.5;margin-bottom:16px">Your rent stays held by TermNest while we sort this out. A support team member will contact you within 1 hour. If the room isn’t as listed, you get a full refund.</p>
+      <p style="line-height:1.5;margin-bottom:16px">Your rent stays held by our payment processor while we sort this out. A support team member will contact you within 1 hour. If the room isn’t as listed, you get a full refund.</p>
       <button class="btn btn-primary" data-action="support">${ic('chat')} Chat with support</button>
       <button class="btn btn-ghost" data-action="closeSheet">Close</button>`),
   messageHost:el=>{ if(!sheetRoot.hidden) closeSheet(); go('chat',{id:threadFor(L(el.dataset.id)).id}); },
@@ -2368,9 +2753,9 @@ const actions = {
         <div><dt>Student</dt><dd>${esc(r.name)}</dd></div>
         <div><dt>Move-in</dt><dd>${fmtLong(l.moveIn)}</dd></div>
         <div><dt>Move-out</dt><dd>${fmtLong(l.moveOut)}</dd></div>
-        <div><dt>Paid to you on move-in day</dt><dd>${money(l.price)}</dd></div>
+        <div><dt>Paid to you when they confirm move-in</dt><dd>${money(l.price)}</dd></div>
       </dl>
-      <div class="protect" style="margin-bottom:16px">${ic('shield',28)}<div><strong>How you get paid</strong>${first}’s first month is held by TermNest now and released to you once they check in on ${fmtShort(l.moveIn)}.</div></div>
+      <div class="protect" style="margin-bottom:16px">${ic('shield',28)}<div><strong>How you get paid</strong>${first}’s first month is held by our payment processor until move-in day and released to you when they confirm move-in on ${fmtShort(l.moveIn)}.</div></div>
       <button class="btn btn-primary" data-action="confirmAccept" data-id="${l.id}" data-i="${el.dataset.i}">Accept request</button>
       <button class="btn btn-ghost" data-action="closeSheet">Not yet</button>`);
   },
@@ -2424,15 +2809,32 @@ document.addEventListener('keydown',e=>{
     else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
   }
 });
+app.addEventListener('change',e=>{
+  if(e.target.id==='fAgree'){   // sign up stays off until the Terms box is checked
+    state.agreeTerms=e.target.checked;
+    const b=document.getElementById('signupBtn'), need=document.getElementById('signupNeed');
+    b.disabled=!state.agreeTerms; need.hidden=state.agreeTerms;
+    if(state.agreeTerms) b.removeAttribute('aria-describedby'); else b.setAttribute('aria-describedby','signupNeed');
+  }
+  if(e.target.id==='feeAgree' && state.draft){
+    state.draft.feeAgree=e.target.checked;
+    if(e.target.checked) setErr(e.target,'err-feeAgree','');
+  }
+});
 app.addEventListener('input',e=>{
   if(e.target.id==='q'){ state.filters.q=e.target.value; renderResults(); }
   if(e.target.name==='sort'){ state.sort=e.target.value; renderResults(); }
+  if(e.target.name==='swTerm'){   // Term Swap: picking a term fills in that term's dates
+    const [a,b]=SWAP_TERMS[e.target.value]||[];
+    if(a){ document.getElementById('swFrom').value=a; document.getElementById('swTo').value=b; }
+  }
 });
 function setErr(input,id,msg){ document.getElementById(id).textContent=msg; input.setAttribute('aria-invalid',msg?'true':'false'); return !msg; }
 app.addEventListener('submit',e=>{
   e.preventDefault(); const f=e.target;
   if(f.id==='signupForm'){
     const nameEl=f.querySelector('#fName'), emailEl=f.querySelector('#fEmail'), email=emailEl.value.trim();
+    if(nameEl && !state.agreeTerms) return f.querySelector('#fAgree').focus();   // sign up needs the Terms box
     let ok=true, firstBad=null;
     if(nameEl){ if(!setErr(nameEl,'fNameErr',nameEl.value.trim()?'':'Enter your first name.')){ ok=false; firstBad=nameEl; } }
     const em = !email ? 'Enter your school email.' : !/^[^\s@]+@([a-z0-9-]+\.)+edu$/i.test(email) ? 'Use a school email that ends in .edu, like you@miami.edu.' : '';
@@ -2458,12 +2860,14 @@ app.addEventListener('submit',e=>{
     const ll=currentLL(); ll.name=n.value.trim(); ll.email=e.value.trim();
     openSheet('Send approval request',`
       <dl class="summary plain">
-        <div><dt>To</dt><dd>${esc(ll.name)}<br>${esc(ll.email)}</dd></div>
-        <div><dt>Subject</dt><dd>Request to sublet my room</dd></div>
+        <div><dt>From</dt><dd>TermNest, on your behalf</dd></div>
+        <div><dt>To</dt><dd>${esc(ll.name)}</dd></div>
+        <div><dt>Subject</dt><dd>Sublet approval request</dd></div>
       </dl>
-      <div class="field"><label for="llMsg">Message (you can edit it)</label>
-        <textarea id="llMsg" rows="12">${esc(llRequestText(ll))}</textarea></div>
-      <button class="btn btn-primary" data-action="sendLL">${ic('send')} Send request</button>
+      <div class="protect" style="margin-bottom:14px">${ic('shield',28)}<div><strong>Your contact info stays private</strong>Your email and phone aren’t shared. Your landlord can only approve or decline in TermNest, and you’ll see the result here.</div></div>
+      <p class="legend" id="llPreviewLbl">What your landlord will see</p>
+      <div class="ll-preview" role="region" aria-labelledby="llPreviewLbl" tabindex="0">${esc(llRequestText(ll))}</div>
+      <button class="btn btn-primary" data-action="sendLL" style="margin-top:16px">${ic('send')} Send request</button>
       <button class="btn btn-ghost" data-action="closeSheet">Not now</button>`);
   }
   if(f.id==='signForm'){
@@ -2505,7 +2909,7 @@ app.addEventListener('submit',e=>{
     state.bookings[l.id]={step:1, method:f.elements.method.value};
     threadFor(l).msgs.push({me:true,text:`Hi ${l.host.name.split(' ')[0]}! I just reserved your room for ${fmtShort(l.moveIn)} – ${fmt(l.moveOut)}.`,time:'Now'});
     go('booking',{id:l.id},{replace:true});
-    toast(`Reserved! ${money(l.price)} is held by TermNest`);
+    toast(`Reserved! ${money(l.price)} is held until move-in day`);
   }
 });
 function submitPost(f){
@@ -2549,6 +2953,8 @@ function fit(){
   document.documentElement.style.setProperty('--s',s.toFixed(3));
 }
 addEventListener('resize',fit); fit();
+// Snapshot of the untouched app, used by "Demo: reset" (works even where a page reload isn't possible)
+const INITIAL_STATE = structuredClone(state);
 updateBadge();
 go('welcome',{}, {reset:true});
 </script>
