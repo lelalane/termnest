@@ -486,16 +486,9 @@ section{padding:72px 0;border-bottom:2px solid var(--ink)}
 .quiz-lease{background:var(--orange-50);border:2px solid var(--ink);border-left:8px solid var(--orange);border-radius:10px;padding:12px 14px;margin:14px 0 0}
 .quiz-r .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
 .letter{margin-top:26px;padding-top:22px;border-top:2px dashed var(--soft)}
-.letter-fields{display:grid;gap:14px;margin:14px 0 18px}
-@media (min-width:640px){.letter-fields{grid-template-columns:1fr 1fr}}
-.letter-fields .wide{grid-column:1/-1}
-.letter-fields label,.letter .f-label{display:block;font-weight:700;margin-bottom:6px}
-.quiz .letter-lang legend{font-family:inherit;font-size:1rem;font-weight:700;margin-bottom:8px}
-.letter-fields input{width:100%;min-height:52px;border:2px solid var(--ink);border-radius:10px;padding:0 12px;font:inherit;background:#fff;color:var(--ink)}
-.letter-fields input:focus-visible,.letter textarea:focus-visible{outline:3px solid var(--green);outline-offset:2px}
-.letter textarea{width:100%;min-height:420px;border:2px solid var(--ink);border-radius:10px;padding:14px;font:inherit;font-size:1rem;line-height:1.5;background:var(--bg);color:var(--ink);resize:vertical}
-.quiz .letter-lang{border:0;margin:0 0 18px;padding:0}
-.letter-copy{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:12px}
+.app-req-list{list-style:none;margin:12px 0 18px;padding:0;display:grid;gap:8px}
+.app-req-list li{display:flex;gap:10px;align-items:flex-start;line-height:1.45}
+.app-req-list svg{flex:none;color:var(--green);margin-top:3px}
 .copy-msg{font-weight:700;color:var(--green)}
 .quiz-again{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
 
@@ -759,7 +752,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <button class="nav-dd" type="button" aria-expanded="false" aria-controls="ddSublet">Sublet your place<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <ul class="nav-sub" id="ddSublet" aria-label="Sublet your place">
             <li><a href="#subleasing"><span class="dd-t">I’m subleasing my place</span><span class="dd-d">How to sublet your room while you’re away</span></a></li>
-            <li><a href="#quizH"><span class="dd-t">Can I sublet? Quiz</span><span class="dd-d">3 questions, plus a landlord request to copy</span></a></li>
+            <li><a href="#quizH"><span class="dd-t">Can I sublet? Quiz</span><span class="dd-d">3 questions, then request approval in the app</span></a></li>
             <li><a href="#swap"><span class="dd-t">Term Swap</span><span class="dd-d">Trade rooms with a student from another city</span></a></li>
           </ul>
         </li>
@@ -862,7 +855,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <li><strong>Verify your school email</strong><span>Sign up with your miami.edu email and confirm the code. Every student you talk to is verified too.</span></li>
         <li><strong>Search by your dates</strong><span>Each room shows how many of your days it covers, the commute to campus, and a fair price tag. You can <a href="#browse">browse sublets</a> right now, no account needed.</span></li>
         <li><strong>Message and match</strong><span>Chat in the app. Add roommate preferences if you want a match score.</span></li>
-        <li><strong>Reserve and sign</strong><span>Pay in the app and sign the sublease. Your rent is held, not sent to the host yet.</span></li>
+        <li><strong>Reserve and sign</strong><span>Pay in the app. The host’s landlord approves the sublease through TermNest, and you see the approval in the app. Then you both sign. Your rent is held, not sent to the host yet.</span></li>
         <li><strong>Move in and check</strong><span>Take move-in photos and confirm the room is as listed. Then the rent is released to the host.</span></li>
       </ol>
       <div class="aud-side">
@@ -907,7 +900,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Landlord approval and sublease agreement in the app</span></li>
           <li><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><span>Move-in photos saved with the booking</span></li>
         </ul>
-        <p class="cost"><strong>Cost to you: $15,</strong> only after a subletter signs. Optional $5 Boost puts your listing at the top of search. It’s paid upfront and non-refundable.</p>
+        <p class="cost"><strong>Cost to you: $15 success fee,</strong> only after a subletter signs. Optional $5 Boost puts your listing at the top of search. It’s paid upfront and non-refundable.</p>
         <a class="btn btn-primary" href="#calc">See how much you could save</a>
         <a class="btn btn-ghost" href="app/index.html">Post your room in the app</a>
       </div>
@@ -916,7 +909,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
     <div class="quiz-layout">
       <div class="quiz-intro">
         <h2 class="steps-h" id="quizH">Can you sublet your place?</h2>
-        <p class="lead" style="margin-top:8px">Answer 3 quick questions to find out what to do first. At the end, you’ll get a landlord approval request you can copy and send.</p>
+        <p class="lead" style="margin-top:8px">Answer 3 quick questions to find out what to do first. At the end, you’ll see how to request your landlord’s approval through TermNest.</p>
       </div>
       <div class="quiz" id="quiz" aria-labelledby="quizH" role="region" data-i18n-skip>
         <noscript><p>This check needs JavaScript. In short: if you rent from a landlord, get their approval in writing before you sublet.</p></noscript>
@@ -1005,7 +998,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
           <div><dt>TermNest success fee</dt><dd>− $15</dd></div>
           <div><dt>You keep</dt><dd id="bKeep">$4,385</dd></div>
         </dl>
-        <p class="small">The $15 fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.</p>
+        <p class="small">The $15 success fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.</p>
         <a class="btn" href="app/index.html">Post your room in the app</a>
       </div>
     </div>
@@ -1239,7 +1232,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </div>
       <p class="s-text">You never send rent straight to a stranger. Our third-party payment processor holds your first month’s rent until move-in day, when you’re in the room and happy with it.</p>
       <ol class="hold-track">
-        <li><strong>Reserved</strong><span>You pay the first month in the app. Our payment processor holds it until move-in day.</span></li>
+        <li><strong>Reserved</strong><span>You pay the first month in the app. Our payment processor holds it until move-in day. The landlord approves the sublease through TermNest, and you see the approval in the app.</span></li>
         <li class="held-step"><strong>Lease signed</strong><span>You and the host sign the sublease in the app. The host can see the rent is paid, but can’t take it out yet.</span></li>
         <li><strong>Moved in</strong><span>On move-in day, you see the room in person and take your move-in photos.</span></li>
         <li><strong>Payment released</strong><span>After you confirm move-in, the payment processor pays the host.</span></li>
@@ -1333,7 +1326,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
   <div class="wrap">
     <span class="eyebrow">Pricing and FAQ</span>
     <h1 class="sec-h" id="priceH" tabindex="-1">Simple pricing. No surprises.</h1>
-    <p class="lead">Looking is always free. Subleasers pay the $15 success fee only when a sublease is signed.</p>
+    <p class="lead">Looking is always free. TermNest makes money three ways: the $15 success fee, charged only after a sublease is signed; the optional $5 Boost; and commissions from our storage and moving partners.</p>
     <div class="price-grid">
       <div class="price-card">
         <span class="who">For students looking</span>
@@ -1353,7 +1346,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <span class="when">Only after a subletter signs</span>
         <ul>
           <li>Posting your room is free</li>
-          <li>No subletter, no fee</li>
+          <li>No subletter, no success fee</li>
           <li>Landlord approval and sublease agreement included</li>
         </ul>
       </div>
@@ -1392,7 +1385,7 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
       </details>
       <details>
         <summary>How does “rent held until move-in” work?</summary>
-        <p>When you reserve, you pay the first month in the app. Our third-party payment processor holds it until move-in day. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.</p>
+        <p>When you reserve, you pay the first month in the app. Our third-party payment processor holds it until move-in day. The landlord approves the sublease through TermNest, and you see the approval in the app. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.</p>
       </details>
       <details>
         <summary>When do I pay the $15 success fee?</summary>
@@ -1403,8 +1396,12 @@ details p{padding:0 18px 18px;color:var(--ink-2)}
         <p>Boost puts your listing at the top of search results and adds a Boost tag. It’s optional, costs $5, is charged upfront when you turn it on, and isn’t refundable.</p>
       </details>
       <details>
+        <summary>How does TermNest make money?</summary>
+        <p>Three ways, and none of them cost students who are looking for a place: the $15 success fee, which subleasers pay only after a sublease is signed with someone they met on TermNest; the optional $5 Boost, paid upfront by subleasers who want their listing at the top of search; and commissions from our storage and moving partners when students use a partner perk. Perks are free for students. Landlords don’t pay TermNest. They only approve subleases through it.</p>
+      </details>
+      <details>
         <summary>Do I need my landlord’s permission?</summary>
-        <p>Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement.</p>
+        <p>Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement. Your landlord approves through TermNest and never contacts students directly. Students see the approval in the app.</p>
       </details>
       <details>
         <summary>What is Term Swap?</summary>
@@ -1816,7 +1813,7 @@ window.I18N = (() => {
     "See rooms near campus, no account needed": "Habitaciones cerca del campus, sin crear cuenta",
     "How to sublet your room while you’re away": "Cómo subarrendar tu habitación mientras no estás",
     "Can I sublet? Quiz": "Test: ¿puedo subarrendar?",
-    "3 questions, plus a landlord request to copy": "3 preguntas y una solicitud para tu propietario lista para copiar",
+    "3 questions, then request approval in the app": "3 preguntas y luego pide la autorización en la app",
     "Trade rooms with a student from another city": "Intercambia habitación con un estudiante de otra ciudad",
     "What the app does for you": "Lo que la app hace por ti",
     "How we protect students and their rent": "Cómo protegemos a los estudiantes y su alquiler",
@@ -1889,7 +1886,7 @@ window.I18N = (() => {
     "Message and match": "Chatea y mira tu compatibilidad",
     "Chat in the app. Add roommate preferences if you want a match score.": "Chatea en la app. Agrega tus preferencias de convivencia si quieres ver qué tan compatibles son.",
     "Reserve and sign": "Reserva y firma",
-    "Pay in the app and sign the sublease. Your rent is held, not sent to the host yet.": "Paga en la app y firma el subarriendo. Tu alquiler queda retenido; todavía no se le envía al anfitrión.",
+    "Pay in the app. The host’s landlord approves the sublease through TermNest, and you see the approval in the app. Then you both sign. Your rent is held, not sent to the host yet.": "Paga en la app. El propietario del anfitrión aprueba el subarriendo a través de TermNest y tú ves la aprobación en la app. Luego ambos firman. Tu alquiler queda retenido, todavía no se le envía al anfitrión.",
     "Move in and check": "Múdate y revisa",
     "Take move-in photos and confirm the room is as listed. Then the rent is released to the host.": "Toma fotos al mudarte y confirma que la habitación es como en el anuncio. Entonces el alquiler se le libera al anfitrión.",
     "What you get": "Lo que obtienes",
@@ -1925,7 +1922,7 @@ window.I18N = (() => {
     "Students looking right now": "Estudiantes que buscan ahora mismo",
     "Verified UM students who need a short-term place. In the app, you’ll see everyone whose dates match your room, plus a roommate match.": "Estudiantes verificados de UM que necesitan un lugar temporal. En la app verás a todos los que coinciden con las fechas de tu habitación, y qué tan compatibles son para convivir.",
     "Can you sublet your place?": "¿Puedes subarrendar tu lugar?",
-    "Answer 3 quick questions to find out what to do first. At the end, you’ll get a landlord approval request you can copy and send.": "Responde 3 preguntas rápidas para saber qué hacer primero. Al final tendrás una solicitud de autorización para tu propietario, lista para copiar y enviar.",
+    "Answer 3 quick questions to find out what to do first. At the end, you’ll see how to request your landlord’s approval through TermNest.": "Responde 3 preguntas rápidas para saber qué hacer primero. Al final verás cómo pedirle la autorización a tu propietario a través de TermNest.",
     "See who matches your dates in the app": "Mira en la app quién coincide con tus fechas",
     "Going to another city for a semester or the summer? Some students from that city are coming to Miami at the same time. Swap places: you stay in their room, they stay in yours.": "¿Te vas a otra ciudad por un semestre o por el verano? Hay estudiantes de esa ciudad que vienen a Miami en las mismas fechas. Intercambien lugares: tú te quedas en su habitación y ellos en la tuya.",
     "Pick the city you’re going to and your term.": "Elige la ciudad a la que vas y el período.",
@@ -1958,7 +1955,7 @@ window.I18N = (() => {
     "Rent while you’re away": "Alquiler mientras no estás",
     "TermNest success fee": "Comisión de éxito de TermNest",
     "You keep": "Te quedas con",
-    "The $15 fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.": "La tarifa de $15 se cobra solo cuando alguien firma el subarriendo. Si nadie firma, no pagas nada. Este cálculo supone que tu subarrendatario paga el alquiler completo de cada mes que estés fuera.",
+    "The $15 success fee is charged only after a subletter signs. If nobody signs, you pay nothing. This estimate assumes your subletter pays your full rent for every month you’re away.": "La comisión de éxito de $15 se cobra solo cuando alguien firma el subarriendo. Si nadie firma, no pagas nada. Este cálculo supone que tu subarrendatario paga el alquiler completo de cada mes que estés fuera.",
     "Enter your rent as a number between $1 and $20,000.": "Ingresa tu alquiler como un número entre $1 y $20,000.",
     "Enter a whole number of months from 1 to 12.": "Ingresa un número entero de meses, de 1 a 12.",
     "Sublets near UM": "Subarriendos cerca de UM",
@@ -2041,7 +2038,7 @@ window.I18N = (() => {
     "For your safety, messaging and booking happen in the TermNest app.": "Por tu seguridad, los mensajes y las reservas se hacen en la app de TermNest.",
     "For your safety, messaging happens in the TermNest app, not by email or text. Open the app to send your first message.": "Por tu seguridad, los mensajes se envían en la app de TermNest, no por correo ni por mensaje de texto. Abre la app para enviar tu primer mensaje.",
     "Reserve this place in the TermNest app": "Reserva este lugar en la app de TermNest",
-    "For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in and how you both sign the sublease.": "Por tu seguridad, las reservas se hacen en la app de TermNest. Así tu alquiler queda retenido hasta la mudanza y ambos firman el subarriendo.",
+    "For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in, how you see the landlord’s approval, and how you both sign the sublease. Landlords approve through TermNest and never contact you directly.": "Por tu seguridad, las reservas se hacen en la app de TermNest. Así tu alquiler queda retenido hasta la mudanza, ves la aprobación del propietario y ambos firman el subarriendo. Los propietarios aprueban a través de TermNest y nunca te contactan directamente.",
     "Everyone you talk to is a verified student": "Todos con quienes hablas son estudiantes verificados",
     "Your rent is held until move-in": "Tu alquiler queda retenido hasta la mudanza",
     "You both sign the sublease agreement in the app": "Ambos firman el contrato de subarriendo en la app",
@@ -2095,7 +2092,7 @@ window.I18N = (() => {
     "Rent is held until move-in": "El alquiler queda retenido hasta la mudanza",
     "You never send rent straight to a stranger. Our third-party payment processor holds your first month’s rent until move-in day, when you’re in the room and happy with it.": "Nunca le mandas el alquiler directamente a un desconocido. Nuestro procesador de pagos externo retiene el primer mes hasta el día de la mudanza, cuando ya estás en la habitación y conforme con ella.",
     "Reserved": "Reservado",
-    "You pay the first month in the app. Our payment processor holds it until move-in day.": "Pagas el primer mes en la app. Nuestro procesador de pagos lo retiene hasta el día de la mudanza.",
+    "You pay the first month in the app. Our payment processor holds it until move-in day. The landlord approves the sublease through TermNest, and you see the approval in the app.": "Pagas el primer mes en la app. Nuestro procesador de pagos lo retiene hasta el día de la mudanza. El propietario aprueba el subarriendo a través de TermNest y tú ves la aprobación en la app.",
     "Lease signed": "Contrato firmado",
     "You and the host sign the sublease in the app. The host can see the rent is paid, but can’t take it out yet.": "Tú y el anfitrión firman el subarriendo en la app. El anfitrión ve que el alquiler está pagado, pero todavía no puede retirarlo.",
     "Moved in": "Mudanza hecha",
@@ -2147,7 +2144,7 @@ window.I18N = (() => {
     "Contact TermNest support. A team member replies within 1 hour in the app.": "Contacta al soporte de TermNest. Alguien del equipo te responde en menos de 1 hora en la app.",
     "Contact TermNest": "Contactar a TermNest",
     "Simple pricing. No surprises.": "Precios simples. Sin sorpresas.",
-    "Looking is always free. Subleasers pay the $15 success fee only when a sublease is signed.": "Buscar siempre es gratis. Quienes subarriendan pagan la comisión de éxito de $15 solo cuando se firma un subarriendo.",
+    "Looking is always free. TermNest makes money three ways: the $15 success fee, charged only after a sublease is signed; the optional $5 Boost; and commissions from our storage and moving partners.": "Buscar siempre es gratis. TermNest gana dinero de tres formas: la comisión de éxito de $15, que se cobra solo después de que se firma un subarriendo; el Boost opcional de $5; y las comisiones de nuestros socios de almacenamiento y mudanzas.",
     "For students looking": "Para quien busca",
     "Find a place": "Buscar lugar",
     "Always free": "Siempre gratis",
@@ -2158,7 +2155,7 @@ window.I18N = (() => {
     "one time": "pago único",
     "Only after a subletter signs": "Solo cuando alguien firma el subarriendo",
     "Posting your room is free": "Publicar tu habitación es gratis",
-    "No subletter, no fee": "Si nadie subarrienda, no hay tarifa",
+    "No subletter, no success fee": "Si nadie subarrienda, no hay comisión de éxito",
     "Landlord approval and sublease agreement included": "Incluye la aprobación del propietario y el contrato de subarriendo",
     "Optional for hosts": "Opcional para anfitriones",
     "Boost": "Boost",
@@ -2172,13 +2169,13 @@ window.I18N = (() => {
     "Who can use TermNest?": "¿Quién puede usar TermNest?",
     "Students with a .edu school email. TermNest is built for University of Miami students, and Term Swap students from other schools verify the same way. You confirm a code sent to that email before you can post or message. We verify the email only and don’t do background checks.": "Estudiantes con correo universitario .edu. TermNest está pensado para estudiantes de la Universidad de Miami, y los estudiantes de otras universidades que usan Term Swap se verifican igual. Antes de publicar o enviar mensajes, confirmas un código que llega a ese correo. Solo verificamos el correo y no revisamos antecedentes.",
     "How does “rent held until move-in” work?": "¿Cómo funciona eso de “alquiler retenido hasta la mudanza”?",
-    "When you reserve, you pay the first month in the app. Our third-party payment processor holds it until move-in day. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.": "Al reservar, pagas el primer mes en la app y nuestro procesador de pagos externo lo retiene hasta el día de la mudanza. Cuando te mudas y confirmas que la habitación es como en el anuncio, el dinero le llega al anfitrión. Si no es como en el anuncio, recibes un reembolso total.",
+    "When you reserve, you pay the first month in the app. Our third-party payment processor holds it until move-in day. The landlord approves the sublease through TermNest, and you see the approval in the app. After you move in and confirm the room is as listed, the money goes to the host. If the room isn’t as listed, you get a full refund.": "Al reservar, pagas el primer mes en la app y nuestro procesador de pagos externo lo retiene hasta el día de la mudanza. El propietario aprueba el subarriendo a través de TermNest y tú ves la aprobación en la app. Cuando te mudas y confirmas que la habitación es como en el anuncio, el dinero le llega al anfitrión. Si no es como en el anuncio, recibes un reembolso total.",
     "When do I pay the $15 success fee?": "¿Cuándo pago la comisión de éxito de $15?",
     "Only after a subletter signs the sublease agreement for your room. Posting is free, and if nobody signs, you pay nothing.": "Solo cuando alguien firma el contrato de subarriendo de tu habitación. Publicar es gratis y, si nadie firma, no pagas nada.",
     "What does the $5 Boost do?": "¿Para qué sirve el Boost de $5?",
     "Boost puts your listing at the top of search results and adds a Boost tag. It’s optional, costs $5, is charged upfront when you turn it on, and isn’t refundable.": "Boost pone tu anuncio primero en los resultados de búsqueda y le agrega la etiqueta Boost. Es opcional, cuesta $5, se cobra por adelantado al activarlo y no se reembolsa.",
     "Do I need my landlord’s permission?": "¿Necesito el permiso de mi propietario?",
-    "Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement.": "La mayoría de los contratos de alquiler lo exigen. Con TermNest le envías la solicitud a tu propietario desde la app, y su aprobación queda en el contrato de subarriendo.",
+    "Most leases require it. TermNest lets you send a request to your landlord from the app and adds their approval to the sublease agreement. Your landlord approves through TermNest and never contacts students directly. Students see the approval in the app.": "La mayoría de los contratos de alquiler lo exigen. Con TermNest le envías la solicitud a tu propietario desde la app, y su aprobación queda en el contrato de subarriendo. Tu propietario aprueba a través de TermNest y nunca contacta directamente a los estudiantes. Los estudiantes ven la aprobación en la app.",
     "What is Term Swap?": "¿Qué es Term Swap?",
     "If you’re leaving Miami for a semester, Term Swap finds a student coming to Miami from the place you’re going, so you can trade rooms. You each keep paying your own rent, so no money changes hands.": "Si te vas de Miami por un semestre, Term Swap te encuentra un estudiante que viene a Miami desde el lugar al que vas, para que intercambien habitaciones. Cada uno sigue pagando su propio alquiler, así que no hay dinero de por medio.",
     "Try a Term Swap search": "Prueba una búsqueda en Term Swap",
@@ -2245,7 +2242,9 @@ window.I18N = (() => {
     "Great price": "Muy buen precio",
     "Fair price": "Precio justo",
     "Above average": "Sobre el promedio",
-    "Compared with similar rooms nearby": "Comparado con habitaciones parecidas de la zona"
+    "Compared with similar rooms nearby": "Comparado con habitaciones parecidas de la zona",
+    "How does TermNest make money?": "¿Cómo gana dinero TermNest?",
+    "Three ways, and none of them cost students who are looking for a place: the $15 success fee, which subleasers pay only after a sublease is signed with someone they met on TermNest; the optional $5 Boost, paid upfront by subleasers who want their listing at the top of search; and commissions from our storage and moving partners when students use a partner perk. Perks are free for students. Landlords don’t pay TermNest. They only approve subleases through it.": "De tres formas, y ninguna le cuesta nada a quien busca lugar: la comisión de éxito de $15, que pagan quienes subarriendan solo después de firmar un subarriendo con alguien que conocieron en TermNest; el Boost opcional de $5, que pagan por adelantado quienes quieren su anuncio primero en las búsquedas; y las comisiones de nuestros socios de almacenamiento y mudanzas cuando los estudiantes usan un beneficio. Los beneficios son gratis para los estudiantes. Los propietarios no le pagan a TermNest. Solo aprueban subarriendos a través de la plataforma."
   };
   let lang = 'en';
   try {
@@ -2773,7 +2772,7 @@ window.TNBrowse = (() => {
       dlgP.textContent = t('For your safety, messaging happens in the TermNest app, not by email or text. Open the app to send your first message.');
     } else {
       dlgH.textContent = t('Reserve this place in the TermNest app');
-      dlgP.textContent = t('For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in and how you both sign the sublease.');
+      dlgP.textContent = t('For your safety, booking happens in the TermNest app. That’s how your rent is held until move-in, how you see the landlord’s approval, and how you both sign the sublease. Landlords approve through TermNest and never contact you directly.');
     }
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
   }
@@ -2987,7 +2986,7 @@ window.TNBrowse = (() => {
 })();
 
 // "Can you sublet your place?" quiz on the I'm subleasing page: 3 questions, then an answer, next steps,
-// and a landlord approval request to copy. Every string has English and Spanish side by side: [English, Spanish].
+// and a link to request landlord approval in the app. Every string has English and Spanish side by side: [English, Spanish].
 // General guidance only, not legal advice.
 (() => {
   const box = document.getElementById('quiz');
@@ -3012,7 +3011,7 @@ window.TNBrowse = (() => {
       {v:'no', t:['Yes, and they said no','Sí, y me dijo que no']},
       {v:'notyet', t:['Not yet','Todavía no']}]}
   ];
-  const state = {step: 0, a: {}, f: {you:'', landlord:'', address:'', from:'', to:''}, letterLang: null, edited: false, text: ''};
+  const state = {step: 0, a: {}};
   const btnArrow = '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
   // ---- the answer ----
@@ -3046,125 +3045,60 @@ window.TNBrowse = (() => {
       p:['Your landlord approved it in writing. That’s the most important step.','Tu propietario lo aprobó por escrito. Ese es el paso más importante.'],
       steps:[['Save a copy of the written approval. You’ll add it to your listing in the app.','Guarda una copia de la aprobación por escrito. La vas a agregar a tu anuncio en la app.'],
              ['Post your room for free, with photos, rent and your exact dates.','Publica tu habitación gratis, con fotos, el alquiler y tus fechas exactas.'],
-             ['Pick a verified student and sign the sublease agreement in the app. The $15 fee is charged only then.','Elige a un estudiante verificado y firmen el contrato de subarriendo en la app. La tarifa de $15 se cobra solo en ese momento.']],
+             ['Pick a verified student and sign the sublease agreement in the app. The $15 success fee is charged only then.','Elige a un estudiante verificado y firmen el contrato de subarriendo en la app. La comisión de éxito de $15 se cobra solo en ese momento.']],
       cta:[POST, CALC], letter:false};
     if (asked === 'no') return {tone:'stop', badge:['Not yet','Todavía no'], note,
       h:['Don’t sublet without your landlord’s OK','No subarriendes sin el visto bueno de tu propietario'],
       p:['Subletting after your landlord said no can break your lease. You could lose your deposit or even be evicted.','Subarrendar después de que tu propietario dijo que no puede romper tu contrato. Podrías perder tu depósito o incluso enfrentar un desalojo.'],
-      steps:[['Ask what would change their mind, such as meeting the subletter or a shorter sublet. The request below covers the usual worries.','Pregúntale qué le haría cambiar de opinión, como conocer al subarrendatario o un subarriendo más corto. La solicitud de abajo responde a las preocupaciones más comunes.'],
+      steps:[['A shorter sublet can change their mind. A request sent through TermNest covers the usual worries: verified UM students, and you staying responsible for rent.','Un subarriendo más corto puede hacerle cambiar de opinión. Una solicitud enviada a través de TermNest responde a las preocupaciones más comunes: estudiantes verificados de UM y que tú sigues respondiendo por el alquiler.'],
              ['Ask about other options: a lease transfer, where a new tenant takes over your lease, or ending your lease early.','Pregunta por otras opciones: un traspaso, en el que otra persona asume tu contrato, o terminar el contrato antes.'],
              ['Only post your room once you have a yes in writing.','Publica tu habitación solo cuando tengas un sí por escrito.']],
       cta:[], letter:true, letterH:['If you ask again','Si vuelves a preguntar']};
     if (asked === 'verbal') return {tone:'ask', badge:['Almost there','Ya casi'], note,
       h:['Get your landlord’s OK in writing','Pide el visto bueno de tu propietario por escrito'],
-      p:['A spoken OK is easy to forget or dispute later. A short email reply or a signed letter protects you both.','Un sí de palabra se olvida fácil o se puede discutir después. Una respuesta por correo o una carta firmada los protege a ambos.'],
-      steps:[['Send the request below and ask them to reply with their approval.','Envía la solicitud de abajo y pídele que responda con su aprobación.'],
+      p:['A spoken OK is easy to forget or dispute later. An approval recorded in TermNest protects you both.','Un sí de palabra se olvida fácil o se puede discutir después. Una aprobación registrada en TermNest los protege a ambos.'],
+      steps:[['Request approval through TermNest. Your landlord approves in a few taps.','Pide la autorización a través de TermNest. Tu propietario la aprueba con unos pocos toques.'],
              ['Meanwhile, post your room for free in the app.','Mientras tanto, publica tu habitación gratis en la app.'],
-             ['Add the written approval in the app before anyone signs the sublease.','Agrega la aprobación por escrito en la app antes de que alguien firme el subarriendo.']],
+             ['Nobody can sign the sublease until the approval shows in the app.','Nadie puede firmar el subarriendo hasta que la aprobación aparezca en la app.']],
       cta:[POST], letter:true};
     if (asked === 'waiting') return {tone:'ask', badge:['Waiting on your landlord','Esperando a tu propietario'], note,
       h:['Wait for a written answer before anyone moves in','Espera una respuesta por escrito antes de que alguien se mude'],
       p:['You can get everything else ready while you wait.','Mientras esperas, puedes dejar todo lo demás listo.'],
-      steps:[['No answer in a week? Follow up in writing. You can use the request below.','¿Sin respuesta en una semana? Vuelve a escribirle. Puedes usar la solicitud de abajo.'],
+      steps:[['No answer in a week? Send the request through TermNest, so their answer is recorded in the app.','¿Sin respuesta en una semana? Envía la solicitud a través de TermNest, así su respuesta queda registrada en la app.'],
              ['Post your room for free in the app. Nobody can sign until your landlord’s approval is in.','Publica tu habitación gratis en la app. Nadie puede firmar hasta que esté la aprobación de tu propietario.'],
-             ['If they say yes, add their written approval in the app. If they say no, don’t sublet.','Si dice que sí, agrega su aprobación por escrito en la app. Si dice que no, no subarriendes.']],
-      cta:[POST], letter:true, letterH:['A follow-up you can send','Un seguimiento que puedes enviar']};
+             ['If they approve, you’ll see it in the app. If they say no, don’t sublet.','Si lo aprueba, lo verás en la app. Si dice que no, no subarriendes.']],
+      cta:[POST], letter:true, letterH:['Send it through TermNest','Envíala a través de TermNest']};
     if (lease === 'forbids') return {tone:'ask', badge:['Ask first','Pregunta primero'], note: null,   // the summary already covers the lease
       h:['Ask your landlord for an exception','Pide una excepción a tu propietario'],
       p:['Your lease says no subletting, but many landlords agree when they know who’s moving in and that you stay responsible for rent.','Tu contrato prohíbe subarrendar, pero muchos propietarios aceptan cuando saben quién se va a mudar y que tú sigues respondiendo por el alquiler.'],
-      steps:[['Send the request below. It explains that you stay responsible for the lease and rent.','Envía la solicitud de abajo. Explica que sigues respondiendo por el contrato y el alquiler.'],
+      steps:[['Request approval through TermNest. The request explains that you stay responsible for the lease and rent.','Pide la autorización a través de TermNest. La solicitud explica que sigues respondiendo por el contrato y el alquiler.'],
              ['Only sublet if your landlord agrees in writing.','Subarrienda solo si tu propietario acepta por escrito.'],
              ['If they say no, ask about a lease transfer or ending your lease early.','Si dice que no, pregunta por un traspaso del contrato o por terminarlo antes.']],
       cta:[], letter:true};
     return {tone:'ask', badge:['Next step','Siguiente paso'], note,
       h:['Ask your landlord before you sublet','Pregúntale a tu propietario antes de subarrendar'],
-      p:['This is the step most students skip, and the one that protects you most. It takes one email.','Es el paso que más estudiantes se saltan y el que más te protege. Basta con un correo.'],
-      steps:[['Send the request below to your landlord or property manager.','Envía la solicitud de abajo a tu propietario o a la administradora.'],
+      p:['This is the step most students skip, and the one that protects you most. It takes a minute in the app.','Es el paso que más estudiantes se saltan y el que más te protege. Te toma un minuto en la app.'],
+      steps:[['Request approval through TermNest. We send it to your landlord or property manager for you.','Pide la autorización a través de TermNest. Nosotros se la enviamos a tu propietario o a la administradora.'],
              ['Meanwhile, post your room for free in the app.','Mientras tanto, publica tu habitación gratis en la app.'],
-             ['Once they approve in writing, add it in the app. Then pick a verified student and sign the sublease.','Cuando lo apruebe por escrito, agrégalo en la app. Luego elige a un estudiante verificado y firmen el subarriendo.']],
+             ['Once they approve in TermNest, pick a verified student and sign the sublease.','Cuando lo apruebe en TermNest, elige a un estudiante verificado y firmen el subarriendo.']],
       cta:[POST, CALC], letter:true};
   }
 
   // ---- the landlord approval request ----
-  function letter(lang) {
-    const f = state.f, isEs = lang === 'es';
-    const blank = (v, en, sp) => v.trim() || (isEs ? sp : en);
-    const day = iso => { if (!iso) return ''; const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d).toLocaleDateString(isEs ? 'es-US' : 'en-US', {month:'long', day:'numeric', year:'numeric'}); };
-    const from = day(f.from) || (isEs ? '[fecha en que te vas]' : '[date you leave]');
-    const to = day(f.to) || (isEs ? '[fecha en que vuelves]' : '[date you return]');
-    const addr = blank(f.address, '[your address and unit]', '[tu dirección y número de unidad]');
-    const ll = blank(f.landlord, '[landlord’s name]', '[nombre del propietario]');
-    const you = blank(f.you, '[your name]', '[tu nombre]');
-    return isEs ? `Asunto: Solicitud de autorización para subarrendar ${addr}
-
-Estimado/a ${ll}:
-
-Le escribo para pedirle su autorización por escrito para subarrendar mi habitación en ${addr} mientras estoy fuera, del ${from} al ${to}.
-
-La persona que se quedaría es estudiante de la Universidad de Miami, con su correo universitario verificado a través de TermNest. Esto es lo que propongo:
-
-• Yo sigo siendo responsable del contrato de alquiler y de que el alquiler se pague a tiempo durante todo ese período.
-• La persona firmará un contrato de subarriendo que cumple con todas las condiciones de mi contrato, incluidas las reglas del edificio.
-• Le enviaré su nombre y sus datos de contacto antes de que se mude.
-• El subarriendo termina el ${to}, cuando vuelvo a vivir aquí. Mi contrato no cambia en nada más.
-
-Si está de acuerdo, ¿podría responder a este mensaje confirmando su autorización o firmar abajo? Con gusto respondo cualquier pregunta o coordino un momento para que conozca a la persona.
-
-Muchas gracias,
-${you}
-[tu teléfono o correo]
-
-Autorizado por: ______________________   Fecha: ____________`
-    : `Subject: Request to sublet ${addr}
-
-Dear ${ll},
-
-I’m writing to ask for your written approval to sublet my room at ${addr}, while I’m away from ${from} to ${to}.
-
-The subletter would be a University of Miami student whose school email has been verified through TermNest. Here’s what I propose:
-
-• I stay responsible for the lease and for rent being paid on time for the whole period.
-• The subletter will sign a sublease agreement that follows all the terms of my lease, including the building rules.
-• I’ll send you the subletter’s name and contact information before they move in.
-• The sublet ends on ${to}, when I move back in. Nothing else about my lease changes.
-
-If you agree, could you reply to this message to confirm, or sign below? I’m happy to answer any questions or set up a time for you to meet the subletter.
-
-Thank you,
-${you}
-[your phone or email]
-
-Approved by: ______________________   Date: ____________`;
-  }
-  const letterLang = () => state.letterLang || (es() ? 'es' : 'en');
+  // Landlords only approve subleases inside TermNest and never contact students directly,
+  // so the quiz sends students to the app instead of giving them a letter to send themselves.
+  const tick = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
   function letterHTML(r) {
-    const f = state.f, ll = letterLang();
-    const field = (k, label, type = 'text', auto = '', cls = '') => `<div${cls ? ` class="${cls}"` : ''}><label for="lt-${k}">${L(label)}</label>
-      <input id="lt-${k}" data-f="${k}" type="${type}" value="${esc(f[k])}"${auto ? ` autocomplete="${auto}"` : ''}></div>`;
-    if (!state.edited) state.text = letter(ll);
-    return `<div class="letter">
-      <h4>${L(r.letterH || ['Your landlord approval request','Tu solicitud de autorización al propietario'])}</h4>
-      <p>${L(['Fill in what you know, and the request updates as you type. You can also edit the text before you copy it.','Completa lo que sepas y la solicitud se actualiza mientras escribes. También puedes editar el texto antes de copiarlo.'])}</p>
-      <div class="letter-fields">
-        ${field('you', ['Your name','Tu nombre'], 'text', 'name')}
-        ${field('landlord', ['Landlord or property manager','Propietario o administradora'])}
-        ${field('address', ['Address and unit','Dirección y número de unidad'], 'text', 'street-address', 'wide')}
-        ${field('from', ['Away from','Fuera desde'], 'date')}
-        ${field('to', ['Back on','De vuelta el'], 'date')}
-      </div>
-      <fieldset class="letter-lang"><legend class="f-label">${L(['Language of the request','Idioma de la solicitud'])}</legend>
-        <div class="pills">
-          <label class="pill-opt"><input type="radio" name="letterLang" value="en"${ll === 'en' ? ' checked' : ''}><span>English</span></label>
-          <label class="pill-opt"><input type="radio" name="letterLang" value="es"${ll === 'es' ? ' checked' : ''}><span>Español</span></label>
-        </div></fieldset>
-      <label class="f-label" for="letterTxt">${L(['Request to send','Solicitud para enviar'])}</label>
-      <textarea id="letterTxt" spellcheck="true">${esc(state.text)}</textarea>
-      <div class="letter-copy">
-        <button type="button" class="btn btn-accent" data-q="copy">${L(['Copy request','Copiar solicitud'])}</button>
-        ${state.edited ? `<button type="button" class="link-btn" data-q="reset-letter">${L(['Undo my edits','Deshacer mis cambios'])}</button>` : ''}
-        <span class="copy-msg" id="copyMsg" role="status"></span>
-      </div>
-      ${state.edited ? `<p class="help">${L(['You edited the text, so the fields above no longer change it.','Editaste el texto, así que los campos de arriba ya no lo cambian.'])}</p>` : ''}
+    return `<div class="letter app-req">
+      <h4>${L(r.letterH || ['Request approval through TermNest','Pide la autorización a través de TermNest'])}</h4>
+      <p>${L(['TermNest sends the request to your landlord or property manager for you. They approve or decline inside TermNest, and you see their answer in the app.',
+              'TermNest le envía la solicitud a tu propietario o a la administradora por ti. Aprueba o rechaza dentro de TermNest, y tú ves su respuesta en la app.'])}</p>
+      <ul class="app-req-list">
+        <li>${tick}<span>${L(['Your landlord sees your name, the room and your sublet dates.','Tu propietario ve tu nombre, la habitación y las fechas del subarriendo.'])}</span></li>
+        <li>${tick}<span>${L(['They never get your phone number or email, and they can’t contact you directly.','Nunca recibe tu teléfono ni tu correo, y no puede contactarte directamente.'])}</span></li>
+        <li>${tick}<span>${L(['The request explains that you stay responsible for the lease and rent, and that subletters are verified UM students.','La solicitud explica que sigues respondiendo por el contrato y el alquiler, y que los subarrendatarios son estudiantes verificados de UM.'])}</span></li>
+      </ul>
+      <a class="btn btn-primary" href="app/index.html">${L(['Request approval in the app','Pide la autorización en la app'])}${btnArrow}</a>
     </div>`;
   }
 
@@ -3210,17 +3144,8 @@ Approved by: ______________________   Date: ____________`;
   box.addEventListener('change', e => {
     const i = e.target;
     if (i.name && i.name.startsWith('quiz-')) { state.a[i.name.slice(5)] = i.value; document.getElementById('quizErr').textContent = ''; }
-    if (i.name === 'letterLang') { state.letterLang = i.value; state.edited = false; draw(); document.querySelector(`#quiz input[name="letterLang"][value="${i.value}"]`).focus(); }
   });
-  box.addEventListener('input', e => {
-    const i = e.target;
-    if (i.dataset.f) { state.f[i.dataset.f] = i.value; if (!state.edited) document.getElementById('letterTxt').value = state.text = letter(letterLang()); }
-    if (i.id === 'letterTxt') {
-      state.text = i.value;
-      if (!state.edited) { state.edited = true; const pos = i.selectionStart; draw(); const t = document.getElementById('letterTxt'); t.focus(); t.setSelectionRange(pos, pos); }
-    }
-  });
-  box.addEventListener('click', async e => {
+  box.addEventListener('click', e => {
     const b = e.target.closest('[data-q]'); if (!b) return;
     const act = b.dataset.q;
     if (act === 'next') {
@@ -3234,18 +3159,9 @@ Approved by: ______________________   Date: ____________`;
       draw(true); scrollToQuiz();
     } else if (act === 'restart') {
       state.step = 0; state.a = {}; draw(true); scrollToQuiz();
-    } else if (act === 'reset-letter') {
-      state.edited = false; draw(); document.getElementById('letterTxt').focus();
-    } else if (act === 'copy') {
-      const t = document.getElementById('letterTxt'), msg = document.getElementById('copyMsg');
-      let ok = false;
-      try { await navigator.clipboard.writeText(t.value); ok = true; }
-      catch (err) { t.focus(); t.select(); try { ok = document.execCommand('copy'); } catch (err2) {} }
-      msg.textContent = ok ? L(['Copied. Paste it into an email or message to your landlord.','Copiado. Pégalo en un correo o mensaje para tu propietario.'])
-                           : L(['Couldn’t copy automatically. The text is selected: press Ctrl+C (or ⌘+C) to copy it.','No se pudo copiar automáticamente. El texto está seleccionado: presiona Ctrl+C (o ⌘+C) para copiarlo.']);
     }
   });
-  document.addEventListener('tn:lang', () => draw());   // keeps answers, fields and any edits to the request
+  document.addEventListener('tn:lang', () => draw());   // keeps the answers when the language changes
   draw();
 })();
 
